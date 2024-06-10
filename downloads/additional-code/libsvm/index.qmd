@@ -1,0 +1,70 @@
+---
+title: LIBSVM
+toc: true
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;"> <a href="http://www.csie.ntu.edu.tw/~cjlin/libsvm/">LIBSVM</a> is an external Support Vector Machine software package that is used by the <a href="http://www.readout.info/toolbox-design/classifiers/libsvm_cl/" title="libsvm_CL">Libsvm_CL classifier object</a>.  In order use the Libsvm_CL classifier, the LIBSVM software package must be installed to work with Matlab.  Below are instructions giving a few different ways to get the LIBSVM working with the <tt>libsvm_CL</tt> classifier object.  
+
+
+<h2> Use a precompiled version of LIBSVM </h2>
+
+We have created a precompiled version of LIBSVM that should work with 32 bit (.mexw32) and 64 bit (.mexw64) windows operating systems, and with 64 bit Linux (.mexa64).  To use the precompiled LIBSVM code, download the zip the files by clicking the link below, upzip the files, and put the  directory  <tt>libsvm-3.11/</tt> in the <tt>ndt.1.0.0/external_libraries/</tt> directory. Run the <tt>add_ndt_paths_and_init_rand_generator</tt> helper function to add the code to Matlab's path and it should work.  
+
+
+[Download precompiled LIBSVM 3.11](/_freeze/download_data_and_code/data_and_code/libsvm-3.11.zip)    
+
+
+<h2 style="padding-top:1em !important"> Download and compile LIBSVM on your system</h2>
+
+If you are running an operating system not supported (or the above precompiled version of LIBSVM is not working), then you can compile LIBSVM into a MEX file on your own computer using the following instructions.
+
+<ol>
+<li>Download either the <a href="http://www.csie.ntu.edu.tw/~cjlin/cgi-bin/libsvm.cgi?+http://www.csie.ntu.edu.tw/~cjlin/libsvm+zip">zip file</a> or the <a href="http://www.csie.ntu.edu.tw/~cjlin/cgi-bin/libsvm.cgi?+http://www.csie.ntu.edu.tw/~cjlin/libsvm+tar.gz">tar.gz file</a>.</li>
+<li>Unzip the compressed files and put the directory <tt>libsvm-3.1.x/</tt> into the directory <tt>ndt.1.0.0/external_libraries/</tt>. </li>
+<li>Compile the libsvm mex files. To do this, in Matlab go to the directory <tt>external_libraries/libsvm-3.1.x/matlab/</tt>' and type the command <tt> &gt;&gt; make.</tt> </li>
+<li> Rename the compiled <tt>svmtrain</tt> mex file, to <tt>svmtrain2</tt> (e.g., rename <tt>svmtrain.mexa64</tt> to <tt>svmtrain2.mexa64</tt>). Note that depending on the operating system used, the extension of the <tt>svmtrain</tt> mex file will be slightly different (e.g., if you are using a 32 bit version of Windows, the file will be named <tt>svmtrain.w32</tt> and one should rename it <tt>svmtrain2.w32</tt>). The reason that svmtrain needs to be renamed is because the matlab bioinformatics toolbox has a function that is also named svmtrain, thus creating a naming conflict with LIBSVM. </li>
+</ol>
+<h4>Suppressing LIBSVM command line output</h4>
+
+If you compile LIBSVM yourself, a lot of output strings will printed to the Matlab command window when LIBSVM is run. This output can be suppressed by taking the following steps.
+
+<ol>
+<li>Open the file <tt>svm.cpp</tt>, and change the line
+
+<div style="margin-top:2em">
+```c
+#if 1
+static void info(const char *fmt, ...)
+```
+</div>
+
+
+to:
+
+```c
+#if 0
+static void info(const char *fmt, ...)
+```
+
+</li>
+<li>Open the file <tt>matlab/svmpredict.c</tt> and change (comment out) the following lines:
+
+<div style="margin-top:2em">
+
+```c
+        mexPrintf("Accuracy = %g%% (%d/%d) (classification)\n", 
+              (double)correct/total*100,correct,total);
+```
+</div>
+
+to:
+
+```c
+     // mexPrintf("Accuracy = %g%% (%d/%d) (classification)\n",
+     //       (double)correct/total*100,correct,total);
+```
+</li>
+
+<li>Recompile the mex file and rename it to <tt>svmtrain2</tt> as described in steps 3 and 4 above.</li>
+</ol>
+

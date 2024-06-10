@@ -1,0 +1,15 @@
+---
+title: Tutorials
+toc: true
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">Below are some tutorials that show you how to use the Neural Decoding Toolbox. The <a href="http://www.readout.info/tutorials/introduction-tutorial/" title="Introduction tutorial">introduction tutorial</a> is a simple tutorial that explains the basics of how to decoding simple variables using the Neural Decoding Toolbox and should be read first. Once one has gone through the basic tutorial one can either try the <a href="http://www.readout.info/tutorials/generalization-analysis/" title="Generalization analysis tutorial">generalization analysis tutorial</a> to see how one can use the Neural Decoding Toolbox to test whether neural activity is invariant to transformations of experimental conditions, or one can get started using your own data by following <a href="http://www.readout.info/tutorials/getting-started-with-your-own-data/" title="Getting started with your own data">the getting started with your own data tutorial.</a>
+<ul>
+<li><a href="http://www.readout.info/tutorials/introduction-tutorial/" title="Introduction tutorial">Introduction tutorial</a> on how to use the toolbox</li>
+</ul>
+<ul>
+<li> <a href="http://www.readout.info/tutorials/generalization-analysis/" title="Generalization analysis tutorial">Generalization tutorial</a> that shows how to test whether neural representations are invariant to particular stimulus transformations</li>
+</ul>
+<ul>
+<li><a href="http://www.readout.info/tutorials/getting-started-with-your-own-data/" title="Getting started with your own data">A tutorial showing how to get started with your own data</a></li>
+</ul>

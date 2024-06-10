@@ -1,0 +1,104 @@
+
+# website settings
+website:
+  title: "Neural Decoding Toolbox"                               
+  description: "The Neural Decoding Toolbox is a Matlab toolbox that makes it easy to apply decoding analyses to neural data"   # A brief slogan (optional)
+
+  bread-crumbs: false
+  favicon: img/favicon.png
+  
+  # start of the navigation bar at the top of the website
+  navbar:
+    pinned: true
+
+    # your sub-pages
+    right:
+      - text: "Tutorials"
+        menu:
+          - text: "Introduction tutorial"
+            href: tutorials/introduction-tutorial/index.qmd
+          - text: "Generalization analysis"
+            href: tutorials/generalization-analysis/index.qmd
+          - text: "Using your own data"
+            href: tutorials/getting-started-with-your-own-data/index.qmd
+          - text: "MEG/EEG decoding"
+            href: tutorials/meg-eeg-decoding-tutorial/index.qmd
+          - text: "P-value tutorial"
+            href: tutorials/p-value-tutorial/index.qmd
+          - text: "Additional resources"
+            href: tutorials/additional-tutorial-resources/index.qmd
+      - text: "Downloads"
+        menu: 
+          - text: "Download the toolbox"
+            href: downloads/download-the-toolbox/index.qmd
+          - text: "Data sets"
+            href: downloads/datasets/index.qmd
+          - text: "Additional code"
+            href: downloads/additional-code/index.qmd
+      - text: "Documentation"
+        menu:
+          - text: "Datasources"
+            href: toolbox-design/datasources/index.qmd
+          - text: "Feature preprocessors"
+            href: toolbox-design/feature-preprocessors/index.qmd
+          - text: "Classifiers"
+            href: toolbox-design/classifiers/index.qmd
+          - text: "Cross-validators"
+            href: toolbox-design/cross-validator/index.qmd
+          - text: "Tools"
+            href: toolbox-design/tools/index.qmd
+          - text: "Data formats"
+            href: toolbox-design/data-formats/index.qmd  
+      - text: "About"
+        menu: 
+          - text: "Publications"
+            href: about/publications/index.qmd      
+            
+  sidebar:
+    - id: Documentation
+      style: docked
+      contents:          
+       - auto: toolbox-design/
+    - id: tutorials_sidebar
+      style: docked
+      contents:          
+       - auto: tutorials/
+    - id: download_sidebar
+      style: docked
+      contents:          
+       - auto: downloads/
+
+
+  search: 
+    location: navbar
+    type: overlay
+  page-footer: 
+    right: |
+      <span class="faux-block">&#169; The Neural Decoding Toolbox was created by <a href=https://emeyers.scripts.mit.edu/emeyers/>Ethan Meyers</a></span>
+
+
+project:
+  type: website
+  output-dir: docs
+
+  preview: 
+    port: 22222
+    browser: true
+    watch-inputs: true
+    navigate: true
+
+execute:
+  freeze: true
+
+format:
+  html:
+    fontsize: 0.92em
+    theme: 
+      - pulse
+      - html/styles.scss
+    toc: false
+    code-link: true
+    anchor-sections: true
+    fig-cap-location: margin
+    reference-location: margin
+    footnotes-hover: true

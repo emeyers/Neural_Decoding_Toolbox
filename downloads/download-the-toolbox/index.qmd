@@ -1,0 +1,19 @@
+---
+title: Download the toolbox
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">
+
+
+<br>
+
+<p style="font-size: 20px;">Download the latest version of the [Neural Decoding Toolbox (v1.0.4) ](/_freeze/download_data_and_code/ndt.1.0.4.zip)</p>
+ 
+<br>
+
+<p style="font-size: 20px;">The latest version of additional files that are useful for MEG decoding can be downloaded [here](/downloads/additional-code/meg-additional-decoding-functions/)</p>
+
+<br>
+
+Older versions of the toolbox can be downloaded [here](/downloads/download-the-toolbox/old-versions-of-the-toolbox/). In general we highly recommend using the latest version of the toolbox.  However in order to replicate previous results, we maintain links to older versions of the toolbox. 
+

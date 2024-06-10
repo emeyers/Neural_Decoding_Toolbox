@@ -1,0 +1,275 @@
+---
+title: P-value tutorial
+toc: true
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">This tutorial shows how to run a permutation test to get p-values that can be used to evaluate when your decoding results are above chance. This tutorial assumes you are already familiar with the steps needed to do a basic decoding analysis as described in the <a href="http://www.readout.info/toolbox-design/datasources/basic_ds/" title="basic_DS">basic tutorial</a>
+
+
+### Permutation tests
+
+
+
+When running a decoding analysis we often want to know if a particular decoding accuracy is higher than what we would expect by chance. This can be phrased as a <a href="https://en.wikipedia.org/wiki/Statistical_hypothesis_testing">hypothesis test</a> where the null hypothesis (H0) is that the decoding results are compatible with a chance model of the classifier randomly guessing, and the alternative hypothesis (HA) is that they are higher than would be expected from chance model. We call our (probability) model of decoding accuracies if the classier was guessing, a  null distribution , and a p-value is the probability of getting a random decoding accuracy as high or higher than the one we actually got from this null distribution. 
+
+<!--
+[create an image of a null distribution, line for the observed statistic, p-value, etc. as I ve done a million times in intro stats]
+-->
+
+
+In a permutation test, each statistic in the null distribution is created by running the decoding analysis with the labels randomly shuffled. Shuffling the labels breaks the relationship between the experimental conditions that occurred and thus gives us a decoding accuracy statistic that is consistent with the null hypothesis. To get a full null distribution, we repeat the procedure of shuffling the labels and running the decoding analysis many times. 
+
+The Neural Decoding Toolbox has built in functionality that can make it easy to create these null distributions and get p-values. In particular, what needs to be done is to set a flag in the data source to randomly shuffle the labels and then to run the analysis several times with this flag set, saving these shuffled results in a separate file every time.  The standard_plot_result_object (and p_value object) will then take these shuffled files and the real results and return p-values at each point in time. While running the decoding analysis many times with the results shuffled might seem computationally intensive, by making a few assumptions (that for all intents and purposes are true) we can greatly speed up this computation. The rest of this tutorial walks you through the steps to do this analysis with the Neural Decoding Toolbox. 
+
+ 
+
+
+
+
+
+### Getting decoding results
+
+
+In order to assess when your decoding results are above chance, you (obviously) first need to run a decoding analysis to get the regular decoding results. In this tutorial we will follow the outline of the <a href="http://www.readout.info/toolbox-design/datasources/basic_ds/" title="basic_DS">introduction tutorial</a> and try to decoding which of 7 different objects in <a href="http://www.readout.info/downloads/datasets/zhang-desimone-7-object-dataset/">Zhang-Desimone  7 object data set </a> was shown to a monkey. We will assume that we already have the data in binned-format in a file called <tt>'Zhang_Desimone_7objects_raster_data/'</tt> (for more information about binning data see the <a href="http://www.readout.info/toolbox-design/datasources/basic_ds/" title="basic_DS">basic tutorial</a>). Let's start by creating a directory to store our results called <tt>results/</tt> and a directory within this directory called <tt>shuff/results</tt> and load the Neural Decoding Toolbox functions. 
+
+<div class="ethan_code_space">
+
+```matlab
+% Two directories to store our results
+mkdir results
+mkdir results/shuff/
+
+% add the path to the Neural Decoding Toolbox
+toolbox_directory_name = '../../ndt.1.0.4/'  
+addpath(toolbox_directory_name) 
+add_ndt_paths_and_init_rand_generator
+
+```
+</div> 
+
+
+Now that we have directories to store our result and have loaded the NDT, let's create a function called <tt>run_basic_decoding_initial()</tt> which will run the decoding analysis and save the results to the <tt>results/</tt> directory. The code below shows this initial decoding function and is very similar to the code used in the <a href="http://www.readout.info/toolbox-design/datasources/basic_ds/" title="basic_DS">Introduction Tutorial</a>. The only real difference is that we set the cross-validator flag <tt>test_only_at_training_times</tt> equal to 1, which causes the decoding to only be trained and tested at the same time point - i.e., when this flag is set a full temporal generalization analysis will not be run which will greatly speed the run time of the code (at the cost of not being able to create TCT plots). 
+
+<div class="ethan_code_space">
+
+```matlab
+function run_basic_decoding()
+
+% the following parameters are hard coded but could be input arguments to this function
+specific_binned_labels_names = 'stimulus_ID';  % use object identity labels to decode which object was shown 
+num_cv_splits = 20;     % use 20 cross-validation splits 
+binned_data_file_name = 'Binned_Zhang_Desimone_7object_data_150ms_bins_50ms_sampled.mat'; % use the data that was previously binned 
+
+% the name of where to save the results
+save_file_name = 'results/Zhang_Desimone_basic_7object_results';
+
+
+% create the basic objects needed for decoding
+ds = basic_DS(binned_data_file_name, specific_binned_labels_names,  num_cv_splits); % create the basic datasource object
+the_feature_preprocessors{1} = zscore_normalize_FP;  % create a feature preprocess that z-score normalizes each feature
+the_classifier = max_correlation_coefficient_CL;  % select a classifier
+the_cross_validator = standard_resample_CV(ds, the_classifier, the_feature_preprocessors);  
+
+
+% we will also greatly speed up the run-time of the analysis by not creating a full TCT matrix 
+% (i.e., we are only training and testing the classifier on the same time bin)
+the_cross_validator.test_only_at_training_times = 1;  
+
+
+% run the decoding analysis and save the results
+DECODING_RESULTS = the_cross_validator.run_cv_decoding; 
+
+% save the results
+save(save_file_name, 'DECODING_RESULTS');
+
+end
+```
+</div> 
+
+
+If we were to run this code it would create it will create a file called <tt>Zhang_Desimone_basic_7object_results</tt> in the directory <tt>results/</tt> that contains the basic decoding results. We will make a few modifications to this code below which will allow us to create to run a permutation test by creating a null distribution from which we can calculate p-values.
+
+
+
+### Shuffled results
+
+
+
+Now that we've created a basic function to run our decoding analyses, we can make a few modifications to this function to run create shuffled results for our the null distribution of our permutation test. In particular there are three modifications that we will need to make. The first modification we need to make is to change a flag in the data source so that the labels are shuffled prior to running the decoding analysis. By shuffling the labels we break the relationship between the data and the experimental conditions (labels) and thus the decoding accuracy we get is consistent with what we would expect by chance. We make this 
+
+
+<div class="ethan_code_space">
+
+```matlab
+if shuff_num &gt; 0
+
+    % randomly shuffled the labels before running
+    ds.randomly_shuffle_labels_before_running = 1;  
+
+    % create the cross validator as before
+    the_cross_validator = standard_resample_CV(ds, the_classifier, the_feature_preprocessors);  
+    
+    % save the results with the appropriate name to the shuff_results/ directory
+    save_file_name = ['results/shuff_results/Zhang_Desimone_basic_7object_results_shuff_run_' num2str(shuff_num, '%03d')];
+    
+end
+
+```
+</div> 
+
+
+We add this code to our original file at the line before we create the cross-validator so that the data-source with the shuffle flag set to 1 will occur before we pass the data source to the cross-validator constructor method.  The full code that contains these changes is shown below.
+
+Note: We have also added a line so that the cross-validator will only run 10 resample runs to speed up the code (this might create slightly more variable results, which if anything, will make our p-values a little more conservative). Finally we have added a few lines to repress information that is printed while the decoding analysis is run in order to reduce visual clutter.  
+
+
+<div class="ethan_code_space">
+
+```matlab
+ function run_basic_decoding_shuff(shuff_num)
+
+% the following parameters are hard coded but could be input arguments to this function
+specific_binned_labels_names = 'stimulus_ID';  % use object identity labels to decode which object was shown 
+num_cv_splits = 20;     % use 20 cross-validation splits 
+binned_data_file_name = 'Binned_Zhang_Desimone_7object_data_150ms_bins_50ms_sampled.mat'; % use the data that was previously binned 
+
+
+% the name of where to save the results
+save_file_name = 'results/Zhang_Desimone_basic_7object_results';
+
+% create the basic objects needed for decoding
+ds = basic_DS(binned_data_file_name, specific_binned_labels_names,  num_cv_splits); % create the basic datasource object
+the_feature_preprocessors{1} = zscore_normalize_FP;  % create a feature preprocess that z-score normalizes each feature
+the_classifier = max_correlation_coefficient_CL;  % select a classifier
+
+
+if shuff_num == 0
+    
+    'Currently running regular decoding results'
+    
+     % if running the regular results, create the regular cross-validator
+     the_cross_validator = standard_resample_CV(ds, the_classifier, the_feature_preprocessors);  
+     
+     % the name of where to save the results for regular (non-shuffled) decoding results as before
+     save_file_name = 'results/Zhang_Desimone_basic_7object_results';
+
+else
+        
+    'Currently running shuffled label decoding results (data for the null distribution)'
+
+    ds.randomly_shuffle_labels_before_running = 1;  % randomly shuffled the labels before running
+
+    % create the cross validator as before
+    the_cross_validator = standard_resample_CV(ds, the_classifier, the_feature_preprocessors);  
+    
+    the_cross_validator.num_resample_runs = 10;  % only do 10 resample runs to save time
+    
+    % don't show progress to reduce visual clutter while the code is running
+    the_cross_validator.display_progress.zero_one_loss = 0;  
+    the_cross_validator.display_progress.resample_run_time = 0;
+    
+    % save the results with the appropriate name to the shuff_results/ directory
+    save_file_name = ['results/shuff_results/Zhang_Desimone_basic_7object_results_shuff_run_' num2str(shuff_num, '%03d')];
+    
+end
+
+
+
+% we will also greatly speed up the run-time of the analysis by not creating a full TCT matrix 
+% (i.e., we are only training and testing the classifier on the same time bin)
+the_cross_validator.test_only_at_training_times = 1;  
+
+
+
+% run the decoding analysis and save the results
+DECODING_RESULTS = the_cross_validator.run_cv_decoding; 
+
+% save the results
+save(save_file_name, 'DECODING_RESULTS'); 
+
+end
+```
+</div> 
+
+
+
+We can then run this code 6 times in a <tt>for</tt> as shown below. The first time the code is run with <tt>i = 0</tt>, which means that our function is called as <tt>run_basic_decoding_shuff(0)</tt>. This causes the regular decoding results to be run where the labels are not shuffled. In the next 5 iterations of the loop, <tt>run_basic_decoding_shuff</tt> is called with arguments valued from 1 to 5. This causes the shuffled results to be run and saved in the <tt>results/shuff_results/</tt> directories with the names <tt>Zhang_Desimone_basic_7object_results_shuff_run_001.mat</tt>, <tt>Zhang_Desimone_basic_7object_results_shuff_run_002.mat</tt>, etc. 
+
+<div class="ethan_code_space">
+
+```matlab
+
+for i = 0:5
+    i
+    run_basic_decoding_shuff(i); 
+end
+
+```
+</div> 
+
+
+As discussed more below, since there are 18 time bin in our binned data (i.e., in <tt>Binned_Zhang_Desimone_7object_data_150ms_bins_50ms_sampled.mat</tt>) we will ultimately have a null distribution that has 18 * 5 = 90 point in it. By default, the toolbox will call results 'statistically significant' if they are less than all points in the null distribution, which here is equivalent to a significance level of p-values be less than 1/90 = .0111. To have more potential precision of the smallest p-value, run the code more times with the labels shuffled (e.g, have the for loop from 1 to 10). In the sections below we also discuss how to change the significant level (alpha) when the results are plotted.
+
+
+
+### Plotting 'statistically significant' times
+
+
+
+
+Now that we have all the data to create a null distribution, we can use the plot_standard_results object to load the data files we created and calculate a p-value based on how many decoding results in the null distribution are as high or higher than the real decoding results. To do this we just need to set two properties compared to the way we normally plot the results. The first property is <tt>plot_obj.p_values</tt> and tells the plot_standard_results_object where the null distribution files are. This property <tt>plot_obj.p_values</tt> needs to be set to a cell array of strings, where each string is a directory that contains shuffled results. The reason that this is a cell array is because if one is comparing different decoding results on the same figure, different directories of shuffled results are needed to create the p-values for each decoding result. 
+
+The second property that needs to be set is <tt>plot_obj.collapse_all_times_when_estimating_pvals = 1;</tt> This property tells us to use data from all time bins when creating the null distribution. By using data from all time points when creating the null distribution we can greatly reduce the number of times we have to rerun our code with the labels shuffled which greatly cuts down on computational time (i.e., for each shuffled run we get num_time_bin  points rather than a single point).  Of course this means we are assuming that the results with the labels shuffled are the same at all time points, however this is a reasonable assumption to make and empirically seems to be very close to true for the data we have looked at (if you are worried about this assumption and have enough time or computational power, simply do not set the flag <tt>plot_obj.collapse_all_times_when_estimating_pvals = 1;</tt> and just do many runs with the labels shuffled). 
+
+
+<div class="ethan_code_space">
+
+```matlab
+ % create a plot_standard_results_object that has the directory with the real results
+result_names{1} = 'results/Zhang_Desimone_basic_7object_results';
+plot_obj = plot_standard_results_object(result_names);
+
+
+% create the names of directories that contain the shuffled data for creating null distributions
+% (this is a cell array so that multiple p-values are created when comparing results)
+pval_dir_name{1} = 'results/shuff_results/';
+plot_obj.p_values = pval_dir_name;
+
+% use data from all time bins when creating the null distribution
+plot_obj.collapse_all_times_when_estimating_pvals = 1;
+
+% plot the results as usual
+plot_obj.plot_results;
+end
+```
+</div>
+
+
+The solid strip at the bottom of the figure shows the times when the decoding results are above what we consider chance, as defined by the significance level (alpha) that can be set through the property <tt>plot_obj.p_value_alpha_level</tt>. As a default, <tt>plot_obj.p_value_alpha_level</tt> is set to 
+0 (or more technically, to the smallest value the computer is capable of representing). Thus decoding results are only considered statistically significant if they are greater than all of the shuffled data in the null distribution. 
+
+When p-values are plotted, the latency of when the p-values are first above chance is also added to the legend of the plot. These latencies show the ends of the time bin that is first considered to have above chance decoding results. This first 'statistically significant' time bin is defined as the first bin of <tt>k</tt> consecutive bins that show p-values below the specified alpha level. Using <tt>k</tt> consecutive bins helps smooth the results so that the latency won't be thrown off by having a single spurious time when a p-value is significant by chance, but instead the p-values need to be significant for several bins in a row. By default, the number of consecutive time bins is set to <tt>k = 5</tt>. This parameter can be changed by using the <tt>latency_num_consecutive_sig_bins</tt> property in the <tt>pvalue_object</tt>. In the future we plan to update this tutorial to explain how to do this (and how to use the <tt>pvalue_object</tt> more generally). 
+
+
+
+<!--
+
+
+### <a name="P_value_object"></a>Examining additional p-value information with the pvalue_object
+
+
+
+...
+
+<div class="ethan_code_space">
+
+```matlab
+
+
+
+
+```
+</div>
+
+
+-->

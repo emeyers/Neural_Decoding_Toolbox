@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Neural Decoding Toolbox - Introduction tutorial</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../img/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Neural Decoding Toolbox</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-tutorials" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Tutorials</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-tutorials">    
+        <li>
+    <a class="dropdown-item" href="../../tutorials/introduction-tutorial/index.html">
+ <span class="dropdown-text">Introduction tutorial</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../tutorials/generalization-analysis/index.html">
+ <span class="dropdown-text">Generalization analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../tutorials/getting-started-with-your-own-data/index.html">
+ <span class="dropdown-text">Using your own data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../tutorials/meg-eeg-decoding-tutorial/index.html">
+ <span class="dropdown-text">MEG/EEG decoding</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../tutorials/p-value-tutorial/index.html">
+ <span class="dropdown-text">P-value tutorial</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../tutorials/additional-tutorial-resources/index.html">
+ <span class="dropdown-text">Additional resources</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-downloads" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Downloads</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-downloads">    
+        <li>
+    <a class="dropdown-item" href="../../downloads/download-the-toolbox/index.html">
+ <span class="dropdown-text">Download the toolbox</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../downloads/datasets/index.html">
+ <span class="dropdown-text">Data sets</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../downloads/additional-code/index.html">
+ <span class="dropdown-text">Additional code</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-documentation" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Documentation</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-documentation">    
+        <li>
+    <a class="dropdown-item" href="../../toolbox-design/datasources/index.html">
+ <span class="dropdown-text">Datasources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../toolbox-design/feature-preprocessors/index.html">
+ <span class="dropdown-text">Feature preprocessors</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../toolbox-design/classifiers/index.html">
+ <span class="dropdown-text">Classifiers</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../toolbox-design/cross-validator/index.html">
+ <span class="dropdown-text">Cross-validators</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../toolbox-design/tools/index.html">
+ <span class="dropdown-text">Tools</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../toolbox-design/data-formats/index.html">
+ <span class="dropdown-text">Data formats</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-about" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">About</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-about">    
+        <li>
+    <a class="dropdown-item" href="../../about/publications/index.html">
+ <span class="dropdown-text">Publications</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <a class="flex-grow-1 no-decor" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+          <h1 class="quarto-secondary-nav-title">Introduction tutorial</h1>
+        </a>     
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../tutorials/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorials</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/additional-tutorial-resources/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Additional tutorial resources</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/generalization-analysis/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Generalization analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/getting-started-with-your-own-data/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting started with your own data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/introduction-tutorial/index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Introduction tutorial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/p-value-tutorial/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">P value tutorial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../tutorials/meg-eeg-decoding-tutorial/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Meg/eeg decoding tutorial</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/meg-eeg-decoding-tutorial/brainstorm_new_protocol/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Brainstorm_new_protocol</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview-of-the-ndt" id="toc-overview-of-the-ndt" class="nav-link active" data-scroll-target="#overview-of-the-ndt">Overview of the NDT</a>
+  <ul class="collapse">
+  <li><a href="#about-the-data" id="toc-about-the-data" class="nav-link" data-scroll-target="#about-the-data">About the data</a></li>
+  <li><a href="#adding-the-toolbox-path" id="toc-adding-the-toolbox-path" class="nav-link" data-scroll-target="#adding-the-toolbox-path">Adding the toolbox path</a></li>
+  </ul></li>
+  <li><a href="#data-formats" id="toc-data-formats" class="nav-link" data-scroll-target="#data-formats">Data formats</a>
+  <ul class="collapse">
+  <li><a href="#raster-format" id="toc-raster-format" class="nav-link" data-scroll-target="#raster-format">Raster format</a></li>
+  <li><a href="#binning-the-data" id="toc-binning-the-data" class="nav-link" data-scroll-target="#binning-the-data">Binning the data</a></li>
+  <li><a href="#determining-number-of-condition-repetitions" id="toc-determining-number-of-condition-repetitions" class="nav-link" data-scroll-target="#determining-number-of-condition-repetitions">Determining number of condition repetitions</a></li>
+  </ul></li>
+  <li><a href="#running-the-analysis" id="toc-running-the-analysis" class="nav-link" data-scroll-target="#running-the-analysis">Running the analysis</a>
+  <ul class="collapse">
+  <li><a href="#datasources-ds" id="toc-datasources-ds" class="nav-link" data-scroll-target="#datasources-ds">Datasources (DS)</a></li>
+  <li><a href="#feature-preprocessors-fp" id="toc-feature-preprocessors-fp" class="nav-link" data-scroll-target="#feature-preprocessors-fp">Feature-preprocessors (FP)</a></li>
+  <li><a href="#classifiers-cl" id="toc-classifiers-cl" class="nav-link" data-scroll-target="#classifiers-cl">Classifiers (CL)</a></li>
+  <li><a href="#cross-validators-cv" id="toc-cross-validators-cv" class="nav-link" data-scroll-target="#cross-validators-cv">Cross-validators (CV)</a></li>
+  <li><a href="#running-the-decoding" id="toc-running-the-decoding" class="nav-link" data-scroll-target="#running-the-decoding">Running the decoding</a></li>
+  </ul></li>
+  <li><a href="#plotting-the-results" id="toc-plotting-the-results" class="nav-link" data-scroll-target="#plotting-the-results">Plotting the results</a>
+  <ul class="collapse">
+  <li><a href="#plot-decoding-accuracy" id="toc-plot-decoding-accuracy" class="nav-link" data-scroll-target="#plot-decoding-accuracy">Plot decoding accuracy</a></li>
+  <li><a href="#temporal-cross-decoding" id="toc-temporal-cross-decoding" class="nav-link" data-scroll-target="#temporal-cross-decoding">Temporal-cross-decoding</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Introduction tutorial</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><br></p>
+<p class="ethan_opening_paragraph_tutorial">
+The following tutorial gives a basic introduction to the data formats used by Neural Decoding Toolbox (NDT) and shows how to run a simple decoding analysis. The tutorial is based on a dataset collected by Ying Zhang in Bob Desimone’s lab at MIT which is downloaded <a title="Downloads" href="http://www.readout.info/downloads/datasets/zhang-desimone-7-object-dataset/">here</a>.
+</p>
+<!-- <h2>Overview of the NDT</h2> -->
+<section id="overview-of-the-ndt" class="level2">
+<h2 class="anchored" data-anchor-id="overview-of-the-ndt">Overview of the NDT</h2>
+<p>
+Neural decoding is a process in which a pattern classifier learns the relationship between neural activity and experimental conditions using a&nbsp;<em>training set</em>&nbsp;of data. The reliability of the relationship between the neural activity and experimental conditions is evaluated by having the classifier predict what experimental conditions were present on a second&nbsp;<em>test set</em>&nbsp;of data.
+</p>
+<p>
+The NDT is built around 4 different object classes that allow users to apply neural decoding in a flexible and robust way. The four types of objects are:
+</p>
+<ol>
+<li>
+<a title="Datasources" href="http://www.readout.info/toolbox-design/datasources/">Datasources (DS)</a> which generate training and test splits of the data.
+</li>
+<li>
+<a title="Feature Preprocessors" href="http://www.readout.info/toolbox-design/feature-preprocessors/">Feature preprocessors (FP)</a> which apply preprocessing to the training and test splits.
+</li>
+<li>
+<a title="Classifiers" href="http://www.readout.info/toolbox-design/classifiers/">Classifiers (CL)</a> which learn the relationship between experimental conditions and data on the training set, and then predict experimental conditions on the test data.
+</li>
+<li>
+<a title="Cross-validators" href="http://www.readout.info/toolbox-design/cross-validator/">Cross-validators </a>(CV) which take the DS, FP and CL objects and run a cross-validation decoding procedure.
+</li>
+</ol>
+<p>
+The NDT comes with a few implementations of each of these objects, and defines interfaces that allow one to create new objects that extend the basic functionality of the four object classes. More information about the design of the NDT and these four objects classes can be found&nbsp;<a title="Toolbox Design" href="http://www.readout.info/toolbox-design/">here</a>.
+</p>
+<p>
+The following tutorial explains the data formats used by the Neural Decoding Toolbox, and how to run a decoding experiment using the basic versions of the four object classes.
+</p>
+<section id="about-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="about-the-data">About the data</h3>
+<!-- <h3>About the data used in this tutorial</h3> -->
+<p>
+The data used in this tutorial was collected by Ying Zhang in Bob Desimone’s lab at MIT and was used in the supplemental figures in the paper <a href="http://web.mit.edu/emeyers/www/Zhang_Meyers_PNAS_2011.pdf" rel="nofollow">Object decoding with attention in inferior temporal cortex, <em>PNAS</em>, 2011</a>. The data consists of single unit recordings from the 132 neurons in inferior temporal cortex (IT). The recordings were made while a monkey viewed 7 different objects that were presented at three different locations (the monkey was also shown images that consisted of three objects shown simultaneously and had to perform an attention task, however for the purposes of this tutorial we are only going to analyze data from trials when single objects were shown). Each object was presented approximately 20 times at each of the three locations. The data can be downloaded <a href="http://www.readout.info/download/2860/">here</a>.
+</p>
+<!--- <h3>Adding the path to the toolbox</h3> -->
+</section>
+<section id="adding-the-toolbox-path" class="level3">
+<h3 class="anchored" data-anchor-id="adding-the-toolbox-path">Adding the toolbox path</h3>
+<p>
+Before using any of the functions in the NDT, the path must be set so that Matlab knows where to find these functions. The function&nbsp;<tt>add_ndt_paths_and_init_rand_generator</tt>&nbsp;adds the path and the appropriate directories that contain the different NDT functions. Additionally, this function initializes the random number generator (to the current time on the CPU’s clock) so that each time the toolbox is used a different sequence of random numbers will be generated (by default Matlab uses the same seed to initialize the random number generator, which leads to the same sequence of random numbers every time Matlab is started). The following lines show how to use&nbsp;<tt>add_ndt_paths_and_init_rand_generator</tt>:
+</p>
+<div class="ethan_code_space">
+<div class="sourceCode" id="cb1"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">% add the path to the NDT so add_ndt_paths_and_init_rand_generator can be called</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">toolbox_basedir_name</span> <span class="op">=</span> <span class="ss">'ndt.1.0.4/'</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="va">addpath</span>(<span class="va">toolbox_basedir_name</span>)<span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">% add the NDT paths using add_ndt_paths_and_init_rand_generator</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="va">add_ndt_paths_and_init_rand_generator</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!--- <h2><a id="Data_formats"></a>Data formats</h2> -->
+</section>
+</section>
+<section id="data-formats" class="level2">
+<h2 class="anchored" data-anchor-id="data-formats">Data formats</h2>
+<p>
+In order to use the NDT, the neural data must be in a usable format. Typically this involves putting the data in&nbsp;<a title="Raster-format" href="http://www.readout.info/toolbox-design/data-formats/raster-format/">raster-format</a>&nbsp;and then converting it to&nbsp;<a title="Binned-format" href="http://www.readout.info/toolbox-design/data-formats/binned-format/">binned-format</a>&nbsp;using the&nbsp;<a title="create_binned_data_from_raster_data" href="http://www.readout.info/toolbox-design/tools/create_binned_data_from_raster_data/">create_binned_data_from_raster_data</a>&nbsp;function that is found in the tools directory. Information about these data formats is described&nbsp;<a title="Data formats" href="http://www.readout.info/toolbox-design/data-formats/">here</a>.
+</p>
+<!--- <h3><a id="Raster-format"></a>Raster-format</h3> -->
+<section id="raster-format" class="level3">
+<h3 class="anchored" data-anchor-id="raster-format">Raster format</h3>
+<p>
+To run a decoding analysis using the NDT you first need to have your data in a usable&nbsp;<a title="Data formats" href="http://www.readout.info/toolbox-design/data-formats/">format</a>. In this tutorial we will use data collected by Ying Zhang in Bob Desimone’s lab at MIT. The directory&nbsp;<tt>Zhang_Desimone_7objects_raster_data/</tt>&nbsp;contains data in&nbsp;<a title="Raster-format" href="http://www.readout.info/toolbox-design/data-formats/raster-format/">raster-format</a>. Each file in this directory contains data from one neuron. To start, let us load one of these files and examine its contents by typing the command:
+</p>
+<div class="ethan_code_space">
+<div class="sourceCode" id="cb2"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">load</span> <span class="va">bp1021spk_04B_raster_data</span>.<span class="va">mat</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>
+Data that is in&nbsp;<tt>raster-format</tt>&nbsp;contains three variables:&nbsp;<tt>raster_site_info, raster_labels, and raster_data</tt>. The variable&nbsp;<tt>raster_data</tt>&nbsp;is a matrix where each row corresponds to the data from one trial, and each column corresponds to data from one time point (the rows are also in order so that the first trial is in the first row, and the last trial is in the last row). Because we are dealing with neural spiking data in this tutorial each column in the matrix that was just loaded corresponds to a time when a spike occurred. We can view the spike rasters from each trial and a peri-stimulus time histogram (PSTH) of the data by typing the following commands:
+</p>
+<div class="ethan_code_space">
+<div class="sourceCode" id="cb3"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">% view the rasters from one neuron</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">subplot</span>(<span class="fl">1</span><span class="op">,</span> <span class="fl">2</span><span class="op">,</span> <span class="fl">1</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="va">imagesc</span>(<span class="op">~</span><span class="va">raster_data</span>)<span class="op">;</span> <span class="va">colormap</span> <span class="va">gray</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="va">line</span>([<span class="fl">500</span> <span class="fl">500</span>]<span class="op">,</span> <span class="va">get</span>(<span class="va">gca</span><span class="op">,</span> <span class="ss">'YLim'</span>)<span class="op">,</span> <span class="ss">'color'</span><span class="op">,</span> [<span class="fl">1</span> <span class="fl">0</span> <span class="fl">0</span>])<span class="op">;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="va">ylabel</span>(<span class="ss">'Trials'</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="va">xlabel</span>(<span class="ss">'Time (ms)'</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="va">title</span>(<span class="ss">'rasters'</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">% view the PSTH for one neuron</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="va">subplot</span>(<span class="fl">1</span><span class="op">,</span> <span class="fl">2</span><span class="op">,</span> <span class="fl">2</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="va">bar</span>(<span class="va">sum</span>(<span class="va">raster_data</span>))<span class="op">;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="va">line</span>([<span class="fl">500</span> <span class="fl">500</span>]<span class="op">,</span> <span class="va">get</span>(<span class="va">gca</span><span class="op">,</span> <span class="ss">'YLim'</span>)<span class="op">,</span> <span class="ss">'color'</span><span class="op">,</span> [<span class="fl">1</span> <span class="fl">0</span> <span class="fl">0</span>])<span class="op">;</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="va">ylabel</span>(<span class="ss">'Number of spikes'</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="va">xlabel</span>(<span class="ss">'Time (ms)'</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="va">title</span>(<span class="ss">'PSTH'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>
+From looking at the PSTH, one can see that this cell increased its firing rate shortly after stimulus onset (the stimulus onset was at 500 ms).
+</p>
+<p>
+The structure&nbsp;<tt>raster_labels</tt>&nbsp;is a structure that contains cell arrays that lists the experimental conditions that were present on each trial (each cell array has as many entries as there are rows in the raster_data matrix, so that there is an experimental condition label for each trial). For example, the variable <tt>raster_labels.stimulus_ID</tt>&nbsp;contains the labels for which of the 7 stimuli was shown on each trial, and the variable <tt>raster_labels.stimulus_position</tt>&nbsp;contains the position where the stimulus was shown.
+</p>
+<p>
+The structure&nbsp;<tt>rater_site_info</tt>&nbsp;contains any additional information about the recording site that the experimenter wants to record. For example, one could keep a record of the quality of the spike sorting isolation in this structure, or information about the position of where the neuron was recorded relative to a grid system used, etc.. For the purposes of this tutorial we will ignore this structure.
+</p>
+<!--- <h3><a id="Binning_the_data"></a>Binning the data</h3> -->
+</section>
+<section id="binning-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="binning-the-data">Binning the data</h3>
+<p>
+The NDT decoding objects operate on data that is in&nbsp;<a title="Binned-format" href="http://www.readout.info/toolbox-design/data-formats/binned-format/">binned-format</a>. To convert data in&nbsp;<tt>raster-format</tt>&nbsp;to&nbsp;<tt>binned-format</tt>, we can use the tool <tt><a title="create_binned_data_from_raster_data" href="http://www.readout.info/toolbox-design/tools/create_binned_data_from_raster_data/">create_binned_data_from_raster_data</a></tt>, which calculates the average firing rate of neurons over specified intervals and sampled with a specified frequency (i.e., a boxcar filter is used).&nbsp;<tt>create_binned_data_from_raster_data</tt>&nbsp;takes in four arguments: 1) the name of the directory where the raster-format data is stored, 2) the name (potentially including a directory) that the binned data should be saved as, 3) a bin size that specifies how much time the firing rates should be calculated over, and 4) a sampling interval that specifies how frequently to calculate these firing rates. To calculate the average firing rates in 150 ms bins sampled every 50 ms, the following commands can be used:
+</p>
+<div class="ethan_code_space">
+<div class="sourceCode" id="cb4"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">raster_file_directory_name</span> <span class="op">=</span> <span class="ss">'Zhang_Desimone_7objects_raster_data/'</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">save_prefix_name</span> <span class="op">=</span> <span class="ss">'Binned_Zhang_Desimone_7object_data'</span><span class="op">;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="va">bin_width</span> <span class="op">=</span> <span class="fl">150</span><span class="op">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="va">step_size</span> <span class="op">=</span> <span class="fl">50</span><span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="va">create_binned_data_from_raster_data</span>(<span class="va">raster_file_directory_name</span><span class="op">,</span> <span class="va">save_prefix_name</span><span class="op">,</span> <span class="va">bin_width</span><span class="op">,</span> <span class="va">step_size</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>
+The output of this function will be a file called&nbsp;<tt>Binned_Zhang_Desimone_7object_data_150ms_bins_50ms_sampled.mat</tt>. Data in&nbsp;<tt>binned-format</tt>&nbsp;has similar fields to data in&nbsp;<tt>raster-format</tt>&nbsp;except that data from all the neurons are now grouped together into single structures. The three variables for&nbsp;<tt>binned-format</tt>&nbsp;data are: 1) the_data{} which is a cell array where each entry contains a&nbsp;<tt>[num_trials x num_bins]</tt>&nbsp;matrix of data, which is a binned version of the raster_data for each neuron; 2)&nbsp;<tt>binned_labels</tt>&nbsp;which is a structure that contains cell array for the labels for each neuron, and 3)&nbsp;<tt>binned_site_info</tt>&nbsp;which contains all the extra info for each neuron.
+</p>
+<!--- <h3><a id="Determining_how_many_times_each_condition_was_repeated"></a> Determining how many times each condition was repeated</h3> -->
+</section>
+<section id="determining-number-of-condition-repetitions" class="level3">
+<h3 class="anchored" data-anchor-id="determining-number-of-condition-repetitions">Determining number of condition repetitions</h3>
+<p>
+Before beginning the decoding analysis it is useful to know how many times each experimental condition (e.g., stimulus) was presented to each site (e.g., neuron). In particular, it is useful to know how many times the condition that has the fewest repetitions was presented. To do this we will use the tool&nbsp;<a title="find_sites_with_k_label_repetitions" href="http://www.readout.info/tutorials/find_sites_with_k_label_repetitions/">find_sites_with_k_label_repetitions</a>&nbsp;which finds all sites that have at least k repetitions using data that is in binned-format. Below we count the number of sites with k repetitions for different numbers of k, and store them in the variable&nbsp;<tt>num_sites_with_k_repeats</tt>.
+</p>
+<div class="ethan_code_space">
+<div class="sourceCode" id="cb5"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">% load the binned data</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="va">load</span> <span class="va">Binned_Zhang_Desimone_7object_data_150ms_bins_50ms_sampled</span>.<span class="va">mat</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="va">k</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">65</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="op">&amp;</span><span class="va">nbsp</span><span class="op">;</span> <span class="op">&amp;</span><span class="va">nbsp</span><span class="op">;</span> <span class="va">inds_of_sites_with_at_least_k_repeats</span> <span class="op">=</span> <span class="va">find_sites_with_k_label_repetitions</span>(<span class="va">binned_labels</span>.<span class="va">stimulus_ID</span><span class="op">,</span> <span class="va">k</span>)<span class="op">;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="op">&amp;</span><span class="va">nbsp</span><span class="op">;</span> <span class="op">&amp;</span><span class="va">nbsp</span><span class="op">;</span> <span class="va">num_sites_with_k_repeats</span>(<span class="va">k</span>) <span class="op">=</span> <span class="va">length</span>(<span class="va">inds_of_sites_with_at_least_k_repeats</span>)<span class="op">;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>
+Based on these results we see that all of the 132 sites have 59 repetitions of all 7 of the stimuli, and that 125 sites have 60 repetitions of all 7 stimuli. This information is useful when deciding how many cross-validations splits to use, as described below.
+</p>
+<!--- <h2><a id="Performing_a_decoding_analysis"></a>Performing a decoding analysis</h2> -->
+</section>
+</section>
+<section id="running-the-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="running-the-analysis">Running the analysis</h2>
+<p>
+Performing a decoding analyses involves several steps:
+</p>
+<ol>
+<li>
+creating a&nbsp;<tt>datasource (DS)</tt>&nbsp;object that generates training and test splits of the data.
+</li>
+<li>
+optionally creating&nbsp;<tt>feature-preprocessor (FP)</tt>&nbsp;objects that learn parameters from the training data, and preprocess the training and test data.
+</li>
+<li>
+creating a&nbsp;<tt>classifier (CL)</tt>&nbsp;object that learns the relationship between the training data and training labels, and then evaluates the strength of this relationship on the test data.
+</li>
+<li>
+running a&nbsp;<tt>cross-validator</tt>&nbsp;object that using the&nbsp;<tt>datasource (DS)</tt>, the&nbsp;<tt>feature-preprocessor (FP)</tt>&nbsp;and the&nbsp;<tt>classifier (CL)</tt>&nbsp;objects to do a cross-validation procedure that estimates the decoding accuracy.
+</li>
+</ol>
+<p>
+Below we describe how to create and run these objects on the Zhang-Desimone dataset.
+</p>
+<!---  <h3><a id="Creating_a_Datasource_(DS)_object"></a>Creating a Datasource (DS) object</h3> -->
+<section id="datasources-ds" class="level3">
+<h3 class="anchored" data-anchor-id="datasources-ds">Datasources (DS)</h3>
+<p>
+A datasource object is used by the cross-validator to generate training and test splits of the data. Below we create a&nbsp;<a title="basic_DS" href="http://www.readout.info/toolbox-design/datasources/basic_ds/">basic_DS</a> object&nbsp;that takes binned-format data, a cell array of labels, and a scalar that specifies how many cross-validation splits to use. The default behavior of this datasource is to create test splits that have one example of each object in them and <tt>num_cv_splits - 1</tt> examples of each object in the training set.
+</p>
+<p>
+As calculated <a href="http://www.readout.info/tutorials/introduction-tutorial#Determining_how_many_times_each_condition_was_repeated">above</a>, all 132 neurons have 59 repetitions of each stimulus, and 125 neurons have 60 repetitions of each stimulus. Thus we can use up to 59 cross-validation splits using all neurons, or we could set the datasource to use only a subset of neurons and use 60 cross-validation splits. For the purpose of this tutorial, we will use all the neurons and only 20 cross-validation splits (to make the code run a little faster). The basic_DS datasource object also has many more properties that can be set, including specifying that only certain labels or neurons should be used. More information about this object can be found&nbsp;<a title="basic_DS" href="http://www.readout.info/toolbox-design/datasources/basic_ds/">here</a>.
+</p>
+<div class="ethan_code_space">
+<div class="sourceCode" id="cb6"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">% the name of the file that has the data in binned-format</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="va">binned_format_file_name</span> <span class="op">=</span> <span class="ss">'Binned_Zhang_Desimone_7object_data_150ms_bins_50ms_sampled.mat'</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">% will decode the identity of which object was shown (regardless of its position)</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="va">specific_label_name_to_use</span> <span class="op">=</span> <span class="ss">'stimulus_ID'</span><span class="op">;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="va">num_cv_splits</span> <span class="op">=</span> <span class="fl">20</span><span class="op">;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="va">ds</span> <span class="op">=</span> <span class="va">basic_DS</span>(<span class="va">binned_format_file_name</span><span class="op">,</span> <span class="va">specific_label_name_to_use</span><span class="op">,</span> <span class="va">num_cv_splits</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!---  <h3><a id="Creating_a_feature-preprocessor_(FP)_object"></a>Creating a feature-preprocessor (FP) object</h3> -->
+</section>
+<section id="feature-preprocessors-fp" class="level3">
+<h3 class="anchored" data-anchor-id="feature-preprocessors-fp">Feature-preprocessors (FP)</h3>
+<p>
+Feature preprocessors use the training set to learn particular parameters about the data, and then applying some preprocessing to the training and test sets using these parameters. Below will we create a&nbsp;<a title="zscore_normalize_FP" href="http://www.readout.info/toolbox-design/feature-preprocessors/zscore_normalize_fp/">zscore_normalize_FP</a>&nbsp;that zscore normalizes the data so that each neuron’s activity has approximately zero mean and a standard deviation of 1 over all trials. This feature-preprocessor is useful so that neurons with high firing rates do not end up contributing more to the decoding results than neurons with lower firing rates when a&nbsp;<tt>max_correlation_coefficient_CL</tt>&nbsp;is used.
+</p>
+<div class="ethan_code_space">
+<div class="sourceCode" id="cb7"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">% create a feature preprocessor that z-score normalizes each neuron</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">% note that the FP objects are stored in a cell array </span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">% which allows multiple FP objects to be used in one analysis</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="va">the_feature_preprocessors</span>{<span class="fl">1</span>} <span class="op">=</span> <span class="va">zscore_normalize_FP</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!---  <h3><a id="Creating_a_classifier_(CL)_object"></a>Creating a classifier (CL) object</h3> -->
+</section>
+<section id="classifiers-cl" class="level3">
+<h3 class="anchored" data-anchor-id="classifiers-cl">Classifiers (CL)</h3>
+<p>
+Classifiers take a “training set” of data and learn the relationship between the neural responses and the experimental conditions (labels) that were present on particular trials. The classifier is then used to make predictions about what experimental conditions are present on trials from a different “test set” of neural data. Below we create a&nbsp;<a title="max_correlation_coefficient_CL" href="http://www.readout.info/toolbox-design/classifiers/max_correlation_coefficient_cl/">max_correlation_coefficient_CL</a> classifier&nbsp;which learns prototypes of each class&nbsp;<em>k</em>&nbsp;that consists of the mean of all training data from class&nbsp;<em>k</em>. The predicted class for a new test point&nbsp;<em>x</em>&nbsp;is the class that has the maximum correlation coefficient value (i.e., the smallest angle) between the&nbsp;<em>x</em>&nbsp;and each class prototype.
+</p>
+<div class="ethan_code_space">
+<div class="sourceCode" id="cb8"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">% create the CL object</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="va">the_classifier</span> <span class="op">=</span> <span class="va">max_correlation_coefficient_CL</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!---  <h3><a id="Creating_a_cross-validator_(CV)_object"></a>Creating a cross-validator (CV) object</h3> -->
+</section>
+<section id="cross-validators-cv" class="level3">
+<h3 class="anchored" data-anchor-id="cross-validators-cv">Cross-validators (CV)</h3>
+<p>
+Cross-validator objects take a datasource, a classifier and optionally feature-preprocessor objects and run a decoding procedure by generating training and test data from the datasource, preprocessing this data with the feature-preprocessors and then training and testing the classifier on the resulting data. This procedure is run in two nested loops. The inner ‘cross-validation’ loop runs a cross-validation procedure where the classifier is trained and tested on different divisions of the data. The outer, ‘resample’ loop generates new splits (and also potentially pseudo-populations) of data, which are then run in a cross-validation procedure by the inner loop. Below we create a&nbsp;<a title="standard_resample_CV" href="http://www.readout.info/toolbox-design/cross-validator/standard_resample_cv/">standard_resample_CV</a>&nbsp;object that runs this decoding procedure.
+</p>
+<div class="ethan_code_space">
+<div class="sourceCode" id="cb9"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">% create the CV object</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="va">the_cross_validator</span> <span class="op">=</span> <span class="va">standard_resample_CV</span>(<span class="va">ds</span><span class="op">,</span> <span class="va">the_classifier</span><span class="op">,</span> <span class="va">the_feature_preprocessors</span>)<span class="op">;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">% set how many times the outer 'resample' loop is run</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">% generally we use more than 2 resample runs which will give more accurate results</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">% but to save time in this tutorial we are using a small number.</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="va">the_cross_validator</span>.<span class="va">num_resample_runs</span> <span class="op">=</span> <span class="fl">2</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!---  <h3><a id="Running_the_decoding_analysis_and_saving_the_results"></a>Running the decoding analysis and saving the results</h3> -->
+</section>
+<section id="running-the-decoding" class="level3">
+<h3 class="anchored" data-anchor-id="running-the-decoding">Running the decoding</h3>
+<p>
+To run the decoding procedure we call the cross-validator’s run_cv_decoding method, and the results are saved to a structure&nbsp;<tt>DECODING_RESULTS</tt>.
+</p>
+<div class="ethan_code_space">
+<div class="sourceCode" id="cb10"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">% run the decoding analysis</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="va">DECODING_RESULTS</span> <span class="op">=</span> <span class="va">the_cross_validator</span>.<span class="va">run_cv_decoding</span><span class="op">;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="va">save_file_name</span> <span class="op">=</span> <span class="ss">'Zhang_Desimone_basic_7object_results'</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="va">save</span>(<span class="va">save_file_name</span><span class="op">,</span> <span class="ss">'DECODING_RESULTS'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!---  <h2><a id="Plotting_the_results"></a>Plotting the results</h2> -->
+</section>
+</section>
+<section id="plotting-the-results" class="level2">
+<h2 class="anchored" data-anchor-id="plotting-the-results">Plotting the results</h2>
+<p>
+Below we show how to plot the decoding accuracies as function of time using the&nbsp;<tt>plot_standard_results_object</tt>&nbsp;which is useful when comparing decoding accuracies from different analyses. We also show how to plot the results when training the classifier at one time and testing the classifier at a second time (ie., a temporal-cross-training plot) using the&nbsp;<tt>plot_standard_results_TCT_object</tt>&nbsp;object, which is useful for testing where information is contained in a dynamic population code.
+</p>
+<!--- <h3><a id="Plot_a_line_that_shows_the_decoding_accuracy"></a>Plot the decoding accuracy as a function of time</h3> -->
+<section id="plot-decoding-accuracy" class="level3">
+<h3 class="anchored" data-anchor-id="plot-decoding-accuracy">Plot decoding accuracy</h3>
+<p>
+To plot basic decoding results as a function of time, we will use the&nbsp;<a title="plot_standard_results_object" href="http://www.readout.info/toolbox-design/tools/plot_standard_results_object/">plot_standard_results_object</a>. This object takes the decoding result files that were created by the&nbsp;<tt>standard_resample_CV</tt>&nbsp;object and plots them in a nice way. There are many properties that can be set for this object, so we recommend you read the&nbsp;<a title="plot_standard_results_object" href="http://www.readout.info/toolbox-design/tools/plot_standard_results_object/">documentation</a>&nbsp;to see all the possibilities. Below we show how to plot the results we created above setting only a few of the possible parameters.
+</p>
+<div class="ethan_code_space">
+<div class="sourceCode" id="cb11"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="va">result_names</span>{<span class="fl">1</span>} <span class="op">=</span> <span class="va">save_file_name</span><span class="op">;</span> <span class="op">&amp;</span><span class="va">nbsp</span><span class="op">;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">% create the plot results object</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="va">plot_obj</span> <span class="op">=</span> <span class="va">plot_standard_results_object</span>(<span class="va">result_names</span>)<span class="op">;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">% put a line at the time when the stimulus was shown</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="va">plot_obj</span>.<span class="va">significant_event_times</span> <span class="op">=</span> <span class="fl">0</span><span class="op">;</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">% display the results</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="va">plot_obj</span>.<span class="va">plot_results</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>
+Other measures of decoding accuracy can be plotted by setting the property&nbsp;<tt>plot_obj.result_type_to_plot</tt>. For example, if this property is set to 6, then mutual information will be plotted, and if this property is to 2 normalized rank results will be plotted.
+</p>
+<!--- <h3><a id="Plot_temporal_cross_training_decoding_accuracies"></a>Plot temporal cross training decoding accuracies</h3> -->
+</section>
+<section id="temporal-cross-decoding" class="level3">
+<h3 class="anchored" data-anchor-id="temporal-cross-decoding">Temporal-cross-decoding</h3>
+<p>
+To plot a matrix of decoding accuracies showing the results when the classifier was trained at time t1 and tested at time t2 we will use the <a title="plot_standard_results_TCT_object" href="http://www.readout.info/toolbox-design/tools/plot_standard_results_tct_object/">plot_standard_results_TCT_object</a>. The basic functions of this object are similar to the&nbsp;<tt>plot_standard_results_object</tt>, namely it takes the name of a decoding result file that was generated by running&nbsp;<tt>standard_resample_CV</tt>&nbsp;object and plots the full temporal-cross-training (TCT) matrix. There are also many properties that can be set for this object, so we again recommend you read the&nbsp;<a title="plot_standard_results_TCT_object" href="http://www.readout.info/toolbox-design/tools/plot_standard_results_tct_object/">documentation</a>&nbsp;to see all the possibilities. Below we show again how to plot the results we created above setting only a few of the possible parameters.
+</p>
+<div class="ethan_code_space">
+<div class="sourceCode" id="cb12"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">% create the plot results object</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">% note that this object takes a string in its constructor not a cell array</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="va">plot_obj</span> <span class="op">=</span> <span class="va">plot_standard_results_TCT_object</span>(<span class="va">save_file_name</span>)<span class="op">;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">% put a line at the time when the stimulus was shown</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="va">plot_obj</span>.<span class="va">significant_event_times</span> <span class="op">=</span> <span class="fl">0</span><span class="op">;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">% display the results</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="va">plot_obj</span>.<span class="va">plot_results</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!--- <h2><a id="Conclusion"></a>Conclusion</h2> -->
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>
+This concludes the introductory tutorial. You should now understand the design of the Neural Decoding Toolbox and how to do a basic decoding analysis. We recommend trying out this tutorial yourself in Matlab and experimenting with different datasource, feature-preprocessor, cross-validator and plotting parameters. Once you feel comfortable with this tutorial you can look at the <a title="Generalization analysis tutorial" href="http://www.readout.info/tutorials/generalization-analysis/">generalization analysis tutorial</a> which shows how to test whether neural representations contain information in an abstract/invariant format, or you can look at the <a title="Getting started with your own data" href="http://www.readout.info/tutorials/getting-started-with-your-own-data/">getting started with your own data tutorial</a> which shows the steps necessary to being analyzing your own data.
+</p>
+</section></main></div>
+
+
+
+
+
+ <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+ <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p><span class="faux-block">© The Neural Decoding Toolbox was created by <a href="https://emeyers.scripts.mit.edu/emeyers/">Ethan Meyers</a></span></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

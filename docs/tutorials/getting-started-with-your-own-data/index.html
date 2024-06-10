@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Neural Decoding Toolbox - Getting started with your data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../img/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Neural Decoding Toolbox</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-tutorials" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Tutorials</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-tutorials">    
+        <li>
+    <a class="dropdown-item" href="../../tutorials/introduction-tutorial/index.html">
+ <span class="dropdown-text">Introduction tutorial</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../tutorials/generalization-analysis/index.html">
+ <span class="dropdown-text">Generalization analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../tutorials/getting-started-with-your-own-data/index.html">
+ <span class="dropdown-text">Using your own data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../tutorials/meg-eeg-decoding-tutorial/index.html">
+ <span class="dropdown-text">MEG/EEG decoding</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../tutorials/p-value-tutorial/index.html">
+ <span class="dropdown-text">P-value tutorial</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../tutorials/additional-tutorial-resources/index.html">
+ <span class="dropdown-text">Additional resources</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-downloads" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Downloads</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-downloads">    
+        <li>
+    <a class="dropdown-item" href="../../downloads/download-the-toolbox/index.html">
+ <span class="dropdown-text">Download the toolbox</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../downloads/datasets/index.html">
+ <span class="dropdown-text">Data sets</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../downloads/additional-code/index.html">
+ <span class="dropdown-text">Additional code</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-documentation" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Documentation</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-documentation">    
+        <li>
+    <a class="dropdown-item" href="../../toolbox-design/datasources/index.html">
+ <span class="dropdown-text">Datasources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../toolbox-design/feature-preprocessors/index.html">
+ <span class="dropdown-text">Feature preprocessors</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../toolbox-design/classifiers/index.html">
+ <span class="dropdown-text">Classifiers</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../toolbox-design/cross-validator/index.html">
+ <span class="dropdown-text">Cross-validators</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../toolbox-design/tools/index.html">
+ <span class="dropdown-text">Tools</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../toolbox-design/data-formats/index.html">
+ <span class="dropdown-text">Data formats</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-about" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">About</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-about">    
+        <li>
+    <a class="dropdown-item" href="../../about/publications/index.html">
+ <span class="dropdown-text">Publications</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <a class="flex-grow-1 no-decor" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+          <h1 class="quarto-secondary-nav-title">Getting started with your data</h1>
+        </a>     
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../tutorials/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorials</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/additional-tutorial-resources/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Additional tutorial resources</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/generalization-analysis/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Generalization analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/getting-started-with-your-own-data/index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Getting started with your data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/introduction-tutorial/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction tutorial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/meg-eeg-decoding-tutorial/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MEG/EEG decoding tutorial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/p-value-tutorial/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">P value tutorial</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#formatting-your-data" id="toc-formatting-your-data" class="nav-link active" data-scroll-target="#formatting-your-data">Formatting your data</a></li>
+  <li><a href="#binning-your-data" id="toc-binning-your-data" class="nav-link" data-scroll-target="#binning-your-data">Binning your data</a></li>
+  <li><a href="#calculating-how-many-cross-validation-splits-to-use" id="toc-calculating-how-many-cross-validation-splits-to-use" class="nav-link" data-scroll-target="#calculating-how-many-cross-validation-splits-to-use"></a><a id="Calculating_how_many_cross-validation_splits_to_use" class="nav-link" data-scroll-target="undefined"></a>Calculating how many cross-validation splits to use</li>
+  <li><a href="#running-a-decoding-analysis" id="toc-running-a-decoding-analysis" class="nav-link" data-scroll-target="#running-a-decoding-analysis"></a><a name="Running_a_decoding_analysis" class="nav-link" data-scroll-target="undefined"></a>Running a decoding analysis</li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Getting started with your data</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">
+</p><p>This tutorial shows how to begin to run decoding experiments using your own data. Most of the steps below are similar to those described in the <a href="http://www.readout.info/toolbox-design/datasources/basic_ds/" title="basic_DS">basic tutorial</a> so we recommend going through that tutorial first since it describes the several of the steps below in more detail.</p>
+<section id="formatting-your-data" class="level3">
+<h3 class="anchored" data-anchor-id="formatting-your-data">Formatting your data</h3>
+<p>In order to use the Neural Decoding Toolbox, your data must be in the proper format. The easiest way to start is to put your data in <a href="http://www.readout.info/toolbox-design/data-formats/raster-format/" title="Raster-format">raster-format</a>. Data that is in raster-format contains separate files for each site (by ‘site’ we mean recorded data, such as single unit activity of a neuron, multi-unit activity of a site, LFP power from one recorded channel, MEG activity from one recorded channel, one voxel from an fMRI analysis, etc.). Each file (from one site) that is in raster-format contains the three variables that should be named: <tt>raster_data</tt>, <tt>raster_labels</tt>, and<tt>raster_site_info</tt> that are described below (for more information on raster-format please see the <a href="http://www.readout.info/toolbox-design/data-formats/" title="Data formats">data-formats</a> and <a href="http://www.readout.info/toolbox-design/data-formats/raster-format/" title="Raster-format">raster-format</a> pages).</p>
+<p>The variable <tt>raster_data</tt> is a matrix where each row contains data from one trial, and each column contains data from one time point (i.e.,<tt>raster_data</tt> is a <tt>[num_trials x num_time_points]</tt> matrix). The data from each trial (row) should be aligned to a particular experimental event. For example, in the <a href="http://www.readout.info/downloads/datasets/zhang-desimone-7-object-dataset/" title="Zhang-Desimone 7 object dataset">Zhang-Desimone dataset</a>, the raster-format data is aligned to a time when a stimulus was shown, and each column corresponds to 1 millisecond of data, with a 1 indicating a spike occurred and a 0 indicating a spike did not occur. We highly recommend including activity from a baseline period before the time when the decoding variable is present; when you run your decoding analysis, the decoding accuracy during the baseline period should be at chance, which is a good sanity check that everything is working properly. For example, in the Zhang-Desimone dataset, the stimulus was shown 500 time points into the data giving us a clear baseline period where we should get chance decoding performance.</p>
+<p>The variable <tt>raster_labels</tt> is a structure that contains the different experimental conditions that were present on each trial. Each field <tt>raster_labels.experiment_variable_k</tt> is a <tt>num_trials</tt> length cell array of strings (or vector of numbers) that contains the experimental condition that occurred on each trial. For example, in the Zhang-Desimone data, the position and identity of each stimulus that were shown on each trial are contained in the variables <tt>raster_labels.stimulus_position</tt> and <tt>raster_labels.stimulus_ID</tt>.</p>
+<p>The final variable, <tt>raster_info</tt> contains any additional information about the site that should be recorded. While technically this variable can be set to an empty matrix and the Neural Decoding Toolbox will still run, we usually find it highly valuable to record much additional information about the experiment here so to have a complete record of the experiment. Typically this variable will contain information such as the date that the recording was made, the quality of the recording (e.g., if it is single unit, or multi-unit activity), the brain region where the recording is made, etc.. This information can be useful for later analyses, for example, if one wants to run an analysis using only data from a particular brain region, or only using single unit sites, etc..</p>
+<p>All files in raster-format from all recorded sites should be put together in a directory (called something like my_data_raster_format/).</p>
+</section>
+<section id="binning-your-data" class="level3">
+<h3 class="anchored" data-anchor-id="binning-your-data">Binning your data</h3>
+<p>Once you have all your data in raster-format stored in a particular directory, you can convert it to binned-format that is used by the Neural Decoding Toolbox using the helper function <a href="http://www.readout.info/toolbox-design/tools/create_binned_data_from_raster_data/" title="create_binned_data_from_raster_data">create_binned_data_from_raster_data function</a>. Data that is in binned-format is similar to data in raster format (e.g., there are three variables named <tt>binned_data</tt>, <tt>binned_labels</tt>, and <tt>binned_site_info</tt> that are similar to the raster-format variables) except in binned-format data from all sites are contained together in a cell array (for more information see the page on <a href="http://www.readout.info/toolbox-design/data-formats/binned-format/" title="Binned-format">binned-format</a>.</p>
+<p>To convert data from raster-format to binned-format the following code can be used.</p>
+<div class="ethan_code_space">
+<div class="sourceCode" id="cb1"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">create_binned_data_from_raster_data</span>(<span class="ss">'my_data_raster_format/'</span><span class="op">,</span> <span class="ss">'My_Binned_Data'</span><span class="op">,</span> <span class="fl">150</span><span class="op">,</span> <span class="fl">50</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In the above example, my_data_raster_format/ is the directory that contains the raster files, My_Binned_Data is a name that will be added to the saved binned-format data, 150 refers to the bin size that the data will be averaged over, and 50 refers to the sampling interval for creating averaged bins. The output from running this function will be a file called <tt>My_Binned_Data_150ms_bins_50ms_sampled </tt> that contains the data in binned-format. For more information about the binning function see the <a href="http://www.readout.info/tutorials/introduction-tutorial/#Binning_the_data" title="Introduction tutorial">introduction tutorial</a> section on binning the data and the <a href="http://www.readout.info/toolbox-design/tools/create_time_averaged_binned_data_from_raster_data/" title="create_time_averaged_binned_data_from_raster_data">create_time-averaged_binned_data_from_raster_data</a> function documentation.</p>
+</section>
+<section id="calculating-how-many-cross-validation-splits-to-use" class="level3">
+<h3 class="anchored" data-anchor-id="calculating-how-many-cross-validation-splits-to-use"><a id="Calculating_how_many_cross-validation_splits_to_use"></a>Calculating how many cross-validation splits to use</h3>
+<p>In a cross-validation decoding analyses, data is split into k different sections, and a classifier is trained on k-1 of these sections and needs to make predictions on the remaining section. The default setting for the <a href="http://www.readout.info/toolbox-design/datasources/basic_ds/" title="basic_DS">basic_DS</a> and <a href="http://www.readout.info/toolbox-design/datasources/generalization_ds/" title="generalization_DS">generalization_DS</a>, is to have each of the k sections contain 1 example of data from each experimental condition that will be decoding. Thus, for example, if one wants to have k=5 splits of the data, then only sites that have 5 repetitions of each experimental condition can be used in the analysis. To determine how many sites have at least k repetitions of each experimental condition, the function <a href="http://www.readout.info/toolbox-design/tools/find_sites_with_k_label_repetitions/" title="find_sites_with_k_label_repetitions">find_sites_with_k_label_repetitions</a> can be used as follows:</p>
+<div class="ethan_code_space">
+<div class="sourceCode" id="cb2"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">% load the binned data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">load</span> <span class="va">My_Binned_Data_150ms_bins_50ms_sampled</span>.<span class="va">mat</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="va">k</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">65</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="va">inds_of_sites_with_at_least_k_repeats</span> <span class="op">=</span> <span class="va">find_sites_with_k_label_repetitions</span>(<span class="va">binned_labels</span>.<span class="va">stimulus_ID</span><span class="op">,</span> <span class="va">k</span>)<span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">num_sites_with_k_repeats</span>(<span class="va">k</span>) <span class="op">=</span> <span class="va">length</span>(<span class="va">inds_of_sites_with_at_least_k_repeats</span>)<span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>By looping over different values of k and storing the results in <tt>num_sites-With_k_repeats</tt> one can see how many sites have 1, 2, … etc, repetitions. Decoding accuracy increases as more sites are used, and as more splits of the data are used (i.e., using a larger k). Thus one should try to find a k that is as large as possible but that still allows one to use most of the data you have. Determining the final k is a little bit of an art, although the decoding analyses should be fairly robust to a range of k values, provided k is not too small (e.g., at least 5), and that there are still a significant number of sites used (e.g., for neural data, at least 100 sites).</p>
+</section>
+<section id="running-a-decoding-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="running-a-decoding-analysis"><a name="Running_a_decoding_analysis"></a>Running a decoding analysis</h3>
+<p>The final stage involves running a decoding analyses. The type of analysis can be a simple decoding of a particular experimental variable as described in the <a href="http://www.readout.info/tutorials/introduction-tutorial/" title="Introduction tutorial">introduction tutorial</a>, or it can be a more complex analysis such as examining how invariant neural activity is to particular experimental conditions, as described the <a href="http://www.readout.info/tutorials/generalization-analysis/" title="Generalization analysis tutorial">generalization analysis tutorial</a>. Below we give some code that describes how to run a simple analysis for decoding a particular experimental condition. For more details on this code, see the <a href="http://www.readout.info/tutorials/introduction-tutorial/" title="Introduction tutorial">introduction tutorial</a>.</p>
+<div class="ethan_code_space">
+<div class="sourceCode" id="cb3"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">% add the path to include the code for using the NDT</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">toolbox_basedir_name</span> <span class="op">=</span> <span class="ss">'ndt.1.0.0/'</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="va">addpath</span>(<span class="va">toolbox_basedir_name</span>)<span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="va">add_ndt_paths_and_init_rand_generator</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">% the name of your binned-format data</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="va">binned_data_file_name</span> <span class="op">=</span> <span class="ss">'My_Binned_Data_150ms_bins_50ms_sampled.mat'</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">% select labels to decode </span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="va">specific_label_name</span> <span class="op">=</span> <span class="ss">'my_variable_to_decode'</span><span class="op">;</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">% choose the number of cross-validation section as determined above</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="va">num_cv_splits</span> <span class="op">=</span> <span class="fl">20</span><span class="op">;</span>  </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">% create a basic datasource</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="va">ds</span> <span class="op">=</span> <span class="va">basic_DS</span>(<span class="va">binned_data_file_name</span><span class="op">,</span> <span class="va">specific_label_name</span><span class="op">,</span> <span class="va">num_cv_splits</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">% create a feature proprocessor and a classifier</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="va">the_feature_preprocessors</span>{<span class="fl">1</span>} <span class="op">=</span> <span class="va">zscore_normalize_FP</span><span class="op">;</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="va">the_classifier</span> <span class="op">=</span> <span class="va">max_correlation_coefficient_CL</span><span class="op">;</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">% create a cross-validation object</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="va">the_cross_validator</span> <span class="op">=</span> <span class="va">standard_resample_CV</span>(<span class="va">ds</span><span class="op">,</span> <span class="va">the_classifier</span><span class="op">,</span> <span class="va">the_feature_preprocessors</span>)<span class="op">;</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co">% run the decoding analysis</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="va">DECODING_RESULTS</span> <span class="op">=</span> <span class="va">the_cross_validator</span>.<span class="va">run_cv_decoding</span><span class="op">;</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co">% save the datasource parameters for our records</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="va">DATASOURCE_PARAMS</span> <span class="op">=</span> <span class="va">ds</span>.<span class="va">get_DS_properties</span><span class="op">;</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="co">% save the decoding results as 'My_Decoding_Results</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="va">save</span>(<span class="ss">'My_Decoding_Results'</span><span class="op">,</span> <span class="ss">'DECODING_RESULTS'</span><span class="op">,</span> <span class="ss">'DATASOURCE_PARAMS'</span>)<span class="op">;</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co">% plot the results</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="va">plot_obj</span> <span class="op">=</span> <span class="va">plot_standard_results_object</span>({<span class="ss">'My_Decoding_Results.mat'</span>})<span class="op">;</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="va">plot_obj</span>.<span class="va">plot_results</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p><span class="faux-block">© The Neural Decoding Toolbox was created by <a href="https://emeyers.scripts.mit.edu/emeyers/">Ethan Meyers</a></span></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

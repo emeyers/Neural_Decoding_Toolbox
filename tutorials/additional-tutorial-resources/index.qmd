@@ -1,0 +1,9 @@
+---
+title: Additional tutorial resources
+toc: true
+---
+
+
+<br>
+
+<a href="https://cbmm.mit.edu/learning-hub/tools-datasets/decoding-neural-data">Center for Brains, Minds and Machines tutorial</a>

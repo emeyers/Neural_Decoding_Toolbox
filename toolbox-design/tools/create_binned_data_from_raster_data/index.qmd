@@ -1,0 +1,57 @@
+---
+title: create_binned_data_from_raster_data
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">This helper function takes the name of a directory that contains files in <a href="http://www.readout.info/toolbox-design/data-formats/raster-format/" title="Raster-format">raster-format</a> and creates data that is in <a href="http://www.readout.info/toolbox-design/data-formats/binned-format/" title="Binned-format">binned-format</a> from these files. The function has the following form:<p>
+</p><p class="ethan_bold_method">saved_binned_data_file_name = create_binned_data_from_raster_data(raster_file_directory_name, save_prefix_name, bin_width, sampling_interval, [start_time], [end_time])</p>
+<p style="margin-left:1em !important">The arguments to this function are:</p>
+<ol style="padding-left:2em">
+<li class="ethan_method_explanation"><tt>raster_file_directory_name</tt>
+<p class="ethan_short_input_argument_explanation">The path to the directory that contains the files in raster format.</p></li>
+<li class="ethan_method_explanation"><tt>save_prefix_name</tt>
+<p class="ethan_short_input_argument_explanation">The beginning of a file name (possibly including a directory name) that specifies the name that the binned data should be saved as. Appended on to the end of this name when the binned data is saved is the bin width, step size, and possibly start and end times used.</p></li>
+<li class="ethan_method_explanation"><tt>bin_width</tt>
+<p class="ethan_short_input_argument_explanation">The bin size that is averaged over when creating binned-format features.  For example, if the raster files have spike times given with millisecond precision, and bin_width = 500, then the binned-format data will contain average firing rates (i.e., the spike-count rate) in 500 ms bins. If bin_width is a vector that is the same size as <tt>sampling_interval</tt> then different bin widths can be specified for different time periods (e.g., if bin_widths = [50 500, 100], then the first bin will average over 50 ms of data, the second over 500 ms of data, and the third over 100 ms of data).</p></li>
+<li class="ethan_method_explanation"><tt>sampling_interval</tt>
+<p class="ethan_short_input_argument_explanation">Specifies the sampling interval between successive binned-data points.  For example, if the raster files have spike times given with millisecond precision, and if sampling_interval = 50, then a binned data point will be computed at 50ms intervals. If sampling_interval is a vector, then the values in this vector will specify the start times for the bins (e.g., if sampling_interval = [1 200 500], then the first bin will start time 1, the second bin will start at time 200, and the third bin will start at time 500).</p></li>
+</ol>
+<p style="margin-left:1em !important">Optional arguments:</p>
+<ol style="padding-left:2em">
+<li class="ethan_method_explanation"><tt>start_time</tt>
+<p class="ethan_short_input_argument_explanation">This specifies the time to start the binning process. If this argument is not set, then the binning will start with the first data point in the raster files (i.e., the first bin will use raster_data(:, 1:bin_width), the second bin will use data from raster_data(:, (step_size+1):(step_size+bin_width)), etc.).</p></li>
+<li class="ethan_method_explanation"><tt>end_time</tt>
+<p class="ethan_short_input_argument_explanation">This specifies the time when to end the binning process. If this argument is not set, then the binning will end with the last data point in the raster files.</p></li>
+</ol>
+<p style="margin-left:1em !important">Note: if sampling_interval is a vector, the arguments 5 and 6 can not be set (this is because the start bin times have already been exactly specified by the sampling_interval vector).</p>
+
+
+
+The output of this function is to saves a file in the directory specified by the save_prefix_name (the name of the file is returned in the variable <tt>saved_binned_data_file_name).</tt> The saved file contains the three variables needed to conform to <a href="http://www.readout.info/toolbox-design/data-formats/binned-format/" title="Binned-format">binned-format</a> which are: <tt>binned_data</tt> which contains the data, <tt>binned_labels</tt> which contains the labels, and <tt>binned_site_info</tt> which contains the any extra information about each site. The data in the three saved variables are extracted from the raster-format files that are contained in the input directory. Additionally, additional information is saved in <tt>binned_site_info.binning_parameters</tt> that contains the bin_width, sampling interval, etc., that were used to create this binned data.
+
+
+<h2 class="methods_and_properties">Examples</h2>
+<p style="text-decoration:underline; padding-top:1em">Example 1:</p>
+
+Suppose we had a directory called <tt>my_raster_file_directory/</tt> that contained a number of files in raster-data format from the spike times of neurons specified at 1 ms resolution. Then running:
+
+```matlab
+create_binned_data_from_raster_data('my_raster_file_directory/', ...
+     'my_save_dir/binned_data', 150, 50, 200, 1000)
+```
+
+<p style="text-align: left">
+will create a file called <tt>binned_data_150ms_bins_50ms_sampled_200start_time_1000end_time</tt> that will be saved in the directory <tt>my_save_dir/</tt>. This file will contain the average firing rate calculated over 150 ms intervals for all neurons in the directory my_raster_file_directory/. The firing rates will be sampled every 50 ms, starting 200 ms into the raster-format data and ending 1000 ms into the raster-format data.
+</p>
+<p style="text-decoration:underline; padding-top:2em">Example 2:</p>
+
+Suppose we had a directory called <tt>my_raster_file_directory/</tt> that contained a number of files in raster-data format from the spike times of neurons specified at 1 ms resolution. Then running:
+
+```matlab
+create_binned_data_from_raster_data('my_raster_file_directory/', ...
+     'my_save_dir/binned_data_100ms_bins_plus_2_extra', ...
+      [100 .* ones(10, 1) 250 250], [1:50:500 1 251]);
+```
+
+<p style="text-align: left">
+will create a file in the <tt>binned_data_100ms_bins_plus_2_extra_custom_bins_custom_sampled</tt> that will be saved in the directory <tt>my_save_dir/</tt>. This file will contain the average firing rate calculated over 100 ms intervals for all neurons in the directory <tt>my_raster_file_directory/</tt> and will be sampled every 50 ms for the first 500 ms of data. Additionally, there will be two 250 ms bins at the end of the binned data that have the average firing rates over 1-250 ms into the trial and 251-500 ms into the trial.
+</p>

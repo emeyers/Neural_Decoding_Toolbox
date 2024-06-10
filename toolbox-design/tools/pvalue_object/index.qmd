@@ -1,0 +1,115 @@
+---
+title: pvalue_object
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;"> This helper object calculates p-values from a file that has the decoding results in standard format, and a directory of files that has a number of 'null distribution' decoding results which were created by running the same decoding experiment a number of times with the labels randomly shuffled.  The p-values are thus based on a permutation test which gives the probability that the real decoding results came from the null distribution. The object also has a method to calculate the latency of when the decoding results were first above chance.  (This object inherits from the handle class so it maintains its state after method calls).
+
+
+<h2 class="methods_and_properties">Methods</h2>
+<p class="ethan_bold_method"> pval_obj = pvalue_object(real_decoding_results_file_name, null_distribution_directory_name)</p>
+<p class="ethan_method_explanation">The constructor has two optional arguments that are described below. If the object is created without passing these arguments, then the fields <tt>pval_obj.real_decoding_results_file_name</tt> and <tt>pval_obj.null_distribution_directory_name</tt> must both be set before calling the <tt>pval_obj.create_pvalues_from_nulldist_files</tt> method.</p>
+<ol style="padding-left:2em">
+<li class="ethan_method_explanation"><tt>real_decoding_results_file_name</tt>
+<p class="ethan_short_input_argument_explanation">A string specifying the name of a file that has real decoding results. These results should be in standard results format (as created by the <tt>standard_resample_CV.run_cv_decoding</tt> method.
+</p></li>
+<li class="ethan_method_explanation"><tt>null_distribution_directory_name </tt>
+<p class="ethan_short_input_argument_explanation">A string specifying the name of a directory that has multiple decoding result file that were run with the labels shuffled. The p-values are created by loading each file in this directory to create a null probability distribution that estimates what decoding accuracies would be expected to occur by chance.</p></li>
+</ol>
+<p class="ethan_bold_method">[p_values null_distributions PVALUE_PARAMS] = pval_obj.create_pvalues_from_nulldist_files</p>
+<p class="ethan_method_explanation">This method creates p-values from the actual decoding results and the null distribution results (i.e., p-values are based on a permutation test). More specifically, all the files in the null distribution directory are loaded to create null distributions at each point in time.  At each time point, a p-value is calculated based on the proportion of decoding values in the null distribution that exceeds the real decoding result value. This method causes the properties pval_obj.p_values and pval_obj.null_distributions to be set, and also returns the following output values:</p>
+<ol style="padding-left:2em">
+<li class="ethan_method_explanation"><tt>p_values</tt>
+<p class="ethan_short_input_argument_explanation">a vector containing the p-values at each point in time (i.e., the probability one would get a decoding accuracy as high as the one reported if there was no relationship between the data and the class labels).
+</p></li>
+<li class="ethan_method_explanation"><tt>null_distributions</tt>
+<p class="ethan_short_input_argument_explanation">A <tt>[num_points_in_null_distribution x num_times] </tt>matrix containing the null distribution values at each point in time.
+ </p></li>
+<li class="ethan_method_explanation"><tt>PVALUE_PARAMS</tt>
+<p class="ethan_short_input_argument_explanation">A list of parameters that were used to create the p-values (see the  <tt>pval_obj.get_pvalue_parameters</tt> method below).
+</p></li>
+</ol>
+<p class="ethan_bold_method">[latency_time latency_ind] = pval_obj.get_latency_of_decoded_information </p>
+<p class="ethan_method_explanation">      This method returns an estimate of the latency (i.e., time) when the decoding results are above chance. The  <tt>pval_obj.create_pvalues_from_nulldist_files </tt> method must be called (or the field pval_obj.p_values must be manually set) prior to running this method, and additionally  <tt>latency_time_interval</tt> property must also be set. This method works by finding all p_values that are less than or equal to  <tt>pval_obj.latency_alpha_significance_level</tt>, and then returning the first time in which the p-values are at or below this significance level for  <tt>pval_obj.latency_num_consecutive_sig_bins </tt>.</p>
+<p class="ethan_bold_method">PVALUE_PARAMS = pval_obj.get_pvalue_parameters</p>
+<p class="ethan_method_explanation"> This method returns a number of parameters that were used to calculate the p-values and get the decoding information latency. The structure,  <tt>PVALUE_PARAMS </tt>, that is returned by this object has the following fields:</p>
+<ol l="" style="padding-left:2em">
+<li class="ethan_method_explanation"><tt>.num_points_in_null_distribution</tt>
+<p class="ethan_short_input_argument_explanation">The number of points in the null distribution. </p></li>
+<li class="ethan_method_explanation"><tt>.smallest_significance_level</tt>
+<p class="ethan_short_input_argument_explanation">the smallest possible significance level that can be used based on the number of points in the null distribution (i.e., this value is equal to  <tt>1/PVALUE_PARAMS.num_points_in_null_distribution</tt>).  If the 
+parameter  <tt>pval_obj.latency_alpha_significance_level</tt> is set to 0 (default value), then the p-values should be listed as <tt>p &lt;  PVALUE_PARAMS.smallest_significance_level</tt></p></li>
+<li class="ethan_method_explanation"><tt>.result_type_name</tt>
+<p class="ethan_short_input_argument_explanation">A string specifying what type of results were used to create these p-values (e.g., ZERO_ONE_LOSS, etc.)
+</p></li>
+<li class="ethan_method_explanation"><tt>.training_time_ind_to_use</tt>
+<p class="ethan_short_input_argument_explanation">The <tt>pval_obj.training_time_ind_to_use</tt> value that was used.
+</p></li>
+<li class="ethan_method_explanation"><tt>.real_decoding_results_file_name:</tt>
+<p class="ethan_short_input_argument_explanation">The <tt>pval_obj.real_decoding_results_file_name</tt> string that was used.  
+</p></li>
+<li class="ethan_method_explanation"><tt>.saved_results_structure_name</tt>
+<p class="ethan_short_input_argument_explanation">The <tt>pval_obj.saved_results_structure_name</tt> string that was used. </p></li>
+<li class="ethan_method_explanation"><tt>.null_distribution_file_prefix_name</tt>
+<p class="ethan_short_input_argument_explanation">The <tt>pval_obj.null_distribution_file_prefix_name</tt> that was used.
+ </p></li>
+<li class="ethan_method_explanation"><tt>.latency_alpha_significance_level</tt>
+<p class="ethan_short_input_argument_explanation">The <tt>pval_obj.latency_alpha_significance_level</tt> value that was used.
+</p></li>
+<li class="ethan_method_explanation"><tt>.latency_num_consecutive_sig_bins</tt>
+<p class="ethan_short_input_argument_explanation">The <tt>pval_obj.latency_num_consecutive_sig_bins</tt> that was used.
+ </p></li>
+<li class="ethan_method_explanation"><tt>.latency_time_interval</tt>
+<p class="ethan_short_input_argument_explanation">The <tt>pval_obj.latency_time_interval</tt> that was used.
+</p></li>
+</ol>
+<h2 class="methods_and_properties"> Properties</h2>
+
+The following properties can be set to change the behavior of this object:
+
+<p class="ethan_bold_method"> real_decoding_results_file_name</p>
+<p class="ethan_method_explanation">The name of the non-shuffled decoding results that are compared to the null distribution to see when the results are above chance. This value can also be set in the constructor.
+</p>
+<p class="ethan_bold_method"> null_distribution_directory_name</p>
+<p class="ethan_method_explanation">The name of the directory that contains the null distribution results files. This value can also be set in the constructor.
+</p>
+<p class="ethan_bold_method"> collapse_all_times_when_estimating_pvals (default = 0). </p>
+<p class="ethan_method_explanation">If this is set to one, the null distributions from all time bins are combined together to create one larger total null distribution.  The p-values are then calculated by comparing the actual decoding accuracy at each point in time to this larger null distribution (with this same null distribution is used for all points in time). The advantage of using this is that if the null distributions at each point in time are the same, then one can get a more precise estimate of the p-values for the same computational cost. [added in NDT version 1.4] </p>
+<p class="ethan_bold_method">the_result_type (default = 1)</p>
+<p class="ethan_method_explanation">Specifies which type of decoding result should be used when calculating the p-values.</p>
+<p class="ethan_method_explanation">
+If this is set to 1, the zero-one loss results are used.
+If this is set to 2, the normalized rank results are used.
+If this is set to 3, the mean decision values are used.
+If this is set to 4, the ROC_AUC results run separately on each cross-validation split are used.
+If this is set to 5, the ROC_AUC results combined over cross-validation splits are used.
+If this is set to 6, the mutual information created from a confusion matrix that combining data from all resamples runs is used.
+If this is set to 7, mutual information created from a confusion matrix that is calculated separately and then averaged over resample runs is used.
+</p>
+<p class="ethan_bold_method"> null_distribution_file_prefix_name (deafult is '')</p>
+<p class="ethan_method_explanation">A string that specifies what the beginning of the names of files in the null distribution directory is.  This is useful if there are multiple types of results (e.g., from different decoding analyses) stored in the directory that has the null files but you only want the results in some of these files to be used.  
+</p>
+<p class="ethan_bold_method">training_time_ind_to_use (default = -1)</p>
+<p class="ethan_method_explanation">If a full TCT matrix has been created, this specifies which row (i.e., training time bin) of the TCT matrix should be used when calculating the p-values.  Setting this to a value of less than zero creates p-values when the classifier was trained and tested from the same time bin (i.e., the diagonal of the TCT plot, or equivalent vector of results if the classifier was only trained and tested at the same time).  
+</p>
+<p class="ethan_bold_method">saved_results_structure_name (default is 'DECODING_RESULTS')</p>
+<p class="ethan_method_explanation">A string specifying the name of the variable that has the decoding results.  
+</p>
+<p class="ethan_bold_method">p_values (default is [])</p>
+<p class="ethan_method_explanation">These are the p-values that are usually set by calling the <tt>pval_obj.create_pvalues_from_nulldist_files</tt> method. However, one can set these values manually, and then one can use the <tt>pval_obj.get_latency_of_decoded_information method</tt>.  Doing this is useful if one is getting the latency many times so that one calculate the p-values once, save them, and then load them into this object to get the latency.
+</p>
+<p class="ethan_bold_method">latency_time_interval</p>
+<p class="ethan_method_explanation">This specifies which time points in the experiment the p-values correspond to, and must be set prior to calling the <tt>pval_obj.get_latency_of_decoded_information</tt> method.  This property can be set to either: 1) a vector specifying which times to use, 2) a time_interval_object that one can get time_intervals from or 3) a structure with the fields <tt>latency_time_interval.bin_width</tt>, <tt>latency_time_interval.sampling_interval</tt>, and optionally <tt>latency_time_interval.alignment_event_time</tt>, <tt>latency_time_interval.start_time</tt>, and <tt>latency_time_interval.end_time</tt> which will create a time interval that has the corresponding bin widths, step sizes, zero time, start_time and end_time of the time interval.
+</p>
+<p class="ethan_bold_method">latency_time_interval_alignment_type (default = [], which means show the beginning and end of the first significant time bin)</p>
+<p class="ethan_method_explanation"> If <tt>latency_time_interval</tt> is set to a vector of numbers, this property will be ignored.  However if <tt>latency_time_interval</tt> is set to a <tt>time_interval_object</tt> or to a structure containing <tt>latency_time_interval.bin_width</tt> and <tt>latency_time_interval.sampling_interval</tt> then this will cause the latency estimate to report either: the beginning time of the first significant time bin (<tt>latency_time_interval_alignment_type = 1</tt>), the middle time of the first significant time bin (<tt>latency_time_interval_alignment_type = 2</tt>), the end time of the first significant time bin (<tt>latency_time_interval_alignment_type = 3</tt>), the beginning and end time of the first significant time bin (<tt>atency_time_interval_alignment_type = 4, default</tt>), the time interval of data that was added to make a bin significant, relative to the previous bin which was not significant (<tt>latency_time_interval_alignment_type = 5</tt>), or use the alignment already specified in the <tt>time_interval_object</tt> or by the structure <tt>latency_time_interval.alignment_time</tt> (<tt>latency_time_interval_alignment_type = 6</tt>).
+</p>
+<p class="ethan_bold_method">latency_alpha_significance_level (default = 0))</p>
+<p class="ethan_method_explanation"> The significance level (alpha value) that the p-values must be less than in order to claim that the results have not occurred by chance. When calculated the latency of decoding information, all the p-values are compared to this significance level value to determine whether a time point is considered significant (and the latency is determined based on whether there are <tt>pval_obj.latency_num_consecutive_sig_bins</tt> significant bins in a row).  
+</p>
+<p class="ethan_bold_method">latency_num_consecutive_sig_bins (default = 5)</p>
+<p class="ethan_method_explanation"> The number of consecutive time bins that must be significant in order for a specific time to be considered the time point when the results are first above chance.  The reason this property is needed is because calculating p-values at many time periods introduces a high probability that one will have a small p-value even when the null hypothesis is correct (i.e., a type 1 error which is due to multiple comparisons issues that commonly affect null-hypothesis significance tests).  A commonly used (ad hoc) method in neuroscience to deal with this issue is to define the latency as the time when the p-values remain significant of multiple consecutive bins, which is the method we are using here (empirically it appears to produce reasonable results).  
+</p>
+<p class="ethan_bold_method">real_decoding_results_lower_than_null_distribution (defult = 0)</p>
+<p class="ethan_method_explanation"> If this field is set to one the pvalue_object will calculate the p-values based on the proportion of null distribution decoding results are lower than the actual real decoding result - i.e., it will test the probability that the real decoding result would have been that low by chance. This is useful as a sanity check to make sure the decoding procedure it working (and to test for anti-learning). [added in NDT version 1.4] 
+
+</p>

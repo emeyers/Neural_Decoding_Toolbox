@@ -1,0 +1,18 @@
+---
+title: About
+toc: true
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">The Neural Decoding Toolbox was developed by <a href="http://web.mit.edu/emeyers/www">Ethan Meyers</a> in <a href="http://cbmm.mit.edu">Center for Brains Minds and Machines </a> at <a href="http://mit.edu">MIT</a>.  
+
+<div style="padding-top:1em; padding-bottom:2em">
+
+Below are some relevant links:
+</div>
+
+<p style="margin-left:5em !important"><a href="http://www.readout.info/news/" title="News">News</a> about the latest features of the toolbox.</p>
+
+<p style="margin-left:5em !important"><a href="http://www.readout.info/about/publications/" title="Publications">A list of publications</a> that use the toolbox</p>
+
+<p style="margin-left:5em !important"><a href="http://www.readout.info/about/site-map/" title="Sitemap">A sitemap</a> for this website</p>
+

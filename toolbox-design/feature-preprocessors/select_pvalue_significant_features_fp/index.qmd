@@ -1,0 +1,25 @@
+---
+title: select_pvalue_significant_features_fp
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">This feature preprocessor object applies an ANOVA separately to each feature using data from the training set to find the p-value of all features. It then removes all features that have p-values greater than a specified threshold from the training and test sets.  
+
+
+<h2 class="methods_and_properties">Methods</h2>
+<p class="ethan_bold_method">fp = select_pvalue_significant_features_FP</p>
+<p class="ethan_method_explanation">Basic constructor </p>
+<p class="ethan_bold_method">fp = set_pvalue_threshold(fp, X_data)
+</p><p class="ethan_method_explanation">This method sets the threshold so that all features with ANOVA p-values less than this threshold will be used, and all features with p-values greater than this threshold will be excluded. This method must be called prior to using the object to normalize data. </p>
+<p class="ethan_bold_method">fp = save_extra_preprocessing_info(save_extra_info)
+</p><p class="ethan_method_explanation">If this method is passed a value of 1, the p-values for all features will be saved and returned along with the classifier results. It should be noted that setting this value to 1 will greatly increase the size of the results file. </p>
+
+
+The following methods are used by the cross-validator algorithm to apply feature preprocessing to the data:  
+
+<p class="ethan_bold_method">[fp XTr_preprocesed] = set_properties_with_training_data(fp, XTr, YTr)
+</p><p class="ethan_method_explanation">Calculates the p-values for each feature by applying an ANOVA to the training data, and returns potentially lower dimensional training data in XTr_normalized due to less selective feature being removed. </p>
+<p class="ethan_bold_method">X_preprocessed = preprocess_test_data(fp, X_data)
+</p><p class="ethan_method_explanation">Removes the features that were considered non-selective from the test data (X_data) (where the non-selective features were determined previously by running an ANOVA on the training data), and returns the modified data in X_preprocessed.</p>
+<p class="ethan_bold_method">current_FP_info_to_save = get_current_info_to_save(fp)
+</p><p class="ethan_method_explanation">Returns the p-values from ANOVAs applied to each feature in the structure current_preprocessing_information_to_save.the_p_values_org_order.  These values will then be saved by the cross-validator. </p>
+

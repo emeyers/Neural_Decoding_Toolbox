@@ -1,0 +1,322 @@
+
+---
+title: Introduction tutorial
+toc: true
+---
+
+<br>
+
+<p class="ethan_opening_paragraph_tutorial">The following tutorial gives a basic introduction to the data formats used by Neural Decoding Toolbox (NDT) and shows how to run a simple decoding analysis. The tutorial is based on a dataset collected by Ying Zhang in Bob Desimone's lab at MIT which is downloaded <a title="Downloads" href="http://www.readout.info/downloads/datasets/zhang-desimone-7-object-dataset/">here</a>.</p>
+
+
+
+<!-- <h2>Overview of the NDT</h2> -->
+## Overview of the NDT
+
+
+<p>Neural decoding is a process in which a pattern classifier learns the relationship between neural activity and experimental conditions using a&nbsp;<em>training set</em>&nbsp;of data. The reliability of the relationship between the neural activity and experimental conditions is evaluated by having the classifier predict what experimental conditions were present on a second&nbsp;<em>test set</em>&nbsp;of data.</p>
+<p>The NDT is built around 4 different object classes that allow users to apply neural decoding in a flexible and robust way. The four types of objects are:</p>
+<ol>
+<li><a title="Datasources" href="http://www.readout.info/toolbox-design/datasources/">Datasources (DS)</a> which generate training and test splits of the data.</li>
+<li><a title="Feature Preprocessors" href="http://www.readout.info/toolbox-design/feature-preprocessors/">Feature preprocessors (FP)</a> which apply preprocessing to the training and test splits.</li>
+<li><a title="Classifiers" href="http://www.readout.info/toolbox-design/classifiers/">Classifiers (CL)</a> which learn the relationship between experimental conditions and data on the training set, and then predict experimental conditions on the test data.</li>
+<li><a title="Cross-validators" href="http://www.readout.info/toolbox-design/cross-validator/">Cross-validators </a>(CV) which take the DS, FP and CL objects and run a cross-validation decoding procedure.</li>
+</ol>
+<p>The NDT comes with a few implementations of each of these objects, and defines interfaces that allow one to create new objects that extend the basic functionality of the four object classes. More information about the design of the NDT and these four objects classes can be found&nbsp;<a title="Toolbox Design" href="http://www.readout.info/toolbox-design/">here</a>.</p>
+<p>The following tutorial explains the data formats used by the Neural Decoding Toolbox, and how to run a decoding experiment using the basic versions of the four object classes.</p>
+
+
+
+### About the data 
+
+<!-- <h3>About the data used in this tutorial</h3> -->
+
+<p>The data used in this tutorial was collected by Ying Zhang in Bob Desimone's lab at MIT and was used in the supplemental figures in the paper <a href="http://web.mit.edu/emeyers/www/Zhang_Meyers_PNAS_2011.pdf" rel="nofollow">Object decoding with attention in inferior temporal cortex, <em>PNAS</em>, 2011</a>. The data consists of single unit recordings from the 132 neurons in inferior temporal cortex (IT). The recordings were made while a monkey viewed 7 different objects that were presented at three different locations (the monkey was also shown images that consisted of three objects shown simultaneously and had to perform an attention task, however for the purposes of this tutorial we are only going to analyze data from trials when single objects were shown). Each object was presented approximately 20 times at each of the three locations. The data can be downloaded <a href="http://www.readout.info/download/2860/">here</a>.</p>
+
+
+
+<!--- <h3>Adding the path to the toolbox</h3> -->
+
+### Adding the toolbox path 
+
+<p>Before using any of the functions in the NDT, the path must be set so that Matlab knows where to find these functions. The function&nbsp;<tt>add_ndt_paths_and_init_rand_generator</tt>&nbsp;adds the path and the appropriate directories that contain the different NDT functions. Additionally, this function initializes the random number generator (to the current time on the CPU's clock) so that each time the toolbox is used a different sequence of random numbers will be generated (by default Matlab uses the same seed to initialize the random number generator, which leads to the same sequence of random numbers every time Matlab is started). The following lines show how to use&nbsp;<tt>add_ndt_paths_and_init_rand_generator</tt>:</p>
+<div class="ethan_code_space">
+
+```matlab
+% add the path to the NDT so add_ndt_paths_and_init_rand_generator can be called
+toolbox_basedir_name = 'ndt.1.0.4/'
+addpath(toolbox_basedir_name);
+
+% add the NDT paths using add_ndt_paths_and_init_rand_generator
+add_ndt_paths_and_init_rand_generator
+```
+
+</div>
+
+<!--- <h2><a id="Data_formats"></a>Data formats</h2> -->
+
+## Data formats
+
+<p>In order to use the NDT, the neural data must be in a usable format. Typically this involves putting the data in&nbsp;<a title="Raster-format" href="http://www.readout.info/toolbox-design/data-formats/raster-format/">raster-format</a>&nbsp;and then converting it to&nbsp;<a title="Binned-format" href="http://www.readout.info/toolbox-design/data-formats/binned-format/">binned-format</a>&nbsp;using the&nbsp;<a title="create_binned_data_from_raster_data" href="http://www.readout.info/toolbox-design/tools/create_binned_data_from_raster_data/">create_binned_data_from_raster_data</a>&nbsp;function that is found in the tools directory. Information about these data formats is described&nbsp;<a title="Data formats" href="http://www.readout.info/toolbox-design/data-formats/">here</a>.</p>
+
+
+<!--- <h3><a id="Raster-format"></a>Raster-format</h3> -->
+
+### Raster format
+
+<p>To run a decoding analysis using the NDT you first need to have your data in a usable&nbsp;<a title="Data formats" href="http://www.readout.info/toolbox-design/data-formats/">format</a>. In this tutorial we will use data collected by Ying Zhang in Bob Desimone's lab at MIT. The directory&nbsp;<tt>Zhang_Desimone_7objects_raster_data/</tt>&nbsp;contains data in&nbsp;<a title="Raster-format" href="http://www.readout.info/toolbox-design/data-formats/raster-format/">raster-format</a>. Each file in this directory contains data from one neuron. To start, let us load one of these files and examine its contents by typing the command:</p>
+<div class="ethan_code_space">
+
+```matlab
+load bp1021spk_04B_raster_data.mat
+```
+</div>
+
+
+<p>Data that is in&nbsp;<tt>raster-format</tt>&nbsp;contains three variables:&nbsp;<tt>raster_site_info, raster_labels, and raster_data</tt>. The variable&nbsp;<tt>raster_data</tt>&nbsp;is a matrix where each row corresponds to the data from one trial, and each column corresponds to data from one time point (the rows are also in order so that the first trial is in the first row, and the last trial is in the last row). Because we are dealing with neural spiking data in this tutorial each column in the matrix that was just loaded corresponds to a time when a spike occurred. We can view the spike rasters from each trial and a peri-stimulus time histogram (PSTH) of the data by typing the following commands:</p>
+
+<div class="ethan_code_space">
+
+```matlab
+% view the rasters from one neuron
+subplot(1, 2, 1)
+imagesc(~raster_data); colormap gray
+line([500 500], get(gca, 'YLim'), 'color', [1 0 0]);
+ylabel('Trials')
+xlabel('Time (ms)')
+title('rasters')
+
+% view the PSTH for one neuron
+subplot(1, 2, 2)
+bar(sum(raster_data));
+line([500 500], get(gca, 'YLim'), 'color', [1 0 0]);
+ylabel('Number of spikes')
+xlabel('Time (ms)')
+title('PSTH')
+
+```
+</div>
+
+<p>From looking at the PSTH, one can see that this cell increased its firing rate shortly after stimulus onset (the stimulus onset was at 500 ms).</p>
+<p>The structure&nbsp;<tt>raster_labels</tt>&nbsp;is a structure that contains cell arrays that lists the experimental conditions that were present on each trial (each cell array has as many entries as there are rows in the raster_data matrix, so that there is an experimental condition label for each trial). For example, the variable <tt>raster_labels.stimulus_ID</tt>&nbsp;contains the labels for which of the 7 stimuli was shown on each trial, and the variable <tt>raster_labels.stimulus_position</tt>&nbsp;contains the position where the stimulus was shown.</p>
+<p>The structure&nbsp;<tt>rater_site_info</tt>&nbsp;contains any additional information about the recording site that the experimenter wants to record. For example, one could keep a record of the quality of the spike sorting isolation in this structure, or information about the position of where the neuron was recorded relative to a grid system used, etc.. For the purposes of this tutorial we will ignore this structure.</p>
+
+<!--- <h3><a id="Binning_the_data"></a>Binning the data</h3> -->
+
+### Binning the data
+
+<p>The NDT decoding objects operate on data that is in&nbsp;<a title="Binned-format" href="http://www.readout.info/toolbox-design/data-formats/binned-format/">binned-format</a>. To convert data in&nbsp;<tt>raster-format</tt>&nbsp;to&nbsp;<tt>binned-format</tt>, we can use the tool <tt><a title="create_binned_data_from_raster_data" href="http://www.readout.info/toolbox-design/tools/create_binned_data_from_raster_data/">create_binned_data_from_raster_data</a></tt>, which calculates the average firing rate of neurons over specified intervals and sampled with a specified frequency (i.e., a boxcar filter is used).&nbsp;<tt>create_binned_data_from_raster_data</tt>&nbsp;takes in four arguments: 1) the name of the directory where the raster-format data is stored, 2) the name (potentially including a directory) that the binned data should be saved as, 3) a bin size that specifies how much time the firing rates should be calculated over, and 4) a sampling interval that specifies how frequently to calculate these firing rates. To calculate the average firing rates in 150 ms bins sampled every 50 ms, the following commands can be used:</p>
+<div class="ethan_code_space">
+
+```matlab
+raster_file_directory_name = 'Zhang_Desimone_7objects_raster_data/'
+save_prefix_name = 'Binned_Zhang_Desimone_7object_data';
+bin_width = 150;
+step_size = 50;
+
+create_binned_data_from_raster_data(raster_file_directory_name, save_prefix_name, bin_width, step_size);
+```
+
+
+</div>
+<p>The output of this function will be a file called&nbsp;<tt>Binned_Zhang_Desimone_7object_data_150ms_bins_50ms_sampled.mat</tt>. Data in&nbsp;<tt>binned-format</tt>&nbsp;has similar fields to data in&nbsp;<tt>raster-format</tt>&nbsp;except that data from all the neurons are now grouped together into single structures. The three variables for&nbsp;<tt>binned-format</tt>&nbsp;data are: 1) the_data{} which is a cell array where each entry contains a&nbsp;<tt>[num_trials x num_bins]</tt>&nbsp;matrix of data, which is a binned version of the raster_data for each neuron; 2)&nbsp;<tt>binned_labels</tt>&nbsp;which is a structure that contains cell array for the labels for each neuron, and 3)&nbsp;<tt>binned_site_info</tt>&nbsp;which contains all the extra info for each neuron.</p>
+
+<!--- <h3><a id="Determining_how_many_times_each_condition_was_repeated"></a> Determining how many times each condition was repeated</h3> -->
+
+### Determining number of condition repetitions
+
+
+<p>Before beginning the decoding analysis it is useful to know how many times each experimental condition (e.g., stimulus) was presented to each site (e.g., neuron). In particular, it is useful to know how many times the condition that has the fewest repetitions was presented. To do this we will use the tool&nbsp;<a title="find_sites_with_k_label_repetitions" href="http://www.readout.info/tutorials/find_sites_with_k_label_repetitions/">find_sites_with_k_label_repetitions</a>&nbsp;which finds all sites that have at least k repetitions using data that is in binned-format. Below we count the number of sites with k repetitions for different numbers of k, and store them in the variable&nbsp;<tt>num_sites_with_k_repeats</tt>.</p>
+<div class="ethan_code_space">
+
+```matlab
+% load the binned data
+load Binned_Zhang_Desimone_7object_data_150ms_bins_50ms_sampled.mat
+
+for k = 1:65
+&nbsp; &nbsp; inds_of_sites_with_at_least_k_repeats = find_sites_with_k_label_repetitions(binned_labels.stimulus_ID, k);
+&nbsp; &nbsp; num_sites_with_k_repeats(k) = length(inds_of_sites_with_at_least_k_repeats);
+end
+```
+
+</div>
+
+
+<p>Based on these results we see that all of the 132 sites have 59 repetitions of all 7 of the stimuli, and that 125 sites have 60 repetitions of all 7 stimuli. This information is useful when deciding how many cross-validations splits to use, as described below.</p>
+
+
+<!--- <h2><a id="Performing_a_decoding_analysis"></a>Performing a decoding analysis</h2> -->
+
+## Running the analysis
+
+<p>Performing a decoding analyses involves several steps:</p>
+<ol>
+<li>creating a&nbsp;<tt>datasource (DS)</tt>&nbsp;object that generates training and test splits of the data.</li>
+<li>optionally creating&nbsp;<tt>feature-preprocessor (FP)</tt>&nbsp;objects that learn parameters from the training data, and preprocess the training and test data.</li>
+<li>creating a&nbsp;<tt>classifier (CL)</tt>&nbsp;object that learns the relationship between the training data and training labels, and then evaluates the strength of this relationship on the test data.</li>
+<li>running a&nbsp;<tt>cross-validator</tt>&nbsp;object that using the&nbsp;<tt>datasource (DS)</tt>, the&nbsp;<tt>feature-preprocessor (FP)</tt>&nbsp;and the&nbsp;<tt>classifier (CL)</tt>&nbsp;objects to do a cross-validation procedure that estimates the decoding accuracy.</li>
+</ol>
+<p>Below we describe how to create and run these objects on the Zhang-Desimone dataset.</p>
+
+<!---  <h3><a id="Creating_a_Datasource_(DS)_object"></a>Creating a Datasource (DS) object</h3> -->
+
+### Datasources (DS) 
+
+<p>A datasource object is used by the cross-validator to generate training and test splits of the data. Below we create a&nbsp;<a title="basic_DS" href="http://www.readout.info/toolbox-design/datasources/basic_ds/">basic_DS</a> object&nbsp;that takes binned-format data, a cell array of labels, and a scalar that specifies how many cross-validation splits to use. The default behavior of this datasource is to create test splits that have one example of each object in them and <tt>num_cv_splits - 1</tt> examples of each object in the training set.</p>
+<p>As calculated <a href="http://www.readout.info/tutorials/introduction-tutorial#Determining_how_many_times_each_condition_was_repeated">above</a>, all 132 neurons have 59 repetitions of each stimulus, and 125 neurons have 60 repetitions of each stimulus. Thus we can use up to 59 cross-validation splits using all neurons, or we could set the datasource to use only a subset of neurons and use 60 cross-validation splits. For the purpose of this tutorial, we will use all the neurons and only 20 cross-validation splits (to make the code run a little faster). The basic_DS datasource object also has many more properties that can be set, including specifying that only certain labels or neurons should be used. More information about this object can be found&nbsp;<a title="basic_DS" href="http://www.readout.info/toolbox-design/datasources/basic_ds/">here</a>.</p>
+
+
+<div class="ethan_code_space">
+
+```matlab
+% the name of the file that has the data in binned-format
+binned_format_file_name = 'Binned_Zhang_Desimone_7object_data_150ms_bins_50ms_sampled.mat'
+
+% will decode the identity of which object was shown (regardless of its position)
+specific_label_name_to_use = 'stimulus_ID';
+
+num_cv_splits = 20;
+
+ds = basic_DS(binned_format_file_name, specific_label_name_to_use, num_cv_splits)
+
+```
+
+</div>
+
+<!---  <h3><a id="Creating_a_feature-preprocessor_(FP)_object"></a>Creating a feature-preprocessor (FP) object</h3> -->
+
+### Feature-preprocessors (FP)
+
+<p>Feature preprocessors use the training set to learn particular parameters about the data, and then applying some preprocessing to the training and test sets using these parameters. Below will we create a&nbsp;<a title="zscore_normalize_FP" href="http://www.readout.info/toolbox-design/feature-preprocessors/zscore_normalize_fp/">zscore_normalize_FP</a>&nbsp;that zscore normalizes the data so that each neuron's activity has approximately zero mean and a standard deviation of 1 over all trials. This feature-preprocessor is useful so that neurons with high firing rates do not end up contributing more to the decoding results than neurons with lower firing rates when a&nbsp;<tt>max_correlation_coefficient_CL</tt>&nbsp;is used.</p>
+
+<div class="ethan_code_space">
+
+```matlab
+% create a feature preprocessor that z-score normalizes each neuron
+
+% note that the FP objects are stored in a cell array 
+% which allows multiple FP objects to be used in one analysis
+
+the_feature_preprocessors{1} = zscore_normalize_FP;
+```
+</div>
+
+<!---  <h3><a id="Creating_a_classifier_(CL)_object"></a>Creating a classifier (CL) object</h3> -->
+
+### Classifiers (CL)
+
+<p>Classifiers take a "training set" of data and learn the relationship between the neural responses and the experimental conditions (labels) that were present on particular trials. The classifier is then used to make predictions about what experimental conditions are present on trials from a different "test set" of neural data. Below we create a&nbsp;<a title="max_correlation_coefficient_CL" href="http://www.readout.info/toolbox-design/classifiers/max_correlation_coefficient_cl/">max_correlation_coefficient_CL</a> classifier&nbsp;which learns prototypes of each class&nbsp;<em>k</em>&nbsp;that consists of the mean of all training data from class&nbsp;<em>k</em>. The predicted class for a new test point&nbsp;<em>x</em>&nbsp;is the class that has the maximum correlation coefficient value (i.e., the smallest angle) between the&nbsp;<em>x</em>&nbsp;and each class prototype.</p>
+<div class="ethan_code_space">
+
+```matlab
+% create the CL object
+the_classifier = max_correlation_coefficient_CL;
+```
+</div>
+
+<!---  <h3><a id="Creating_a_cross-validator_(CV)_object"></a>Creating a cross-validator (CV) object</h3> -->
+
+### Cross-validators (CV)
+
+<p>Cross-validator objects take a datasource, a classifier and optionally feature-preprocessor objects and run a decoding procedure by generating training and test data from the datasource, preprocessing this data with the feature-preprocessors and then training and testing the classifier on the resulting data. This procedure is run in two nested loops. The inner 'cross-validation' loop runs a cross-validation procedure where the classifier is trained and tested on different divisions of the data. The outer, 'resample' loop generates new splits (and also potentially pseudo-populations) of data, which are then run in a cross-validation procedure by the inner loop. Below we create a&nbsp;<a title="standard_resample_CV" href="http://www.readout.info/toolbox-design/cross-validator/standard_resample_cv/">standard_resample_CV</a>&nbsp;object that runs this decoding procedure.</p>
+
+<div class="ethan_code_space">
+
+```matlab
+% create the CV object
+the_cross_validator = standard_resample_CV(ds, the_classifier, the_feature_preprocessors);
+
+% set how many times the outer 'resample' loop is run
+% generally we use more than 2 resample runs which will give more accurate results
+% but to save time in this tutorial we are using a small number.
+
+the_cross_validator.num_resample_runs = 2;
+```
+</div>
+
+
+<!---  <h3><a id="Running_the_decoding_analysis_and_saving_the_results"></a>Running the decoding analysis and saving the results</h3> -->
+
+### Running the decoding 
+
+
+<p>To run the decoding procedure we call the cross-validator's run_cv_decoding method, and the results are saved to a structure&nbsp;<tt>DECODING_RESULTS</tt>.</p>
+<div class="ethan_code_space">
+
+```matlab
+% run the decoding analysis
+DECODING_RESULTS = the_cross_validator.run_cv_decoding;
+
+save_file_name = 'Zhang_Desimone_basic_7object_results'
+
+save(save_file_name, 'DECODING_RESULTS');
+```
+</div>
+
+<!---  <h2><a id="Plotting_the_results"></a>Plotting the results</h2> -->
+
+## Plotting the results
+
+<p>Below we show how to plot the decoding accuracies as function of time using the&nbsp;<tt>plot_standard_results_object</tt>&nbsp;which is useful when comparing decoding accuracies from different analyses. We also show how to plot the results when training the classifier at one time and testing the classifier at a second time (ie., a temporal-cross-training plot) using the&nbsp;<tt>plot_standard_results_TCT_object</tt>&nbsp;object, which is useful for testing where information is contained in a dynamic population code.</p>
+
+
+
+<!--- <h3><a id="Plot_a_line_that_shows_the_decoding_accuracy"></a>Plot the decoding accuracy as a function of time</h3> -->
+
+### Plot decoding accuracy
+
+<p>To plot basic decoding results as a function of time, we will use the&nbsp;<a title="plot_standard_results_object" href="http://www.readout.info/toolbox-design/tools/plot_standard_results_object/">plot_standard_results_object</a>. This object takes the decoding result files that were created by the&nbsp;<tt>standard_resample_CV</tt>&nbsp;object and plots them in a nice way. There are many properties that can be set for this object, so we recommend you read the&nbsp;<a title="plot_standard_results_object" href="http://www.readout.info/toolbox-design/tools/plot_standard_results_object/">documentation</a>&nbsp;to see all the possibilities. Below we show how to plot the results we created above setting only a few of the possible parameters.</p>
+
+<div class="ethan_code_space">
+
+```matlab
+result_names{1} = save_file_name; &nbsp;
+
+% create the plot results object
+plot_obj = plot_standard_results_object(result_names);
+
+% put a line at the time when the stimulus was shown
+plot_obj.significant_event_times = 0;
+
+% display the results
+plot_obj.plot_results;
+```
+</div>
+
+<p>Other measures of decoding accuracy can be plotted by setting the property&nbsp;<tt>plot_obj.result_type_to_plot</tt>. For example, if this property is set to 6, then mutual information will be plotted, and if this property is to 2 normalized rank results will be plotted.</p>
+
+
+<!--- <h3><a id="Plot_temporal_cross_training_decoding_accuracies"></a>Plot temporal cross training decoding accuracies</h3> -->
+
+### Temporal-cross-decoding
+
+
+<p>To plot a matrix of decoding accuracies showing the results when the classifier was trained at time t1 and tested at time t2 we will use the <a title="plot_standard_results_TCT_object" href="http://www.readout.info/toolbox-design/tools/plot_standard_results_tct_object/">plot_standard_results_TCT_object</a>. The basic functions of this object are similar to the&nbsp;<tt>plot_standard_results_object</tt>, namely it takes the name of a decoding result file that was generated by running&nbsp;<tt>standard_resample_CV</tt>&nbsp;object and plots the full temporal-cross-training (TCT) matrix. There are also many properties that can be set for this object, so we again recommend you read the&nbsp;<a title="plot_standard_results_TCT_object" href="http://www.readout.info/toolbox-design/tools/plot_standard_results_tct_object/">documentation</a>&nbsp;to see all the possibilities. Below we show again how to plot the results we created above setting only a few of the possible parameters.</p>
+
+
+<div class="ethan_code_space">
+
+```matlab
+% create the plot results object
+% note that this object takes a string in its constructor not a cell array
+plot_obj = plot_standard_results_TCT_object(save_file_name);
+
+% put a line at the time when the stimulus was shown
+plot_obj.significant_event_times = 0;
+
+% display the results
+plot_obj.plot_results;
+
+```
+
+</div>
+
+
+<!--- <h2><a id="Conclusion"></a>Conclusion</h2> -->
+
+## Conclusion
+
+<p>This concludes the introductory tutorial. You should now understand the design of the Neural Decoding Toolbox and how to do a basic decoding analysis. We recommend trying out this tutorial yourself in Matlab and experimenting with different datasource, feature-preprocessor, cross-validator and plotting parameters. Once you feel comfortable with this tutorial you can look at the <a title="Generalization analysis tutorial" href="http://www.readout.info/tutorials/generalization-analysis/">generalization analysis tutorial</a> which shows how to test whether neural representations contain information in an abstract/invariant format, or you can look at the <a title="Getting started with your own data" href="http://www.readout.info/tutorials/getting-started-with-your-own-data/">getting started with your own data tutorial</a> which shows the steps necessary to being analyzing your own data.</p>
+</div>
+</div>
+

@@ -1,0 +1,14 @@
+---
+title: "poisson_naive_bayes_cl"
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">This classifier object implements a Poisson Naive Bayes classifier. The classifier works by learning the expected number of occurrences (denoted lambda) for each feature and each class by taking the average of the training data over all trials (separately for each feature and each class). To evaluate whether a given test point belongs to class i, the log of the likelihood function is calculated using the lambda values as parameters of Poisson distributions (i.e., there is a separate Poisson distribution for each feature, that is based on the lambda value for that feature). The overall likelihood value is calculated by multiplying the probabilities for each neuron together (i.e,. Naive Bayes classifiers assume that each feature is independent), or equivalently, adding the log of the probabilities for each feature together. The class with the highest likelihood value is chosen as the predicted label, and the decision values are the log likelihood values.
+
+<p>Note: This classifier assumes that all features values are integers. There is a flag in the constructor of basic_DS and generalization_DS that can convert firing rates (the default value created by the <tt>create_binned_data_from_raster_data</tt> function) to spike counts (or the helper function <tt>load_binned_data_and_convert_firing_rates_to_spike_counts</tt> can be used directly). Also, it should be noted that if the estimate rate parameter (lambda) for any feature is 0 (i.e., if the mean of a feature in the training data is 0), then this 0 lambda estimate will be replaced by the value 1/(num_training_points_in_class_k +1); i.e., we will assume that there is one more training point in which an event occurred. This prevents errors if an event occurred on a test point but the estimated lambda was 0.</p>
+<h2 class="methods_and_properties">Methods</h2>
+<p class="ethan_bold_method">cl = poisson_naive_bayes_CL</p>
+<p class="ethan_method_explanation">Basic constructor</p>
+<p class="ethan_bold_method">cl = train(cl, XTr, YTr)</p>
+<p class="ethan_method_explanation">Learns the mean occurrence values (lambdas) for each feature and class, and returns the trained classifier.</p>
+<p class="ethan_bold_method">[predicted_labels decision_values] = test(cl, XTe)</p>
+<p class="ethan_method_explanation">Predicts the class of each test point (XTe) calculating the log likelihoods of the test data (XTe) for each class based on assuming that the features are independent and Poisson distributed.</p>

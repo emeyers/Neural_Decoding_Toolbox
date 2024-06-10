@@ -1,0 +1,10 @@
+---
+title: MEG/EEG decoding functions
+toc: true
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">Additional code useful for decoding MEG/EEG data can be <a href="https://github.com/lisik/meg_decoding"> downloaded here</a>.
+
+Please see the <a href="http://www.readout.info/tutorials/megeeg-decoding-tutorial/">MEG/EEG decoding tutorial </a>to learn how to use this code. 
+
+

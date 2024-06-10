@@ -1,0 +1,10 @@
+---
+title: Additional code
+toc: true
+---
+
+<p>Below are links to additional code that works with the Neural Decoding Toolbox:</p>
+
+<p><a title="LIBSVM" href="http://www.readout.info/downloads/additional-code/libsvm/">LIBSVM</a></p>
+
+<p><a href="http://www.readout.info/meg-additional-decoding-functions"> MEG decoding additional functions </a></p>

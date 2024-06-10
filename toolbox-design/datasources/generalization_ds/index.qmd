@@ -1,0 +1,48 @@
+---
+title: generalization_ds
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;"> This datasource object (DS) allows one to train a classifier on a specific set of labels, and then test the classifier on a different set of labels.  This enables one to evaluate how similar neural representations are across different but related conditions (i.e., does training on one set of conditions generalization to a different but related set of conditions ). This datasource is a subclass of the handle class (i.e., it has a persistent state) and contains a <a href="http://www.readout.info/toolbox-design/datasources/basic_ds/" title="basic_DS">basic_DS</a> where it gets most of its functionality from.
+
+<p> The constructor for this datasource contains contains the same arguments as basic_DS, plus two additional arguments <tt>the_training_label_number</tt> and <tt>the_test_label_numbers</tt> i.e., the constructor has the form: <tt>ds = generalization_DS(the_data, the_labels, num_cv_splits, the_training_label_numbers, the_test_label_numbers)</tt>. <tt>the_training_label_number</tt> and <tt>the_test_label_numbers</tt> are cell arrays that specify which labels should belong to which class, with the first element of these cells arrays specifying the training/test labels that should be in first class, the second element of the cell array specifies which labels belong to the second class, etc.. For example, suppose one was interested in testing position invariance, and had done an experiment in which data was recorded while 7 different objects were shown at three different locations. If the labels for the 7 objects at the first location had labels <tt>'obj1_loc1', 'obj2_loc1', ..., 'obj7_loc1'</tt> at the second location were <tt>'obj1_loc2', 'obj2_loc2', ..., 'obj7_loc2'</tt>, and at the third location were <tt>'obj1_loc3', 'obj2_loc3', ..., 'obj7_loc3'</tt>, then one could do a test of position invariance by setting <tt>the_training_label_names{1} = {'obj1_loc1}, the_training_label_names{2} = {'obj2_loc1'}, ..., the_training_label_names{7} = {'obj7_loc1'}, </tt> and setting <tt>the_test_label_names{1} = {'obj1_loc2', 'obj1_loc3'}, the_test_label_names{2} = {'obj2_loc2', 'obj2_loc3'}, ..., the_test_label_names{7} = {'obj7_loc2', 'obj7_loc3'}</tt>. This DS object is able to test such generalization from training on one set of labels and testing on a different set of labels by remapping the training label numbers to the index number in the_training_label_names cell array, and remapping the test label numbers with the the index number into the the_test_label_names cell array. </p>
+<p>There is also an additional property that can be set for this object which is: <tt>use_unique_data_in_each_CV_split</tt> (default value is 0). When this argument is set to 0, the <tt>get_data</tt> method returns the normal leave one split out training and test data sets (i.e., the training set consists of <tt>(num_cv_splits - 1)</tt> splits of the data and the test set consists of 1 split of the data).</p>
+<p>The data in the training still comes from different splits as the data in the test set, thus one can have some of the same labels in the both <tt>the_training_label_names</tt> and in <tt>the_test_label_names</tt> (in fact, if ones sets <tt>the_test_label_names = the_training_label_names </tt>, then the get_data method will be the same as the <tt>basic_DS get_data </tt> method). However, if <tt>use_unique_data_in_each_CV_split = 1</tt>, then each training and test set will consist data from only split, and thus each cross-validation run is essentially like running an independent decoding experiment. In this case <tt>the_training_label_names</tt> and <tt>the_test_label_names</tt> must not contain any of the same labels (otherwise, they would be copies of the same data which would violate the fact that the training and the test set must not have any of the same data). </p>
+<h2 class="methods_and_properties"> Methods</h2>
+<p class="ethan_bold_method">ds = generalization_DS(binned_data_name, specific_binned_label_names, num_cv_splits, the_training_label_numbers, the_test_label_numbers, load_data_as_spike_counts)</p>
+<p class="ethan_method_explanation">The constructor, which takes the following inputs:</p>
+<ol style="padding-left:2em"><li class="ethan_method_explanation"><tt>binned_data_name</tt> <p class="ethan_short_input_argument_explanation">A string containing the name of a file that has data in binned-format, or alternatively, a cell array of data in binned-format</p></li>
+<li class="ethan_method_explanation"><tt>specific_binned_label_name </tt><p class="ethan_short_input_argument_explanation">A string containing the name of specific binned labels, or alternatively, a cell array (or vector) containing the specific binned labels (e.g., <tt>binned_labels.specific_binned_labels</tt>)</p></li>
+<li class="ethan_method_explanation"><tt>num_cv_splits</tt> <p class="ethan_short_input_argument_explanation">A number indicating how many cross-validation splits there should be</p></li>
+<li class="ethan_method_explanation"><tt>the_training_label_numbers</tt>
+<p class="ethan_short_input_argument_explanation">A cell array specifying which labels should belong to which class, with the first element of this cell arrays specifying the training labels for the first class the second element of the cell array specifying which labels belong to the second class, etc. </p></li>
+<li class="ethan_method_explanation"><tt>the_test_label_numbers</tt>
+<p class="ethan_short_input_argument_explanation">A cell array specifying which test labels should belong to which class, with the first element of this cell arrays specifying the test labels for the first class the second element of the cell array specifying which labels belong to the second class, etc. </p></li>
+<li class="ethan_method_explanation"><tt>load_data_as_spike_counts</tt> <p class="ethan_short_input_argument_explanation">If this optional argument is set to an integer greater than 0, this will convert the data from firing rates (the default value saved by <tt>create_binned_data_from_raster_data</tt> function) to spike counts.  This is useful when using the Poisson Naive Bayes classifier which only works on spike count data.</p></li>
+<p class="ethan_bold_method">[XTr_all_time_cv YTr_all XTe_all_time_cv YTe_all] = get_data(ds) </p>
+<p class="ethan_method_explanation">The same arguments are basic_DS but now the data and labels are based on the grouping given by the_training_label_numbers and the_test_label_numbers that are set in the constructor </p>
+</ol>
+<p class="ethan_bold_method">the_properties = get_DS_properties(ds) </p>
+<p class="ethan_method_explanation">Also returns the properties values for the_training_label_numbers, the_test_label_numbers and use_unique_data_in_each_CV_split.</p>
+<p class="ethan_bold_method">ds = set_specific_sites_to_use(ds, curr_bootstrap_sites_to_use)</p>
+<p class="ethan_method_explanation">Exact same functionality inherited from basic_DS </p>
+<h2 class="methods_and_properties">Properties </h2>
+
+
+In addition to the properties inherited from basic_DS, generalization_DS also has the following property that can be set:
+
+<p class="ethan_bold_method">use_unique_data_in_each_CV_split (default = 0).</p>
+<p class="ethan_method_explanation">When this argument is set to 0, the <tt>get_data</tt> method returns the normal leave one split out training and test data sets (i.e., the training set consists of (num_cv_splits - 1) splits of the data and the test set consists of 1 split of the data). The data in the training still comes from different splits as the data in the test set, thus one can have some of the same labels in the both <tt>the_training_label_numbers</tt> and in <tt>the_test_label_numbers</tt> (in fact, if one has  <tt>  the_test_label_numbers = the_training_label_numbers</tt>, then the get_data method will be the same as the basic_DS get_data method. However, if <tt>use_unique_data_in_each_CV_split = 1</tt>, then each training and test set will consist data from only split, and each cross-validation split will consist of unique data. In this case <tt>the_training_label_numbers</tt> and <tt>the_test_label_numbers</tt> must not contain any of the same labels (otherwise, they would be copies of the same population vector which would violate the fact that the training and the test set must not have any of the same data).</p>
+
+
+The following properties function the same way as in basic_DS (for more information <a href="http://www.readout.info/toolbox-design/datasources/basic_ds/" title="basic_DS">see the basic_DS documentation</a>):
+
+<ul>
+<li>create_simultaneously_recorded_populations (default = 0). </li>
+<li>sample_sites_with_replacement (default = 0). </li>
+<li>num_times_to_repeat_each_label_per_cv_split (default = 1). </li>
+<li>num_resample_sites (default = -1, which means use all sites). </li>
+<li>sites_to_use (default = -1). </li>
+<li>sites_to_exclude (default = []). </li>
+<li>time_periods_to_get_data_from (default = []). </li>
+<li>randomly_shuffle_labels_before_running (default = 0).</li>
+</ul>

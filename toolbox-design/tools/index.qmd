@@ -1,0 +1,23 @@
+---
+title: Tools
+toc: true
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">Tools are useful functions and objects that help with setting up decoding analyses and plot results.  The Neural Decoding Toolbox comes with the following tools: 
+
+<ol>
+<li class="ethan_method_explanation"><a href="http://www.readout.info/toolbox-design/tools/create_binned_data_from_raster_data/" title="create_binned_data_from_raster_data">create_binned_data_from_raster_data</a>
+<p class="ethan_short_input_argument_explanation" style="padding-bottom:1.5em !important"> A function takes the name of a directory that contains files in <a href="http://www.readout.info/toolbox-design/data-formats/raster-format/" title="Raster-format">raster-format</a> and creates data that is in <a href="http://www.readout.info/toolbox-design/data-formats/binned-format/" title="Binned-format">binned-format </a>from these files.</p></li>
+<li class="ethan_method_explanation"><a href="http://www.readout.info/toolbox-design/tools/find_sites_with_k_label_repetitions/" title="find_sites_with_k_label_repetitions">find_sites_with_k_label_repetitions</a>
+<p class="ethan_short_input_argument_explanation" style="padding-bottom:1.5em !important"> A function takes in labels in <a href="http://www.readout.info/toolbox-design/data-formats/binned-format/" title="Binned-format">binned-format</a>, and an integer <tt>k,</tt> and returns the indices for all sites (e.g. neurons) that have at least <tt>k</tt> repetitions of each experimental condition.</p></li>
+<li class="ethan_method_explanation"><a href="http://www.readout.info/toolbox-design/tools/log_code_object/" title="log_code_object">log_code_object</a>
+<p class="ethan_short_input_argument_explanation" style="padding-bottom:1.5em !important">A helper object saves information about the exact code that was run so that one has a record of how particular results were generated.</p></li>
+<li class="ethan_method_explanation">create_pvalues_from_nulldist_files
+<p class="ethan_short_input_argument_explanation" style="padding-bottom:1.5em !important">
+</p></li>
+<li class="ethan_method_explanation"><a href="http://www.readout.info/toolbox-design/tools/plot_standard_results_object/" title="plot_standard_results_object">plot_standard_results_object</a>
+<p class="ethan_short_input_argument_explanation" style="padding-bottom:1.5em !important">This object plots <tt>DECODING_RESULTS</tt> files that were created by running the <tt>standard_resample_CV.run_cv_decoding</tt> method, as a function of time.</p></li>
+<li class="ethan_method_explanation"><a href="http://www.readout.info/toolbox-design/tools/plot_standard_results_tct_object/" title="plot_standard_results_TCT_object">plot_standard_results_TCT_object</a>
+<p class="ethan_short_input_argument_explanation" style="padding-bottom:1.5em !important">This object allows one to display the results for training and testing at different time points in the experiment, i.e., temporal cross-training (TCT) results, for results that were created using the <tt>standard_resample_CV.run_cv_decoding</tt> method.
+</p></li>
+</ol>

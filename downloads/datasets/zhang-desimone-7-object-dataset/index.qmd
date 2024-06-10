@@ -1,0 +1,12 @@
+---
+title: Zhang desimone 7 object dataset
+toc: true
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;"> The <em>Zhang-Desimone 7 object dataset</em> was collected by Ying Zhang in <a href="http://mcgovern.mit.edu/principal-investigators/robert-desimone">Bob Desimone's lab</a> in the McGovern Institute at MIT.  The data was used in the supplemental figures in the paper <a href="http://www.pnas.org/content/108/21/8850.abstract">Object decoding with attention in inferior temporal cortex, PNAS, 2011</a>. 
+
+The data consists of single unit recordings from the 132 neurons in inferior temporal cortex (IT). The recordings were made while a monkey viewed 7 different objects that were presented at three different locations (the monkey was also shown images that consisted of three objects shown simultaneously and had to perform an attention task, however the dataset compiled here only consists of  trials when single objects were shown). Each object was presented approximately 20 times at each of the three locations.  The data is in <a href="http://www.readout.info/toolbox-design/data-formats/raster-format/" title="Raster-format">raster-format</a>, and each trial consists of 500 ms of baseline data where a monkey viewed a fixation dot, and 500 ms of data when a monkey viewed one of the 7 different images.  
+
+<p style="padding-top: 2%; padding-bottom: 2%;">
+[Download the Zhang-Desimone 7 object dataset](/_freeze/download_data_and_code/Zhang_Desimone_7objects_raster_data.zip)
+</p>

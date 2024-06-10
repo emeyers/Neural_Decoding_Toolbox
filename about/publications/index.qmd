@@ -1,0 +1,55 @@
+---
+title: Publications
+toc: true
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;"> If you use the Neural Decoding Toolbox in a publication, please cite the paper below which describes the design of the toolbox and how to use it: 
+
+
+<b>Meyers, E. (2013)</b> <a href="http://www.frontiersin.org/Neuroinformatics/10.3389/fninf.2013.00008/abstract" target="_blank"> The Neural Decoding Toolbox</a>. <em>Frontiers in Neuroinformatics</em>, 7:8.
+
+
+<br>
+
+For a list of publications that have used the Neural Decoding Toolbox, please see this [Google Scholar page](https://scholar.google.com/scholar?cites=6091460778318938262&as_sdt=5,30&sciodt=0,30&hl=en) </p>
+
+
+<p style="padding-top: 3%; padding-bottom:.5%"><u> The following are some early publications used Neural Decoding Toolbox (or beta versions of it)</u> </p>
+
+<b>Rikhye R, Gilra A, Halassa M (2018)</b>. <a href="https://www.nature.com/articles/s41593-018-0269-z"> Thalamic regulation of switching between cortical representations enables cognitive flexibility. </a> <em>Nature Neuroscience</em> 21:1753-1763.
+
+<b>Alizadeh AM, Van Dromme I, Janssen P (2018)</b>. <a href="https://www.physiology.org/doi/full/10.1152/jn.00198.2018"> Single-cell responses to three-dimensional structure in a functionally defined patch in macaque area TEO. </a> <em>Journal of Neurophysiology</em> 120:2906-2818.
+
+<b>Fornaciai M, Park J (2018)</b>. <a href="http://journals.sagepub.com/doi/abs/10.1177/0956797617737385"> Attractive Serial Dependence in the Absence of an Explicit Task. </a> <em>Psychol Sci</em> 29(3):437–446.
+
+<b>Fornaciai M, Park J  (2018)</b>. <a href="https://www.mitpressjournals.org/doi/abs/10.1162/jocn_a_01320">Early Numerosity Encoding in Visual Cortex Is Not Sufficient for the Representation of Numerical Magnitude. </a> <em>J Cogn Neurosci</em> 30(12):1788–1802.
+
+<b>Tingley D, Buzsáki G (2018)</b>. <a href="https://www.sciencedirect.com/science/article/pii/S0896627318303362">Transformation of a Spatial Map across the Hippocampal-Lateral Septal Circuit. </a> <em>Neuron</em>.
+
+<b>Boutona S, Chambona V, Tyranda R, Guggisberge S, Seecke M, Karkarf S, van de Villeg D, Girauda A (2018)</b>. <a href="http://www.pnas.org/content/early/2018/01/22/1714279115">Focal versus distributed temporal cortex activity for speech sound category assignment. </a> <em>Proceedings of the National Academy of Sciences</em>.
+
+<b>Kumar S., Popivanov ID, and Vogel  R (2017)</b>. <a href="https://doi.org/10.1093/cercor/bhx320">Transformation of Visual Representations Across Ventral Stream Body-selective Patches. </a> <em>Cerebral Cortex</em>.
+
+<b>Meyers E, Liang A, Katsuki F, and Constantinidis C (2017)</b>. <a href="https://academic.oup.com/cercor/article/4430784/Differential-Processing-of-Isolated-Object-and">Differential Processing of Isolated Object and Multi-item Pop-Out Displays in LIP and PFC. </a> <em>Cerebral Cortex</em>.
+
+<b>Alizadeh AM, Van Dromme I, Verhoef BE, and Janssen P(2017)</b>. <a href="https://www.sciencedirect.com/science/article/pii/S105381191730873X">Caudal Intraparietal Sulcus and three-dimensional vision: A combined functional magnetic resonance imaging and single-cell study.</a><em>NeuroImage</em>.
+
+<b>Schmitt LI, Wimmer R, Nakajima M, Happ M, Mofakham S and Halassa M (2017)</b>. <a href="http://www.nature.com/nature/journal/vaop/ncurrent/full/nature22073.html">Thalamic amplification of cortical connectivity sustains attentional control. </a> <em>Nature</em>.
+
+<b>Kumar S, Kaposvari  P, and Vogels R (2017)</b>. <a href="http://www.mitpressjournals.org/doi/abs/10.1162/jocn_a_01135?url_ver=Z39.88-2003&amp;rfr_id=ori:rid:crossref.org&amp;rfr_dat=cr_pub%3dpubmed#.WRSTA_nyvRY">Encoding of Predictable and Unpredictable Stimuli by Inferior Temporal Cortical Neurons</a> <em>Journal of Cognitive Neuroscience</em>.
+
+<b>Kamiński J, Sullivan S, Chung J, Ross I, Mamelak A and Rutishauser U (2017)</b>. <a href="http://www.nature.com/neuro/journal/vaop/ncurrent/full/nn.4509.html">Persistently active neurons in human medial frontal and medial temporal lobe support working memory</a> <em>Nature Neuroscience</em>.
+
+<b>Stalnaker T, Berg B,	Aujla N, Schoenbaum G (2016)</b>. <a href="http://www.jneurosci.org/content/36/23/6242.short">Cholinergic Interneurons Use Orbitofrontal Input to Track Beliefs about Current State.</a> <em>Journal of Neuroscience</em>.
+
+<b>Rutishauser U, Ye S,	Koroma M, Tudusciuc O,	Ross I,	Chung J, Mamelak A (2015)</b>. <a href="http://www.nature.com/neuro/journal/vaop/ncurrent/full/nn.4041.html">Representation of retrieval confidence by single neurons in the human medial temporal lobe.</a> <em>Nature Neuroscience</em>.
+
+<b>Meyers E, Borzello M, Freiwald W, Tsao D (2015)</b>.<a href="http://emeyers.scripts.mit.edu/emeyers/wp-content/uploads/2015/05/Meyers_JNeurosci_2015.pdf" target="_blank">  Intelligent Information Loss: The Coding of Facial Identity, Head Pose, and Non-Face Information in the Macaque Face Patch System</a>.  <em>Journal of Neuroscience</em>, 35(18):7069-81. 
+
+<b>Isik, L., Meyers, E., Leibo, J., Poggio, T. (2014).</b> <a href="http://jn.physiology.org/content/111/1/91.full" target="_blank"> The dynamics of invariant object recognition in the human visual system </a><em> Journal of Neurophysiology</em>, 111:91–102.
+
+<b>Meyers, E., Qi, X.L., Constantinidis C. (2012).</b> <a href="http://www.pnas.org/content/early/2012/02/29/1201022109" target="_blank"> Incorporation of new information into prefrontal cortical activity after learning working memory tasks</a>. <em>Proceedings of the National Academy of Sciences</em>, 109:4651-4656.
+
+<b>Zhang Y.,*, Meyers, E.*, Bichot, N., Serre, T., Poggio, T., and Desimone, R. (2011).</b> <a href="http://www.pnas.org/content/108/21/8850.abstract" target="_blank">Object decoding with attention in inferior temporal cortex.</a> <em>Proceedings of the National Academy of Sciences</em>, 108:8850-8855.  * These authors contributed equally.
+
+<b>Meyers, E., Freedman, D., Kreiman, G., Miller, E., Poggio T. (2008).</b> <a href="http://jn.physiology.org/content/100/3/1407.long" target="_blank">Dynamic Population Coding of Category Information in Inferior Temporal and Prefrontal Cortex</a>.  <em>Journal of Neurophysiology</em>, 100:1407-1419.

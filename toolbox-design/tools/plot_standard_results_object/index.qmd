@@ -1,0 +1,81 @@
+---
+title: plot_standard_results_object
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">This object plots <tt>DECODING_RESULTS</tt> files that were created by running the <tt>standard_resample_CV.run_cv_decoding</tt> method, as a function of time. 
+
+<h2 class="methods_and_properties">Methods</h2>
+<p class="ethan_bold_method">plot_obj = plot_standard_results_object(result_file_names)</p>
+<p class="ethan_method_explanation">The constructor. The input parameter for this constructor, <tt>result_file_name</tt>, is a cell array of strings that lists the file names of the results that will be plotted, i.e., <tt>result_file_names = {'file_name1', 'file_name2', ...};</tt>.  Alternatively, the constructor can take a <tt>[num_results_to_plot x num_time_bins]</tt> matrix that has all the decoding results precomputed; note, if this later option is used, then p_values can not be a cell array of strings with null distribution directory names, but must be a cell array of vectors with precomputed p-values. </p>
+<p class="ethan_bold_method">plot_obj.plot_results</p>
+<p class="ethan_method_explanation">The main method for the plot_standard_results_object which creates a figure that displays the results. There are several optional parameters that can be set prior to calling this method which will change how the results are displayed, as explained below.</p>
+<h2 class="methods_and_properties">Properties</h2>
+<p class="ethan_bold_method">result_type_to_plot (default = 1). Specifies which type of decoding result should be plotted.</p>
+<p class="ethan_method_explanation">
+If this is set to 1, the zero-one loss results are plotted.
+If this is set to 2, the normalized rank results are plotted.
+If this is set to 3, the mean decision values are plotted.
+If this is set to 4, the ROC_AUC results run separately on each cross-validation split are plotted.
+If this is set to 5, the ROC_AUC results combined over cross-validation splits are plotted.
+If this is set to 6, the mutual information created from a confusion matrix that combining data from all resamples runs is plotted.
+If this is set to 7, mutual information created from a confusion matrix that is calculated separately and then averaged over resample runs is plotted.
+</p>
+<p class="ethan_bold_method" style="text-align:left!important">plot_time_intervals (default [])</p>
+<p class="ethan_method_explanation">This property specifies which time points in the experiment the results correspond to (i.e,. this specifies the x-axis values that the results are plotting against). If this value is set to a vector, then all results specified in <tt>result_file_names</tt> will use the same time range. Alternatively this property can be set with the following fields <tt>plot_time_intervals.bin_width</tt>, <tt>plot_time_intervals.sampling_interval</tt>, and optionally <tt>plot_time_intervals.alignment_event_time</tt> and <tt>plot_time_intervals.alignment_type</tt>, which will create a time interval that has the corresponding bin width, sampling interval and alignment time which specified where 0 on the x-axis will be. The field <tt>alignment_type</tt> specifies whether the bins should be centered (default value of 2), whether they should be aligned to the start of the bins (value of 1) or whether they should be aligned to the end of the bin (value of 3). This property can also cell array that is the same length as <tt>result_file_names</tt>, with each entry of the cell array containing a vector of specified times or a structure of binning parameters for each decoding result. If this property is left empty (default value), then the plot_object attempts to use the binning parameters for each file using the saved in the <tt>DECODING_RESULTS.DS_PARAMETERS.binned_site_info.binning_parameters</tt> field which was originally created by the create_binned_data_from_raster_data function and pass through the DS and CV objects. </p>
+<p class="ethan_bold_method">plot_inds</p>
+<p class="ethan_method_explanation">Plot a smaller range of the decoding results that are given by the indices listed in this vector. This field can also be set to a cell array the that is the same length as <tt>result_file_names</tt>, with each entry of the cell array containing a vector of indices that should be plotted for each result.</p>
+<p class="ethan_bold_method">saved_results_structure_name</p>
+<p class="ethan_method_explanation">By default this object assumes that all results were saved in a structure called <tt>DECODING_RESULTS</tt>. If the structure of the saved results has a different name, the name can be specified here and the results will be plotted using this name.</p>
+<p class="ethan_bold_method">the_colors</p>
+<p class="ethan_method_explanation">A cell array listing the colors that each result should be plotted as. There are 20 colors defined as the default colors, so if more than 20 results are being compared on the same figure, this property must be extended to include more colors.</p>
+<p class="ethan_bold_method">line_width (default = 2)</p>
+<p class="ethan_method_explanation">The line width of the plotted results.</p>
+<p class="ethan_bold_method">line_style (default = '-')</p>
+<p class="ethan_method_explanation">The line style of the plotted results (i.e., can plot dots, dashes, etc.).</p>
+<p class="ethan_bold_method">font_size (default = 16)</p>
+<p class="ethan_method_explanation">The font size for the axis labels.</p>
+<p class="ethan_bold_method">ylabel_name</p>
+<p class="ethan_method_explanation">The default behavior is to display the appropriate name for the given result_type that is being plotted, but this can be set to display alternative ylabels.</p>
+<p class="ethan_bold_method">xlabel_name (default = 'Time (ms)' )</p>
+<p class="ethan_method_explanation">The label of the x-axis.</p>
+<p class="ethan_bold_method">legend_names</p>
+<p class="ethan_method_explanation">Allows one to set a cell array of strings corresponding to the legends for the different results</p>
+<p class="ethan_bold_method">chance_level</p>
+<p class="ethan_method_explanation">Draws a horizontal line at what the chance decoding level is. If this is unspecified, then the chance level will be 1/num_classes for 0-1 loss results, no line will be drawn for decision values, and .5 line will be drawn for normalized rank and ROC AUC results, and 0 will be drawn for mutual information results.</p>
+<p class="ethan_bold_method">significant_event_times</p>
+<p class="ethan_method_explanation">This will cause vertical lines to be drawn at the times specified in this vector which can be used to indicate significant events that occurred during a trial.</p>
+<p class="ethan_bold_method">significant_event_regions</p>
+<p class="ethan_method_explanation">Setting this to a cell array of 2 element vectors (i.e., significant_event_regions{1} = [t1 t2]) will cause shaded regions to be drawn between times <tt>t1</tt> and <tt>t2</tt>.</p>
+<p class="ethan_bold_method">significant_event_region_alphas (default = .1)</p>
+<p class="ethan_method_explanation">If significant_event_regions is set to a cell array of 2 dimensional vectors, the shaded regions with have an alpha level of transparency set by this property. If this property is set to a vector that is the same size as the cell array, then each shaded region can have a different alpha level as determined by the entries in this vector.</p>
+<p class="ethan_bold_method">significant_event_region_colors (default = [0 0 0])</p>
+<p class="ethan_method_explanation">If significant_event_regions is set to a 3 dimensional vector, the shaded regions with have a color specified by this [r g b] vector. If this property is set to a cell array that is the same size as the <tt>significant_event_regions</tt> cell array, then each shaded region can have a different color as determined by the 3 dimensional vectors in each cell.</p>
+<p class="ethan_bold_method">the_axis (default = [])</p>
+<p class="ethan_method_explanation">This has the same effect as using axis([x1 x2 y1 y2]) function but setting this first will allow significant event lines and shaded regions to be drawn to span the whole display, as opposed to if this is set later using the axis function.</p>
+<p class="ethan_bold_method">p_values</p>
+<p class="ethan_method_explanation">If this is set to a cell array of numbers that is the same length as <tt>result_file_names</tt> with each vector containing p-values for each time point, then bars will be plotted at the bottom of the plot for all times that the p-values are less than the <tt>p_value_alpha_level</tt>. If this is set to a cell array of strings that contain the names of directories that have files that comprise a null distribution, the p-values will be calculated and bars will be shown at the bottom of the plot for all times that the p-values are less than <tt>p_value_alpha_level</tt>. The bars for the pvalues indicate which time points in the decoding results shown above are higher than expected by chance.  Technically each bar should really be a dot indicating which result data point is above chance but for illustrative purposes we have extended them to bars (that have the width of sampling interval) so that a solid line is created for continuous times that are above chance (the downside of this is that it might give a slightly false impression of the first time when the results are above chance).  For more information about how the p-values are calculated see <a href="http://www.readout.info/toolbox-design/tools/pvalue_object/" title="pvalue_object">pvalues_object</a>.</p>
+<p class="ethan_bold_method">p_value_alpha_level</p>
+<p class="ethan_method_explanation">If the <tt>p_values</tt> field is set, then bars will be shown at the bottom of the plot for all times that the p-values are less than this value.</p>
+<p class="ethan_bold_method"> collapse_all_times_when_estimating_pvals (default = 0). </p>
+<p class="ethan_method_explanation">If this is set to one, the null distributions from all time bins are combined together to create one larger total null distribution.  The p-values are then calculated by comparing the actual decoding accuracy at each point in time to this larger null distribution (with this same null distribution is used for all points in time). The advantage of using this is that if the null distributions at each point in time are the same, then one can get a more precise estimate of the p-values for the same computational cost. [added in NDT version 1.4] </p>
+<p class="ethan_bold_method">add_pvalue_latency_to_legends_alignment (default = 4)</p>
+<p class="ethan_method_explanation">If this property is set to value greater than 0, and if the p_values field has been set, then the latency when the decoding results are first above chance will be added to the legend.  If this value is set to 1 it will show the beginning of the time interval when the results are first above chance, if it is set to 2 it will show the middle of the time interval when the results are first above chance, if this is set to 3 it will show the end of the time interval when the results are first above chance and if this is set to 4 (default) it will show the beginning and the end of the interval when the results are first above chance.  If this property is set to 5, then the time interval that was added to make the results above chance will be displayed (i.e., the time of the first interval that is above chance will be displayed minus any time that is in the previous interval (which was the last time interval that was not above chance)). </p>
+<p class="ethan_bold_method">errorbar_file_names</p>
+<p class="ethan_method_explanation">If this is set to a cell array of strings, it will plot errorbars using the data from the file names listed. The number of file names in this cell array must be the same as the number of file names in the <tt>result_file_names</tt> sent to the constructor of this object (i.e., each result to be plotted much have a corresponding errorbar file if errorbars are to be plotted). Alternatively, errorbar_file_names can be set to a <tt>[num_results_to_plot x num_time_bins]</tt> sized matrix that contains precomputed errorbars (and the field errorbar_type_to_plot will be ignored). </p>
+<p class="ethan_bold_method">errorbar_type_to_plot (default = 1)</p>
+<p class="ethan_method_explanation">If errorbar_file_names are specified, this field specified which type of decoding variance measure should be plotted. The values for this property are:</p>
+<ul class="ethan_method_explanation">
+<li>If this is set to 1, then the standard deviations over resample runs (i.e., stdev.over_resamples) is used.</li>
+<li>If this is set to 2, then the standard deviations over the mean decoding results from each cross-validation split (i.e., stdev.over_CVs) is used. The mean value over all resample trials is then plotted.</li>
+<li>If this is set to 3, then the standard deviations over the mean decoding results from each cross-validation split combined together from all resample runs (i.e., over_CVs_combined_over_resamples) is used.</li>
+<li>If this is set to 4, then the standard deviation of individual results (e.g., 0 1 values if the 0-1 loss is used) from each cross-validation split (all_single_CV_vals) are used. The mean value over all resample runs and CV splits is plotted.</li>
+<li>If this is set to 5, then the standard deviation of individual results (e.g., 0 1 values if the 0-1 loss is used) from each CV split combined from all cross-validation splits in a single resample run (all_single_CV_vals_combined) are used. The mean value over all resample runs is plotted.</li>
+<li>If this is set to 6, and ROC_AUC results are plotted, then the standard deviation of the ROC results from over the different classes (over_classes) are used. The mean results over resample runs (and CV splits for the separate_CV_ROC_results) are plotted. This value can only be set when ROC_AUC values are plotted (i.e., result_type_to_plot = 4 or 5).</li>
+</ul>
+<p class="ethan_method_explanation">It should also be noted that if separate_CV_ROC_results plotted (i.e., result_type_to_plot = 4), then errorbar_type_to_plot can only be set to values of 1, 2, or 6 and if combined_CV_ROC_results plotted (i.e., result_type_to_plot = 5), then errorbar_type_to_plot can only be set to values of 1 or 6. Also if mutual information created from a confusion matrix that combining data is plotted, then one can not plot errorbars, and if mutual information created from a confusion matrix that is calculated separately and then averaged over resamples is plotted, then errorbar_type_to_plot can only be set to values of 1.</p>
+<p class="ethan_bold_method">errorbar_stdev_multiplication_factor (default = 1)</p>
+<p class="ethan_method_explanation">When plotting the errorbars, the default behavior is to plot plus and minus 1 standard deviation for the standard deviation type that is specified. If errorbar_stdev_multiplication_factor is set to a value of <tt>k</tt>, then the errorbars will be plotted as mean_results plus/minus <tt>k</tt> times the standard deviation type is plotted.</p>
+<p class="ethan_bold_method">errorbar_transparency_level (default = .2)</p>
+<p class="ethan_method_explanation">Sets the transparency level of the errorbars.</p>
+<p class="ethan_bold_method">errorbar_edge_transparency_level (default = .2)</p>
+<p class="ethan_method_explanation">Sets the transparency level of the edges of the errorbars.</p>

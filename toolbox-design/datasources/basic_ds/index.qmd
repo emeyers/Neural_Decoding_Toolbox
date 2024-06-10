@@ -1,0 +1,53 @@
+---
+title: basic_ds
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;"> The datasource <tt>basic_DS</tt> implements the basic of a datasource (DS) object. Namely, it takes binned data and labels, and through the <tt> get_data() </tt> method, the object returns k leave-one-fold-out cross-validation splits of the data which can subsequently be used to train and test a classifier. The data in the population vectors is randomly selected subset of data from larger population of binned-format data that is passed to the constructor of this object. This object can create both pseudo-populations (i.e., populations vector in which the recordings were made on independent sessions but are treated as if they were recorded simultaneously) and simultaneously populations in which neurons that were recorded together always appear together in population vectors. 
+
+</tt><p>Note: this object inherits from the handle class.  Thus when an object from this class is created, a reference to the object is returned, and modifications to any object property immediately affect the object without having to assign the object to a new variable.  </p>
+<h2 class="methods_and_properties"> Methods </h2>
+<p class="ethan_bold_method">ds = basic_DS(binned_data_name, specific_binned_label_names, num_cv_splits, load_data_as_spike_counts)</p>
+<p class="ethan_method_explanation">The constructor, which takes the following inputs:</p>
+<ol style="padding-left:2em"><li class="ethan_method_explanation"><tt>binned_data_name</tt> <p class="ethan_short_input_argument_explanation">A string containing the name of a file that has data in binned-format, or alternatively, a cell array of data in binned-format.  Note that it is preferred to pass a string containing the name of the binned-format file since this will cause the binned_site_info to be saved by the datasource (and this information can be saved in the cross-validator in order to plot timing information automatically).  </p></li>
+<li class="ethan_method_explanation"><tt>specific_binned_label_name </tt><p class="ethan_short_input_argument_explanation">A string containing the name of specific binned labels, or alternatively, a cell array (or vector) containing the specific binned labels (e.g., <tt>binned_labels.specific_binned_labels</tt>)</p></li>
+<li class="ethan_method_explanation"><tt>num_cv_splits</tt> <p class="ethan_short_input_argument_explanation">A number indicating how many cross-validation splits there should be</p></li>
+<li class="ethan_method_explanation"><tt>load_data_as_spike_counts</tt> <p class="ethan_short_input_argument_explanation">If this optional argument is set to an integer greater than 0, this will convert the data from firing rates (the default value saved by <tt>create_binned_data_from_raster_data</tt> function) to spike counts.  This is useful when using the Poisson Naive Bayes classifier which only works on spike count data.</p></li>
+</ol>
+<p class="ethan_bold_method">[XTr_all_time_cv YTr_all XTe_all_time_cv YTe_all] = get_data(ds)</p>
+<p class="ethan_method_explanation">The main get_data method that needs to be implemented for all DS objects. The outputs are the standard DS variables: </p>
+<ol style="padding-left:2em">
+<li class="ethan_method_explanation"><tt>XTr_all_time_cv{iTime}{iCV} = [num_features x num_training_points] </tt>
+<p class="ethan_short_input_argument_explanation"> Is a cell array that has the training data for all times and cross-validation splits</p></li>
+<li class="ethan_method_explanation"><tt>YTr_all = [num_training_point x 1] </tt>
+<p class="ethan_short_input_argument_explanation"> Are the training labels</p></li>
+<li class="ethan_method_explanation"><tt>XTe_all_time_cv{iTime}{iCV} = [num_features x num_test_points] </tt><p class="ethan_short_input_argument_explanation"> Is a cell array that has the test data for all times and cross-validation splits;</p></li>
+<li class="ethan_method_explanation"><tt>YTe_all = [num_test_point x 1] </tt><p class="ethan_short_input_argument_explanation"> Are the test labels</p></li>
+</ol>
+<p class="ethan_bold_method">the_properties = get_DS_properties(ds)</p>
+<p class="ethan_method_explanation">This method returns the main property values of the datasource.</p>
+<p class="ethan_bold_method">ds = set_specific_sites_to_use(ds, curr_resample_sites_to_use)</p>
+<p class="ethan_method_explanation">This method causes the get_data to use specific sites rather than choosing sites randomly. This method should really only be used by other datasources that are extending the functionality of basic_DS.</p>
+<h2 class="methods_and_properties"> Properties</h2>
+
+The basic_DS also has the following properties that can be set:
+
+<p class="ethan_bold_method">create_simultaneously_recorded_populations (default = 0)</p>
+<p class="ethan_method_explanation">If the data from all sites was recorded simultaneously, then setting this variable to 1 causes the function to return simultaneous populations rather than pseudo-populations (for this to work all sites in 'the_data' must have the trials in the same order). If this variable is set to 2, then the training set will be pseudo-populations and the test set will be simultaneous populations. This allows one to estimate I<sub>diag</sub> (as described by Averbeck, Latham and Pouget in 'Neural correlations, population coding and computation, Nature Neuroscience, May, 2006') which is a measure that gives a sense of whether training on pseudo-populations leads to a different decision rule as compared to when training on actual simultaneous recordings.</p>
+<p class="ethan_bold_method">sample_sites_with_replacement (default = 0)</p>
+<p class="ethan_method_explanation">This variable specifies whether the sites should be sampled with replacement - i.e., if the data is sampled with replacement, then some sites will be repeated within a single population vector. This allows one to do a bootstrap estimate of variance of the results if different sites from a larger population had been selected while also ensuring that there is no overlapping data between the training and test sets.</p>
+<p class="ethan_bold_method">num_times_to_repeat_each_label_per_cv_split (default = 1)</p>This variable specifies how many times each label should appear in each cross-validation split. For example, if this value is set to k, this means that there will be k population vectors from each class in each test set, and there will be k x (num_cv_splits - 1) population vectors for each class in each training set split.
+
+<p class="ethan_bold_method">label_names_to_use (default = [] meaning all unique label names in the_labels are used)</p>
+<p class="ethan_method_explanation">This specifies which labels names (or numbers) to use, out of the unique label names that are present in the the_labels cell array. If only a subset of labels are listed, then only population vectors that have the specified labels will be returned.</p>
+<p class="ethan_bold_method">num_resample_sites (default = -1, which means use all sites)</p>
+<p class="ethan_method_explanation">This variable specifies how many sites should be randomly selected each time the get_data method is called. For example, suppose length(the_data) = n, and num_resample_sites = k, then each time get_data is called, k of the n sites would randomly be selected to be included as features in the population vector.</p>
+<p class="ethan_bold_method">sites_to_use (default = -1, which means select features from all sites)</p>
+<p class="ethan_method_explanation">This variable allows one to only choose features from the sites listed in this vector (i.e., features will only be randomly selected from the sites listed in this vector).</p>
+<p class="ethan_bold_method">sites_to_exclude (default = [], which means do not exclude any sites)</p>
+<p class="ethan_method_explanation">This allows one to not select features from particular sites (i.e., features will NOT be selected from the sites listed in this vector).</p>
+<p class="ethan_bold_method">time_periods_to_get_data_from (default = [], which means create one feature for all times that are present in the_data{iSite} matrix)</p>
+<p class="ethan_method_explanation">This variable can be set to a cell array that contains vectors that specify which time bins to use as features from the_data. For examples, if <tt>time_periods_to_get_data_from = {[2 3], [4 5], [10 11]} </tt>then there will be three time periods for XTr_all_time_cv and XTe_all_time_cv (i.e., length(XTr_all_time_cv) = 3), and the population vectors for the time period will have 2 x num_resample_sites features, with the population vector for the first time period having data from each resample site from times 2 and 3 in the_data{iSite} matrix, etc..</p>
+<p class="ethan_bold_method">randomly_shuffle_labels_before_running (default = 0)</p>
+<p class="ethan_method_explanation">If this variable is set to 1, then the labels are randomly shuffled prior to the get_data method being called (thus all calls to get_data return the same randomly shuffled labels). This method is useful for creating a null distribution to test whether a decoding result is above what one would expect by chance.</p>
+<div></div>
+ 

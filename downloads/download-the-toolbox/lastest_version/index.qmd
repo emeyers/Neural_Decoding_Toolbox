@@ -1,0 +1,13 @@
+---
+title: Lastest toolbox version
+toc: true
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">
+
+<p style="font-size: 20px;">Download the latest version of the Neural Decoding Toolbox (v1.0.4)</p>
+
+
+<br>
+
+<p style="font-size: 20px;">The latest version of additional files that are useful for MEG decoding can be downloaded [here](/downloads/additional-code/meg-additional-decoding-functions/)</p>

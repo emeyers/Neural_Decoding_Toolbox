@@ -1,0 +1,30 @@
+---
+about:
+  template: marquee
+  id: about-block
+---
+
+::: {#about-block}
+:::
+
+# The Neural Decoding Toolbox
+
+<br>
+
+The Neural Decoding Toolbox is a MATLAB toolbox that makes it easy to apply decoding analyses to neural data.
+
+- [Download the toolbox](/downloads/download-the-toolbox/)
+
+- View the [tutorials](/tutorials/) and [documentation](toolbox-design/) to learn how to use the toolbox
+
+- To learn more about neural decoding please see this [book chapter](https://emeyers.scripts.mit.edu/emeyers/wp-content/uploads/publications/Meyers_visual_population_codes_2011.pdf) and check out [this video](https://www.youtube.com/watch?v=FMb-HSnaNs4)
+
+- If you prefer to analyze data in R, please check out the [NeuroDecodeR package](https://github.com/emeyers/NeuroDecodeR)
+
+<br>
+
+If you use the toolbox in a publication, please cite: Meyers, E. (2013). <a href= "https://www.frontiersin.org/articles/10.3389/fninf.2013.00008/full">The Neural Decoding Toolbox. Frontiers in Neuroinformatics, 7:8</a>
+
+
+
+

@@ -1,0 +1,29 @@
+---
+title: select_or_exclude_top_k_features_fp
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">This feature preprocessor object applies an ANOVA to the training data to find the p-value of all features. It then either uses the top k features with the smallest p-values, or it removes the features with the smallest k p-values. Additionally, this function can be used to remove the top k p-values and then use only the following j next smallest p-values (for example, this can be useful if one is interested in comparing the performance using the most selective 10 neurons to using the next most selective neurons, etc.). 
+
+
+<h2 class="methods_and_properties">Properties and Methods</h2>
+
+The following properties can be set to control the behavior of this feature preprocessor <strong>(note that either num_features_to_exclude num_features_to_use must be set) </strong>
+<p class="ethan_bold_method">fp = select_or_exclude_top_k_features_FP</p>
+<p class="ethan_method_explanation">Basic constructor</p>
+<p class="ethan_bold_method">num_features_to_exclude</p>
+<p class="ethan_method_explanation">This property sets the number of features with the smallest p-values to exclude. This method or set_num_features_to_use (or both) must be set prior to using the object to normalize data. </p>
+<p class="ethan_bold_method">num_features_to_use</p>
+<p class="ethan_method_explanation">This property sets the number of features with the smallest p-values to use. This property or num_features_to_exclude (or both) must be set prior to using the object to normalize data.</p>
+<p class="ethan_bold_method">fp = save_extra_info (default = 0)
+</p><p class="ethan_method_explanation">If this property is set to 1, the p-values for all features will be saved and returned along with the classifier results. It should be noted that setting this value to 1 will greatly increase the size of the saved results file.</p>
+
+
+The following methods are used by the cross-validator algorithm to apply feature preprocessing to the data:  
+
+<p class="ethan_bold_method">[fp XTr_preprocesed] = set_properties_with_training_data(fp, XTr, YTr)</p>
+<p class="ethan_method_explanation">Calculates the p-values for each feature by applying an ANOVA to the training data (XTr, YTr). The method then returns the training data with either only the top k most selective neurons, or with the top k features removed (or with the top k features removed and only the next j features used, if both set_num_features_to_use and set_num_features_to_remove have been set).</p>
+<p class="ethan_bold_method">X_preprocessed = preprocess_test_data(fp, X_data)</p>
+<p class="ethan_method_explanation">Removes or only uses the top k selective neurons (as determined using the training data).  This method is usually applied by the cross-validator to the test data.</p>
+<p class="ethan_bold_method">current_FP_info_to_save = get_current_info_to_save(fp)</p>
+<p class="ethan_method_explanation">Returns the p-values from ANOVAs applied to each feature in the structure current_preprocessing_information_to_save.the_p_values_org_order. These values will be saved the cross-validator algorithm.</p>
+

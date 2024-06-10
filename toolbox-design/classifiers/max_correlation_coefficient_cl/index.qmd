@@ -1,0 +1,15 @@
+---
+title: max_correlation_coefficient_cl
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;"> This CL object learns a mean population vector (template) for each class from the training set (by averaging together the all training points within each class). The classifier is tested by calculated Pearson's correlation coefficient between a test point and the templates learned from the training set, and the class with the highest correlation value is returned as the predicted label. The decision values returned by the classifier are the correlation coefficients between all test points and all templates.
+
+<p>Note: if the data has only one feature then the class with the smallest squared difference between the learned (one-dimensional) templates and the test point is chosen (and the decision values are the negative of these squared differences).</p>
+<h2 class="methods_and_properties">Methods</h2>
+<p class="ethan_bold_method">cl = max_correlation_coefficient_CL</p>
+<p class="ethan_method_explanation">Basic constructor </p>
+<p class="ethan_bold_method">cl = train(cl, XTr, YTr)</p>
+<p class="ethan_method_explanation">Returns the trained classifier (which has learned the mean template vector for each class).</p>
+<p class="ethan_bold_method">[predicted_labels decision_values] = test(cl, XTe)</p>
+<p class="ethan_method_explanation">Predicts the class of each test point (XTe) by correlated each test point with the learned templates and returns the class with the highest correlation (if two classes are tied for the highest correlation then one of the two classes is randomly chosen).</p>
+

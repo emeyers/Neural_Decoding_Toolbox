@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Neural Decoding Toolbox - pvalue_object</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../img/favicon.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Neural Decoding Toolbox</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-tutorials" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Tutorials</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-tutorials">    
+        <li>
+    <a class="dropdown-item" href="../../../tutorials/introduction-tutorial/index.html">
+ <span class="dropdown-text">Introduction tutorial</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../tutorials/generalization-analysis/index.html">
+ <span class="dropdown-text">Generalization analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../tutorials/getting-started-with-your-own-data/index.html">
+ <span class="dropdown-text">Using your own data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../tutorials/meg-eeg-decoding-tutorial/index.html">
+ <span class="dropdown-text">MEG/EEG decoding</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../tutorials/p-value-tutorial/index.html">
+ <span class="dropdown-text">P-value tutorial</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../tutorials/additional-tutorial-resources/index.html">
+ <span class="dropdown-text">Additional resources</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-downloads" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Downloads</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-downloads">    
+        <li>
+    <a class="dropdown-item" href="../../../downloads/download-the-toolbox/index.html">
+ <span class="dropdown-text">Download the toolbox</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../downloads/datasets/index.html">
+ <span class="dropdown-text">Data sets</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../downloads/additional-code/index.html">
+ <span class="dropdown-text">Additional code</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-documentation" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Documentation</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-documentation">    
+        <li>
+    <a class="dropdown-item" href="../../../toolbox-design/datasources/index.html">
+ <span class="dropdown-text">Datasources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../toolbox-design/feature-preprocessors/index.html">
+ <span class="dropdown-text">Feature preprocessors</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../toolbox-design/classifiers/index.html">
+ <span class="dropdown-text">Classifiers</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../toolbox-design/cross-validator/index.html">
+ <span class="dropdown-text">Cross-validators</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../toolbox-design/tools/index.html">
+ <span class="dropdown-text">Tools</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../toolbox-design/data-formats/index.html">
+ <span class="dropdown-text">Data formats</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-about" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">About</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-about">    
+        <li>
+    <a class="dropdown-item" href="../../../about/publications/index.html">
+ <span class="dropdown-text">Publications</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <a class="flex-grow-1 no-decor" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+          <h1 class="quarto-secondary-nav-title">pvalue_object</h1>
+        </a>     
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../toolbox-design/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">toolbox-design</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../toolbox-design/classifiers/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Classifiers</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/classifiers/libsvm_cl/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">libsvm_cl</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/classifiers/max_correlation_coefficient_cl/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">max_correlation_coefficient_cl</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/classifiers/poisson_naive_bayes_cl/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">poisson_naive_bayes_cl</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../toolbox-design/cross-validator/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cross-validator</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/cross-validator/standard_resample_cv/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">standard_resample_cv</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../toolbox-design/data-formats/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data formats</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/data-formats/binned-format/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">binned-format</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/data-formats/raster-format/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">raster-format</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../toolbox-design/datasources/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Datasources</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/datasources/basic_ds/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">basic_ds</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/datasources/generalization_ds/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">generalization_ds</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../toolbox-design/feature-preprocessors/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feature-preprocessors</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/feature-preprocessors/select_or_exclude_top_k_features_fp/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">select_or_exclude_top_k_features_fp</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/feature-preprocessors/select_pvalue_significant_features_fp/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">select_pvalue_significant_features_fp</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/feature-preprocessors/zscore_normalize_fp/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">zscore_normalize_fp</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../toolbox-design/tools/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tools</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/tools/create_binned_data_from_raster_data/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">create_binned_data_from_raster_data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/tools/find_sites_with_k_label_repetitions/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">find_sites_with_k_label_repetitions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/tools/log_code_object/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">log_code_object</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/tools/plot_standard_results_object/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">plot_standard_results_object</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/tools/plot_standard_results_tct_object/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">plot_standard_results_tct_object</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/tools/pvalue_object/index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">pvalue_object</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">pvalue_object</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">
+</p><p>This helper object calculates p-values from a file that has the decoding results in standard format, and a directory of files that has a number of ‘null distribution’ decoding results which were created by running the same decoding experiment a number of times with the labels randomly shuffled. The p-values are thus based on a permutation test which gives the probability that the real decoding results came from the null distribution. The object also has a method to calculate the latency of when the decoding results were first above chance. (This object inherits from the handle class so it maintains its state after method calls).</p>
+<h2 class="methods_and_properties anchored">
+Methods
+</h2>
+<p class="ethan_bold_method">
+pval_obj = pvalue_object(real_decoding_results_file_name, null_distribution_directory_name)
+</p>
+<p class="ethan_method_explanation">
+The constructor has two optional arguments that are described below. If the object is created without passing these arguments, then the fields <tt>pval_obj.real_decoding_results_file_name</tt> and <tt>pval_obj.null_distribution_directory_name</tt> must both be set before calling the <tt>pval_obj.create_pvalues_from_nulldist_files</tt> method.
+</p>
+<ol style="padding-left:2em">
+<li class="ethan_method_explanation">
+<tt>real_decoding_results_file_name</tt>
+<p class="ethan_short_input_argument_explanation">
+A string specifying the name of a file that has real decoding results. These results should be in standard results format (as created by the <tt>standard_resample_CV.run_cv_decoding</tt> method.
+</p>
+</li>
+<li class="ethan_method_explanation">
+<tt>null_distribution_directory_name </tt>
+<p class="ethan_short_input_argument_explanation">
+A string specifying the name of a directory that has multiple decoding result file that were run with the labels shuffled. The p-values are created by loading each file in this directory to create a null probability distribution that estimates what decoding accuracies would be expected to occur by chance.
+</p>
+</li>
+</ol>
+<p class="ethan_bold_method">
+[p_values null_distributions PVALUE_PARAMS] = pval_obj.create_pvalues_from_nulldist_files
+</p>
+<p class="ethan_method_explanation">
+This method creates p-values from the actual decoding results and the null distribution results (i.e., p-values are based on a permutation test). More specifically, all the files in the null distribution directory are loaded to create null distributions at each point in time. At each time point, a p-value is calculated based on the proportion of decoding values in the null distribution that exceeds the real decoding result value. This method causes the properties pval_obj.p_values and pval_obj.null_distributions to be set, and also returns the following output values:
+</p>
+<ol style="padding-left:2em">
+<li class="ethan_method_explanation">
+<tt>p_values</tt>
+<p class="ethan_short_input_argument_explanation">
+a vector containing the p-values at each point in time (i.e., the probability one would get a decoding accuracy as high as the one reported if there was no relationship between the data and the class labels).
+</p>
+</li>
+<li class="ethan_method_explanation">
+<tt>null_distributions</tt>
+<p class="ethan_short_input_argument_explanation">
+A <tt>[num_points_in_null_distribution x num_times] </tt>matrix containing the null distribution values at each point in time.
+</p>
+</li>
+<li class="ethan_method_explanation">
+<tt>PVALUE_PARAMS</tt>
+<p class="ethan_short_input_argument_explanation">
+A list of parameters that were used to create the p-values (see the <tt>pval_obj.get_pvalue_parameters</tt> method below).
+</p>
+</li>
+</ol>
+<p class="ethan_bold_method">
+[latency_time latency_ind] = pval_obj.get_latency_of_decoded_information
+</p>
+<p class="ethan_method_explanation">
+This method returns an estimate of the latency (i.e., time) when the decoding results are above chance. The <tt>pval_obj.create_pvalues_from_nulldist_files </tt> method must be called (or the field pval_obj.p_values must be manually set) prior to running this method, and additionally <tt>latency_time_interval</tt> property must also be set. This method works by finding all p_values that are less than or equal to <tt>pval_obj.latency_alpha_significance_level</tt>, and then returning the first time in which the p-values are at or below this significance level for <tt>pval_obj.latency_num_consecutive_sig_bins </tt>.
+</p>
+<p class="ethan_bold_method">
+PVALUE_PARAMS = pval_obj.get_pvalue_parameters
+</p>
+<p class="ethan_method_explanation">
+This method returns a number of parameters that were used to calculate the p-values and get the decoding information latency. The structure, <tt>PVALUE_PARAMS </tt>, that is returned by this object has the following fields:
+</p>
+<ol l="" style="padding-left:2em">
+<li class="ethan_method_explanation">
+<tt>.num_points_in_null_distribution</tt>
+<p class="ethan_short_input_argument_explanation">
+The number of points in the null distribution.
+</p>
+</li>
+<li class="ethan_method_explanation">
+<tt>.smallest_significance_level</tt>
+<p class="ethan_short_input_argument_explanation">
+the smallest possible significance level that can be used based on the number of points in the null distribution (i.e., this value is equal to <tt>1/PVALUE_PARAMS.num_points_in_null_distribution</tt>). If the parameter <tt>pval_obj.latency_alpha_significance_level</tt> is set to 0 (default value), then the p-values should be listed as <tt>p &lt; PVALUE_PARAMS.smallest_significance_level</tt>
+</p>
+</li>
+<li class="ethan_method_explanation">
+<tt>.result_type_name</tt>
+<p class="ethan_short_input_argument_explanation">
+A string specifying what type of results were used to create these p-values (e.g., ZERO_ONE_LOSS, etc.)
+</p>
+</li>
+<li class="ethan_method_explanation">
+<tt>.training_time_ind_to_use</tt>
+<p class="ethan_short_input_argument_explanation">
+The <tt>pval_obj.training_time_ind_to_use</tt> value that was used.
+</p>
+</li>
+<li class="ethan_method_explanation">
+<tt>.real_decoding_results_file_name:</tt>
+<p class="ethan_short_input_argument_explanation">
+The <tt>pval_obj.real_decoding_results_file_name</tt> string that was used.
+</p>
+</li>
+<li class="ethan_method_explanation">
+<tt>.saved_results_structure_name</tt>
+<p class="ethan_short_input_argument_explanation">
+The <tt>pval_obj.saved_results_structure_name</tt> string that was used.
+</p>
+</li>
+<li class="ethan_method_explanation">
+<tt>.null_distribution_file_prefix_name</tt>
+<p class="ethan_short_input_argument_explanation">
+The <tt>pval_obj.null_distribution_file_prefix_name</tt> that was used.
+</p>
+</li>
+<li class="ethan_method_explanation">
+<tt>.latency_alpha_significance_level</tt>
+<p class="ethan_short_input_argument_explanation">
+The <tt>pval_obj.latency_alpha_significance_level</tt> value that was used.
+</p>
+</li>
+<li class="ethan_method_explanation">
+<tt>.latency_num_consecutive_sig_bins</tt>
+<p class="ethan_short_input_argument_explanation">
+The <tt>pval_obj.latency_num_consecutive_sig_bins</tt> that was used.
+</p>
+</li>
+<li class="ethan_method_explanation">
+<tt>.latency_time_interval</tt>
+<p class="ethan_short_input_argument_explanation">
+The <tt>pval_obj.latency_time_interval</tt> that was used.
+</p>
+</li>
+</ol>
+<h2 class="methods_and_properties anchored">
+Properties
+</h2>
+<p>The following properties can be set to change the behavior of this object:</p>
+<p class="ethan_bold_method">
+real_decoding_results_file_name
+</p>
+<p class="ethan_method_explanation">
+The name of the non-shuffled decoding results that are compared to the null distribution to see when the results are above chance. This value can also be set in the constructor.
+</p>
+<p class="ethan_bold_method">
+null_distribution_directory_name
+</p>
+<p class="ethan_method_explanation">
+The name of the directory that contains the null distribution results files. This value can also be set in the constructor.
+</p>
+<p class="ethan_bold_method">
+collapse_all_times_when_estimating_pvals (default = 0).
+</p>
+<p class="ethan_method_explanation">
+If this is set to one, the null distributions from all time bins are combined together to create one larger total null distribution. The p-values are then calculated by comparing the actual decoding accuracy at each point in time to this larger null distribution (with this same null distribution is used for all points in time). The advantage of using this is that if the null distributions at each point in time are the same, then one can get a more precise estimate of the p-values for the same computational cost. [added in NDT version 1.4]
+</p>
+<p class="ethan_bold_method">
+the_result_type (default = 1)
+</p>
+<p class="ethan_method_explanation">
+Specifies which type of decoding result should be used when calculating the p-values.
+</p>
+<p class="ethan_method_explanation">
+If this is set to 1, the zero-one loss results are used. If this is set to 2, the normalized rank results are used. If this is set to 3, the mean decision values are used. If this is set to 4, the ROC_AUC results run separately on each cross-validation split are used. If this is set to 5, the ROC_AUC results combined over cross-validation splits are used. If this is set to 6, the mutual information created from a confusion matrix that combining data from all resamples runs is used. If this is set to 7, mutual information created from a confusion matrix that is calculated separately and then averaged over resample runs is used.
+</p>
+<p class="ethan_bold_method">
+null_distribution_file_prefix_name (deafult is ’’)
+</p>
+<p class="ethan_method_explanation">
+A string that specifies what the beginning of the names of files in the null distribution directory is. This is useful if there are multiple types of results (e.g., from different decoding analyses) stored in the directory that has the null files but you only want the results in some of these files to be used.
+</p>
+<p class="ethan_bold_method">
+training_time_ind_to_use (default = -1)
+</p>
+<p class="ethan_method_explanation">
+If a full TCT matrix has been created, this specifies which row (i.e., training time bin) of the TCT matrix should be used when calculating the p-values. Setting this to a value of less than zero creates p-values when the classifier was trained and tested from the same time bin (i.e., the diagonal of the TCT plot, or equivalent vector of results if the classifier was only trained and tested at the same time).
+</p>
+<p class="ethan_bold_method">
+saved_results_structure_name (default is ‘DECODING_RESULTS’)
+</p>
+<p class="ethan_method_explanation">
+A string specifying the name of the variable that has the decoding results.
+</p>
+<p class="ethan_bold_method">
+p_values (default is [])
+</p>
+<p class="ethan_method_explanation">
+These are the p-values that are usually set by calling the <tt>pval_obj.create_pvalues_from_nulldist_files</tt> method. However, one can set these values manually, and then one can use the <tt>pval_obj.get_latency_of_decoded_information method</tt>. Doing this is useful if one is getting the latency many times so that one calculate the p-values once, save them, and then load them into this object to get the latency.
+</p>
+<p class="ethan_bold_method">
+latency_time_interval
+</p>
+<p class="ethan_method_explanation">
+This specifies which time points in the experiment the p-values correspond to, and must be set prior to calling the <tt>pval_obj.get_latency_of_decoded_information</tt> method. This property can be set to either: 1) a vector specifying which times to use, 2) a time_interval_object that one can get time_intervals from or 3) a structure with the fields <tt>latency_time_interval.bin_width</tt>, <tt>latency_time_interval.sampling_interval</tt>, and optionally <tt>latency_time_interval.alignment_event_time</tt>, <tt>latency_time_interval.start_time</tt>, and <tt>latency_time_interval.end_time</tt> which will create a time interval that has the corresponding bin widths, step sizes, zero time, start_time and end_time of the time interval.
+</p>
+<p class="ethan_bold_method">
+latency_time_interval_alignment_type (default = [], which means show the beginning and end of the first significant time bin)
+</p>
+<p class="ethan_method_explanation">
+If <tt>latency_time_interval</tt> is set to a vector of numbers, this property will be ignored. However if <tt>latency_time_interval</tt> is set to a <tt>time_interval_object</tt> or to a structure containing <tt>latency_time_interval.bin_width</tt> and <tt>latency_time_interval.sampling_interval</tt> then this will cause the latency estimate to report either: the beginning time of the first significant time bin (<tt>latency_time_interval_alignment_type = 1</tt>), the middle time of the first significant time bin (<tt>latency_time_interval_alignment_type = 2</tt>), the end time of the first significant time bin (<tt>latency_time_interval_alignment_type = 3</tt>), the beginning and end time of the first significant time bin (<tt>atency_time_interval_alignment_type = 4, default</tt>), the time interval of data that was added to make a bin significant, relative to the previous bin which was not significant (<tt>latency_time_interval_alignment_type = 5</tt>), or use the alignment already specified in the <tt>time_interval_object</tt> or by the structure <tt>latency_time_interval.alignment_time</tt> (<tt>latency_time_interval_alignment_type = 6</tt>).
+</p>
+<p class="ethan_bold_method">
+latency_alpha_significance_level (default = 0))
+</p>
+<p class="ethan_method_explanation">
+The significance level (alpha value) that the p-values must be less than in order to claim that the results have not occurred by chance. When calculated the latency of decoding information, all the p-values are compared to this significance level value to determine whether a time point is considered significant (and the latency is determined based on whether there are <tt>pval_obj.latency_num_consecutive_sig_bins</tt> significant bins in a row).
+</p>
+<p class="ethan_bold_method">
+latency_num_consecutive_sig_bins (default = 5)
+</p>
+<p class="ethan_method_explanation">
+The number of consecutive time bins that must be significant in order for a specific time to be considered the time point when the results are first above chance. The reason this property is needed is because calculating p-values at many time periods introduces a high probability that one will have a small p-value even when the null hypothesis is correct (i.e., a type 1 error which is due to multiple comparisons issues that commonly affect null-hypothesis significance tests). A commonly used (ad hoc) method in neuroscience to deal with this issue is to define the latency as the time when the p-values remain significant of multiple consecutive bins, which is the method we are using here (empirically it appears to produce reasonable results).
+</p>
+<p class="ethan_bold_method">
+real_decoding_results_lower_than_null_distribution (defult = 0)
+</p>
+<p class="ethan_method_explanation">
+</p><p>If this field is set to one the pvalue_object will calculate the p-values based on the proportion of null distribution decoding results are lower than the actual real decoding result - i.e., it will test the probability that the real decoding result would have been that low by chance. This is useful as a sanity check to make sure the decoding procedure it working (and to test for anti-learning). [added in NDT version 1.4]</p>
+<p></p>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p><span class="faux-block">© The Neural Decoding Toolbox was created by <a href="https://emeyers.scripts.mit.edu/emeyers/">Ethan Meyers</a></span></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

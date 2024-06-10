@@ -1,0 +1,113 @@
+---
+title: Getting started with your data
+toc: true
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">This tutorial shows how to begin to run decoding experiments using your own data. Most of the steps below are similar to those described in the <a href="http://www.readout.info/toolbox-design/datasources/basic_ds/" title="basic_DS">basic tutorial</a> so we recommend going through that tutorial first since it describes the several of the steps below in more detail.
+
+
+
+### Formatting your data
+
+
+In order to use the Neural Decoding Toolbox, your data must be in the proper format. The easiest way to start is to put your data in <a href="http://www.readout.info/toolbox-design/data-formats/raster-format/" title="Raster-format">raster-format</a>. Data that is in raster-format contains separate files for each site (by 'site' we mean recorded data, such as single unit activity of a neuron, multi-unit activity of a site, LFP power from one recorded channel, MEG activity from one recorded channel, one voxel from an fMRI analysis, etc.). Each file (from one site) that is in raster-format contains the three variables that should be named: <tt>raster_data</tt>, <tt>raster_labels</tt>, and<tt>raster_site_info</tt> that are described below (for more information on raster-format please see the <a href="http://www.readout.info/toolbox-design/data-formats/" title="Data formats">data-formats</a> and <a href="http://www.readout.info/toolbox-design/data-formats/raster-format/" title="Raster-format">raster-format</a> pages).
+
+The variable <tt>raster_data</tt> is a matrix where each row contains data from one trial, and each column contains data from one time point (i.e.,<tt>raster_data</tt> is a <tt>[num_trials x num_time_points]</tt> matrix). The data from each trial (row) should be aligned to a particular experimental event. For example, in the <a href="http://www.readout.info/downloads/datasets/zhang-desimone-7-object-dataset/" title="Zhang-Desimone 7 object dataset">Zhang-Desimone dataset</a>, the raster-format data is aligned to a time when a stimulus was shown, and each column corresponds to 1 millisecond of data, with a 1 indicating a spike occurred and a 0 indicating a spike did not occur. We highly recommend including activity from a baseline period before the time when the decoding variable is present; when you run your decoding analysis, the decoding accuracy during the baseline period should be at chance, which is a good sanity check that everything is working properly. For example, in the Zhang-Desimone dataset, the stimulus was shown 500 time points into the data giving us a clear baseline period where we should get chance decoding performance.
+
+The variable <tt>raster_labels</tt> is a structure that contains the different experimental conditions that were present on each trial. Each field <tt>raster_labels.experiment_variable_k</tt> is a <tt>num_trials</tt> length cell array of strings (or vector of numbers) that contains the experimental condition that occurred on each trial. For example, in the Zhang-Desimone data, the position and identity of each stimulus that were shown on each trial are contained in the variables <tt>raster_labels.stimulus_position</tt> and <tt>raster_labels.stimulus_ID</tt>.
+
+The final variable, <tt>raster_info</tt> contains any additional information about the site that should be recorded. While technically this variable can be set to an empty matrix and the Neural Decoding Toolbox will still run, we usually find it highly valuable to record much additional information about the experiment here so to have a complete record of the experiment. Typically this variable will contain information such as the date that the recording was made, the quality of the recording (e.g., if it is single unit, or multi-unit activity), the brain region where the recording is made, etc.. This information can be useful for later analyses, for example, if one wants to run an analysis using only data from a particular brain region, or only using single unit sites, etc..
+
+All files in raster-format from all recorded sites should be put together in a directory (called something like my_data_raster_format/).
+
+
+
+### Binning your data
+
+
+Once you have all your data in raster-format stored in a particular directory, you can convert it to binned-format that is used by the Neural Decoding Toolbox using the helper function <a href="http://www.readout.info/toolbox-design/tools/create_binned_data_from_raster_data/" title="create_binned_data_from_raster_data">create_binned_data_from_raster_data function</a>. Data that is in binned-format is similar to data in raster format (e.g., there are three variables named <tt>binned_data</tt>, <tt>binned_labels</tt>, and <tt>binned_site_info</tt> that are similar to the raster-format variables) except in binned-format data from all sites are contained together in a cell array (for more information see the page on <a href="http://www.readout.info/toolbox-design/data-formats/binned-format/" title="Binned-format">binned-format</a>.
+
+To convert data from raster-format to binned-format the following code can be used.
+
+<div class="ethan_code_space">
+
+```matlab
+create_binned_data_from_raster_data('my_data_raster_format/', 'My_Binned_Data', 150, 50);
+```
+</div>
+
+
+In the above example, my_data_raster_format/ is the directory that contains the raster files, My_Binned_Data is a name that will be added to the saved binned-format data, 150 refers to the bin size that the data will be averaged over, and 50 refers to the sampling interval for creating averaged bins. The output from running this function will be a file called <tt>My_Binned_Data_150ms_bins_50ms_sampled </tt> that contains the data in binned-format. For more information about the binning function see the <a href="http://www.readout.info/tutorials/introduction-tutorial/#Binning_the_data" title="Introduction tutorial">introduction tutorial</a> section on binning the data and the <a href="http://www.readout.info/toolbox-design/tools/create_time_averaged_binned_data_from_raster_data/" title="create_time_averaged_binned_data_from_raster_data">create_time-averaged_binned_data_from_raster_data</a> function documentation.
+
+
+
+### <a id="Calculating_how_many_cross-validation_splits_to_use"></a>Calculating how many cross-validation splits to use
+
+
+
+In a cross-validation decoding analyses, data is split into k different sections, and a classifier is trained on k-1 of these sections and needs to make predictions on the remaining section. The default setting for the <a href="http://www.readout.info/toolbox-design/datasources/basic_ds/" title="basic_DS">basic_DS</a> and <a href="http://www.readout.info/toolbox-design/datasources/generalization_ds/" title="generalization_DS">generalization_DS</a>, is to have each of the k sections contain 1 example of data from each experimental condition that will be decoding. Thus, for example, if one wants to have k=5 splits of the data, then only sites that have 5 repetitions of each experimental condition can be used in the analysis. To determine how many sites have at least k repetitions of each experimental condition, the function <a href="http://www.readout.info/toolbox-design/tools/find_sites_with_k_label_repetitions/" title="find_sites_with_k_label_repetitions">find_sites_with_k_label_repetitions</a> can be used as follows:
+
+<div class="ethan_code_space">
+
+```matlab
+% load the binned data
+load My_Binned_Data_150ms_bins_50ms_sampled.mat
+
+for k = 1:65
+    inds_of_sites_with_at_least_k_repeats = find_sites_with_k_label_repetitions(binned_labels.stimulus_ID, k);
+    num_sites_with_k_repeats(k) = length(inds_of_sites_with_at_least_k_repeats);
+end
+```
+</div>
+
+By looping over different values of k and storing the results in <tt>num_sites-With_k_repeats</tt> one can see how many sites have 1, 2, ... etc, repetitions. Decoding accuracy increases as more sites are used, and as more splits of the data are used (i.e., using a larger k). Thus one should try to find a k that is as large as possible but that still allows one to use most of the data you have. Determining the final k is a little bit of an art, although the decoding analyses should be fairly robust to a range of k values, provided k is not too small (e.g., at least 5), and that there are still a significant number of sites used (e.g., for neural data, at least 100 sites).
+
+
+
+### <a name="Running_a_decoding_analysis"></a>Running a decoding analysis
+
+
+The final stage involves running a decoding analyses. The type of analysis can be a simple decoding of a particular experimental variable as described in the <a href="http://www.readout.info/tutorials/introduction-tutorial/" title="Introduction tutorial">introduction tutorial</a>, or it can be a more complex analysis such as examining how invariant neural activity is to particular experimental conditions, as described the <a href="http://www.readout.info/tutorials/generalization-analysis/" title="Generalization analysis tutorial">generalization analysis tutorial</a>. Below we give some code that describes how to run a simple analysis for decoding a particular experimental condition. For more details on this code, see the <a href="http://www.readout.info/tutorials/introduction-tutorial/" title="Introduction tutorial">introduction tutorial</a>.
+
+
+<div class="ethan_code_space">
+
+```matlab
+% add the path to include the code for using the NDT
+toolbox_basedir_name = 'ndt.1.0.0/'
+addpath(toolbox_basedir_name);
+add_ndt_paths_and_init_rand_generator
+
+% the name of your binned-format data
+binned_data_file_name = 'My_Binned_Data_150ms_bins_50ms_sampled.mat'
+
+% select labels to decode 
+specific_label_name = 'my_variable_to_decode';
+
+% choose the number of cross-validation section as determined above
+num_cv_splits = 20;  
+
+% create a basic datasource
+ds = basic_DS(binned_data_file_name, specific_label_name, num_cv_splits)
+
+% create a feature proprocessor and a classifier
+the_feature_preprocessors{1} = zscore_normalize_FP;
+the_classifier = max_correlation_coefficient_CL;
+
+% create a cross-validation object
+the_cross_validator = standard_resample_CV(ds, the_classifier, the_feature_preprocessors);
+
+% run the decoding analysis
+DECODING_RESULTS = the_cross_validator.run_cv_decoding;
+
+% save the datasource parameters for our records
+DATASOURCE_PARAMS = ds.get_DS_properties;
+
+% save the decoding results as 'My_Decoding_Results
+save('My_Decoding_Results', 'DECODING_RESULTS', 'DATASOURCE_PARAMS');
+
+% plot the results
+plot_obj = plot_standard_results_object({'My_Decoding_Results.mat'});
+plot_obj.plot_results;
+```
+</div>

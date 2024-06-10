@@ -1,0 +1,13 @@
+---
+title: Data formats
+toc: true
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">There are currently two data formats used by the Neural Decoding Toolbox, which are:
+
+<ul>
+<li><a href="http://www.readout.info/toolbox-design/data-formats/raster-format/" title="Raster-format">Raster-format</a></li>
+</ul>
+<ul>
+<li><a href="http://www.readout.info/toolbox-design/data-formats/binned-format/" title="Binned-format">Binned-format </a></li>
+</ul>

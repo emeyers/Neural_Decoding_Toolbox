@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Neural Decoding Toolbox - plot_standard_results_object</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../img/favicon.png" rel="icon" type="image/png">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Neural Decoding Toolbox</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-tutorials" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Tutorials</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-tutorials">    
+        <li>
+    <a class="dropdown-item" href="../../../tutorials/introduction-tutorial/index.html">
+ <span class="dropdown-text">Introduction tutorial</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../tutorials/generalization-analysis/index.html">
+ <span class="dropdown-text">Generalization analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../tutorials/getting-started-with-your-own-data/index.html">
+ <span class="dropdown-text">Using your own data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../tutorials/meg-eeg-decoding-tutorial/index.html">
+ <span class="dropdown-text">MEG/EEG decoding</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../tutorials/p-value-tutorial/index.html">
+ <span class="dropdown-text">P-value tutorial</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../tutorials/additional-tutorial-resources/index.html">
+ <span class="dropdown-text">Additional resources</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-downloads" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Downloads</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-downloads">    
+        <li>
+    <a class="dropdown-item" href="../../../downloads/download-the-toolbox/index.html">
+ <span class="dropdown-text">Download the toolbox</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../downloads/datasets/index.html">
+ <span class="dropdown-text">Data sets</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../downloads/additional-code/index.html">
+ <span class="dropdown-text">Additional code</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-documentation" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Documentation</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-documentation">    
+        <li>
+    <a class="dropdown-item" href="../../../toolbox-design/datasources/index.html">
+ <span class="dropdown-text">Datasources</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../toolbox-design/feature-preprocessors/index.html">
+ <span class="dropdown-text">Feature preprocessors</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../toolbox-design/classifiers/index.html">
+ <span class="dropdown-text">Classifiers</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../toolbox-design/cross-validator/index.html">
+ <span class="dropdown-text">Cross-validators</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../toolbox-design/tools/index.html">
+ <span class="dropdown-text">Tools</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../toolbox-design/data-formats/index.html">
+ <span class="dropdown-text">Data formats</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-about" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">About</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-about">    
+        <li>
+    <a class="dropdown-item" href="../../../about/publications/index.html">
+ <span class="dropdown-text">Publications</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <a class="flex-grow-1 no-decor" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+          <h1 class="quarto-secondary-nav-title">plot_standard_results_object</h1>
+        </a>     
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../toolbox-design/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">toolbox-design</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../toolbox-design/classifiers/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Classifiers</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/classifiers/libsvm_cl/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">libsvm_cl</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/classifiers/max_correlation_coefficient_cl/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">max_correlation_coefficient_cl</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/classifiers/poisson_naive_bayes_cl/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">poisson_naive_bayes_cl</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../toolbox-design/cross-validator/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cross-validator</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/cross-validator/standard_resample_cv/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">standard_resample_cv</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../toolbox-design/data-formats/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data formats</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/data-formats/binned-format/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">binned-format</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/data-formats/raster-format/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">raster-format</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../toolbox-design/datasources/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Datasources</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/datasources/basic_ds/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">basic_ds</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/datasources/generalization_ds/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">generalization_ds</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../toolbox-design/feature-preprocessors/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feature-preprocessors</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/feature-preprocessors/select_or_exclude_top_k_features_fp/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">select_or_exclude_top_k_features_fp</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/feature-preprocessors/select_pvalue_significant_features_fp/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">select_pvalue_significant_features_fp</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/feature-preprocessors/zscore_normalize_fp/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">zscore_normalize_fp</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../toolbox-design/tools/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tools</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/tools/create_binned_data_from_raster_data/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">create_binned_data_from_raster_data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/tools/find_sites_with_k_label_repetitions/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">find_sites_with_k_label_repetitions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/tools/log_code_object/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">log_code_object</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/tools/plot_standard_results_object/index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">plot_standard_results_object</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/tools/plot_standard_results_tct_object/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">plot_standard_results_tct_object</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../toolbox-design/tools/pvalue_object/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">pvalue_object</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">plot_standard_results_object</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">
+</p><p>This object plots <tt>DECODING_RESULTS</tt> files that were created by running the <tt>standard_resample_CV.run_cv_decoding</tt> method, as a function of time.</p>
+<h2 class="methods_and_properties anchored">
+Methods
+</h2>
+<p class="ethan_bold_method">
+plot_obj = plot_standard_results_object(result_file_names)
+</p>
+<p class="ethan_method_explanation">
+The constructor. The input parameter for this constructor, <tt>result_file_name</tt>, is a cell array of strings that lists the file names of the results that will be plotted, i.e., <tt>result_file_names = {‘file_name1’, ‘file_name2’, …};</tt>. Alternatively, the constructor can take a <tt>[num_results_to_plot x num_time_bins]</tt> matrix that has all the decoding results precomputed; note, if this later option is used, then p_values can not be a cell array of strings with null distribution directory names, but must be a cell array of vectors with precomputed p-values.
+</p>
+<p class="ethan_bold_method">
+plot_obj.plot_results
+</p>
+<p class="ethan_method_explanation">
+The main method for the plot_standard_results_object which creates a figure that displays the results. There are several optional parameters that can be set prior to calling this method which will change how the results are displayed, as explained below.
+</p>
+<h2 class="methods_and_properties anchored">
+Properties
+</h2>
+<p class="ethan_bold_method">
+result_type_to_plot (default = 1). Specifies which type of decoding result should be plotted.
+</p>
+<p class="ethan_method_explanation">
+If this is set to 1, the zero-one loss results are plotted. If this is set to 2, the normalized rank results are plotted. If this is set to 3, the mean decision values are plotted. If this is set to 4, the ROC_AUC results run separately on each cross-validation split are plotted. If this is set to 5, the ROC_AUC results combined over cross-validation splits are plotted. If this is set to 6, the mutual information created from a confusion matrix that combining data from all resamples runs is plotted. If this is set to 7, mutual information created from a confusion matrix that is calculated separately and then averaged over resample runs is plotted.
+</p>
+<p class="ethan_bold_method" style="text-align:left!important">
+plot_time_intervals (default [])
+</p>
+<p class="ethan_method_explanation">
+This property specifies which time points in the experiment the results correspond to (i.e,. this specifies the x-axis values that the results are plotting against). If this value is set to a vector, then all results specified in <tt>result_file_names</tt> will use the same time range. Alternatively this property can be set with the following fields <tt>plot_time_intervals.bin_width</tt>, <tt>plot_time_intervals.sampling_interval</tt>, and optionally <tt>plot_time_intervals.alignment_event_time</tt> and <tt>plot_time_intervals.alignment_type</tt>, which will create a time interval that has the corresponding bin width, sampling interval and alignment time which specified where 0 on the x-axis will be. The field <tt>alignment_type</tt> specifies whether the bins should be centered (default value of 2), whether they should be aligned to the start of the bins (value of 1) or whether they should be aligned to the end of the bin (value of 3). This property can also cell array that is the same length as <tt>result_file_names</tt>, with each entry of the cell array containing a vector of specified times or a structure of binning parameters for each decoding result. If this property is left empty (default value), then the plot_object attempts to use the binning parameters for each file using the saved in the <tt>DECODING_RESULTS.DS_PARAMETERS.binned_site_info.binning_parameters</tt> field which was originally created by the create_binned_data_from_raster_data function and pass through the DS and CV objects.
+</p>
+<p class="ethan_bold_method">
+plot_inds
+</p>
+<p class="ethan_method_explanation">
+Plot a smaller range of the decoding results that are given by the indices listed in this vector. This field can also be set to a cell array the that is the same length as <tt>result_file_names</tt>, with each entry of the cell array containing a vector of indices that should be plotted for each result.
+</p>
+<p class="ethan_bold_method">
+saved_results_structure_name
+</p>
+<p class="ethan_method_explanation">
+By default this object assumes that all results were saved in a structure called <tt>DECODING_RESULTS</tt>. If the structure of the saved results has a different name, the name can be specified here and the results will be plotted using this name.
+</p>
+<p class="ethan_bold_method">
+the_colors
+</p>
+<p class="ethan_method_explanation">
+A cell array listing the colors that each result should be plotted as. There are 20 colors defined as the default colors, so if more than 20 results are being compared on the same figure, this property must be extended to include more colors.
+</p>
+<p class="ethan_bold_method">
+line_width (default = 2)
+</p>
+<p class="ethan_method_explanation">
+The line width of the plotted results.
+</p>
+<p class="ethan_bold_method">
+line_style (default = ‘-’)
+</p>
+<p class="ethan_method_explanation">
+The line style of the plotted results (i.e., can plot dots, dashes, etc.).
+</p>
+<p class="ethan_bold_method">
+font_size (default = 16)
+</p>
+<p class="ethan_method_explanation">
+The font size for the axis labels.
+</p>
+<p class="ethan_bold_method">
+ylabel_name
+</p>
+<p class="ethan_method_explanation">
+The default behavior is to display the appropriate name for the given result_type that is being plotted, but this can be set to display alternative ylabels.
+</p>
+<p class="ethan_bold_method">
+xlabel_name (default = ‘Time (ms)’ )
+</p>
+<p class="ethan_method_explanation">
+The label of the x-axis.
+</p>
+<p class="ethan_bold_method">
+legend_names
+</p>
+<p class="ethan_method_explanation">
+Allows one to set a cell array of strings corresponding to the legends for the different results
+</p>
+<p class="ethan_bold_method">
+chance_level
+</p>
+<p class="ethan_method_explanation">
+Draws a horizontal line at what the chance decoding level is. If this is unspecified, then the chance level will be 1/num_classes for 0-1 loss results, no line will be drawn for decision values, and .5 line will be drawn for normalized rank and ROC AUC results, and 0 will be drawn for mutual information results.
+</p>
+<p class="ethan_bold_method">
+significant_event_times
+</p>
+<p class="ethan_method_explanation">
+This will cause vertical lines to be drawn at the times specified in this vector which can be used to indicate significant events that occurred during a trial.
+</p>
+<p class="ethan_bold_method">
+significant_event_regions
+</p>
+<p class="ethan_method_explanation">
+Setting this to a cell array of 2 element vectors (i.e., significant_event_regions{1} = [t1 t2]) will cause shaded regions to be drawn between times <tt>t1</tt> and <tt>t2</tt>.
+</p>
+<p class="ethan_bold_method">
+significant_event_region_alphas (default = .1)
+</p>
+<p class="ethan_method_explanation">
+If significant_event_regions is set to a cell array of 2 dimensional vectors, the shaded regions with have an alpha level of transparency set by this property. If this property is set to a vector that is the same size as the cell array, then each shaded region can have a different alpha level as determined by the entries in this vector.
+</p>
+<p class="ethan_bold_method">
+significant_event_region_colors (default = [0 0 0])
+</p>
+<p class="ethan_method_explanation">
+If significant_event_regions is set to a 3 dimensional vector, the shaded regions with have a color specified by this [r g b] vector. If this property is set to a cell array that is the same size as the <tt>significant_event_regions</tt> cell array, then each shaded region can have a different color as determined by the 3 dimensional vectors in each cell.
+</p>
+<p class="ethan_bold_method">
+the_axis (default = [])
+</p>
+<p class="ethan_method_explanation">
+This has the same effect as using axis([x1 x2 y1 y2]) function but setting this first will allow significant event lines and shaded regions to be drawn to span the whole display, as opposed to if this is set later using the axis function.
+</p>
+<p class="ethan_bold_method">
+p_values
+</p>
+<p class="ethan_method_explanation">
+If this is set to a cell array of numbers that is the same length as <tt>result_file_names</tt> with each vector containing p-values for each time point, then bars will be plotted at the bottom of the plot for all times that the p-values are less than the <tt>p_value_alpha_level</tt>. If this is set to a cell array of strings that contain the names of directories that have files that comprise a null distribution, the p-values will be calculated and bars will be shown at the bottom of the plot for all times that the p-values are less than <tt>p_value_alpha_level</tt>. The bars for the pvalues indicate which time points in the decoding results shown above are higher than expected by chance. Technically each bar should really be a dot indicating which result data point is above chance but for illustrative purposes we have extended them to bars (that have the width of sampling interval) so that a solid line is created for continuous times that are above chance (the downside of this is that it might give a slightly false impression of the first time when the results are above chance). For more information about how the p-values are calculated see <a href="http://www.readout.info/toolbox-design/tools/pvalue_object/" title="pvalue_object">pvalues_object</a>.
+</p>
+<p class="ethan_bold_method">
+p_value_alpha_level
+</p>
+<p class="ethan_method_explanation">
+If the <tt>p_values</tt> field is set, then bars will be shown at the bottom of the plot for all times that the p-values are less than this value.
+</p>
+<p class="ethan_bold_method">
+collapse_all_times_when_estimating_pvals (default = 0).
+</p>
+<p class="ethan_method_explanation">
+If this is set to one, the null distributions from all time bins are combined together to create one larger total null distribution. The p-values are then calculated by comparing the actual decoding accuracy at each point in time to this larger null distribution (with this same null distribution is used for all points in time). The advantage of using this is that if the null distributions at each point in time are the same, then one can get a more precise estimate of the p-values for the same computational cost. [added in NDT version 1.4]
+</p>
+<p class="ethan_bold_method">
+add_pvalue_latency_to_legends_alignment (default = 4)
+</p>
+<p class="ethan_method_explanation">
+If this property is set to value greater than 0, and if the p_values field has been set, then the latency when the decoding results are first above chance will be added to the legend. If this value is set to 1 it will show the beginning of the time interval when the results are first above chance, if it is set to 2 it will show the middle of the time interval when the results are first above chance, if this is set to 3 it will show the end of the time interval when the results are first above chance and if this is set to 4 (default) it will show the beginning and the end of the interval when the results are first above chance. If this property is set to 5, then the time interval that was added to make the results above chance will be displayed (i.e., the time of the first interval that is above chance will be displayed minus any time that is in the previous interval (which was the last time interval that was not above chance)).
+</p>
+<p class="ethan_bold_method">
+errorbar_file_names
+</p>
+<p class="ethan_method_explanation">
+If this is set to a cell array of strings, it will plot errorbars using the data from the file names listed. The number of file names in this cell array must be the same as the number of file names in the <tt>result_file_names</tt> sent to the constructor of this object (i.e., each result to be plotted much have a corresponding errorbar file if errorbars are to be plotted). Alternatively, errorbar_file_names can be set to a <tt>[num_results_to_plot x num_time_bins]</tt> sized matrix that contains precomputed errorbars (and the field errorbar_type_to_plot will be ignored).
+</p>
+<p class="ethan_bold_method">
+errorbar_type_to_plot (default = 1)
+</p>
+<p class="ethan_method_explanation">
+If errorbar_file_names are specified, this field specified which type of decoding variance measure should be plotted. The values for this property are:
+</p>
+<ul class="ethan_method_explanation">
+<li>
+If this is set to 1, then the standard deviations over resample runs (i.e., stdev.over_resamples) is used.
+</li>
+<li>
+If this is set to 2, then the standard deviations over the mean decoding results from each cross-validation split (i.e., stdev.over_CVs) is used. The mean value over all resample trials is then plotted.
+</li>
+<li>
+If this is set to 3, then the standard deviations over the mean decoding results from each cross-validation split combined together from all resample runs (i.e., over_CVs_combined_over_resamples) is used.
+</li>
+<li>
+If this is set to 4, then the standard deviation of individual results (e.g., 0 1 values if the 0-1 loss is used) from each cross-validation split (all_single_CV_vals) are used. The mean value over all resample runs and CV splits is plotted.
+</li>
+<li>
+If this is set to 5, then the standard deviation of individual results (e.g., 0 1 values if the 0-1 loss is used) from each CV split combined from all cross-validation splits in a single resample run (all_single_CV_vals_combined) are used. The mean value over all resample runs is plotted.
+</li>
+<li>
+If this is set to 6, and ROC_AUC results are plotted, then the standard deviation of the ROC results from over the different classes (over_classes) are used. The mean results over resample runs (and CV splits for the separate_CV_ROC_results) are plotted. This value can only be set when ROC_AUC values are plotted (i.e., result_type_to_plot = 4 or 5).
+</li>
+</ul>
+<p class="ethan_method_explanation">
+It should also be noted that if separate_CV_ROC_results plotted (i.e., result_type_to_plot = 4), then errorbar_type_to_plot can only be set to values of 1, 2, or 6 and if combined_CV_ROC_results plotted (i.e., result_type_to_plot = 5), then errorbar_type_to_plot can only be set to values of 1 or 6. Also if mutual information created from a confusion matrix that combining data is plotted, then one can not plot errorbars, and if mutual information created from a confusion matrix that is calculated separately and then averaged over resamples is plotted, then errorbar_type_to_plot can only be set to values of 1.
+</p>
+<p class="ethan_bold_method">
+errorbar_stdev_multiplication_factor (default = 1)
+</p>
+<p class="ethan_method_explanation">
+When plotting the errorbars, the default behavior is to plot plus and minus 1 standard deviation for the standard deviation type that is specified. If errorbar_stdev_multiplication_factor is set to a value of <tt>k</tt>, then the errorbars will be plotted as mean_results plus/minus <tt>k</tt> times the standard deviation type is plotted.
+</p>
+<p class="ethan_bold_method">
+errorbar_transparency_level (default = .2)
+</p>
+<p class="ethan_method_explanation">
+Sets the transparency level of the errorbars.
+</p>
+<p class="ethan_bold_method">
+errorbar_edge_transparency_level (default = .2)
+</p>
+<p class="ethan_method_explanation">
+Sets the transparency level of the edges of the errorbars.
+</p>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p><span class="faux-block">© The Neural Decoding Toolbox was created by <a href="https://emeyers.scripts.mit.edu/emeyers/">Ethan Meyers</a></span></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

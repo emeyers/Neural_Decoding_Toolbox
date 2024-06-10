@@ -1,0 +1,31 @@
+---
+title: Freiwald Tsao FaceViews AM  
+toc: true
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">
+<p>The <em>Freiwald Tsao Face Views AM dataset</em> was collected by Winrich Freiwald (Rockefeller University) and Doris Tsao (UC Berkeley), and was originally published in Freiwald and Taso (2010) . The data consists of single unit recordings from anterior medial face patch (AM) while monkeys passively viewed images of 25 individuals from 8 different head orientations. A decoding analysis of this data was published in Meyers et al (2015). </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+
+<br>
+
+<p><strong>If you plan to use this data you must cite the publications below</strong>. More information about the experiments and data analyses can be found in these papers as well.</p>
+
+
+<p>Freiwald, W. A., &amp; Tsao, D. Y. (2010). <a href="https://www.science.org/doi/abs/10.1126/science.1194908">Functional compartmentalization and viewpoint generalization within the macaque face-processing system.</a> Science, 330(6005), 845-851.</p>
+
+
+<p>Meyers, E. M., Borzello, M., Freiwald, W. A., &amp; Tsao, D. (2015). <a href="https://www.jneurosci.org/content/35/18/7069">Intelligent information loss: The coding of facial identity, head pose, and non-face information in the macaque face patch system.</a> Journal of Neuroscience, 35(18).</p>
+
+<br>
+
+[Download MATLAB version of the Freiwald Tsao Face Views AM dataset](/_freeze/download_data_and_code/Freiwald_Tsao_faceviews_AM_data_MATLAB.zip) 
+
+[Download csv version of the Freiwald Tsao Face Views AM dataset](/_freeze/download_data_and_code/Freiwald_Tsao_faceviews_AM_data_csv.zip) 
+
+[Download R version of the Freiwald Tsao Face Views AM dataset](/_freeze/download_data_and_code/Freiwald_Tsao_faceviews_AM_data.zip) 
+
+
+
+

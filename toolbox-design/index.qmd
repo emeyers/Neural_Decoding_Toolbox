@@ -1,0 +1,17 @@
+---
+title: "Toolbox Design"
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">The Neural Decoding Toolbox has a modular architecture that is designed around four <em>abstract</em> classes/(objects). This design allow one to easily add new functionality to the toolbox while reusing other components.  The four abstract classes/(objects) are:
+
+<ol>
+<li style="padding-bottom: 10px;"><a href="http://www.readout.info/toolbox-design/datasources" title="Datasources">Datasources (DS)</a> which generate training and test splits of the data.</li>
+<li style="padding-bottom: 10px;"><a href="http://www.readout.info/toolbox-design/feature-preprocessors/" title="Feature Preprocessors">Feature preprocessors (FP)</a> which learn parameters from the training data, and then preprocessess the the training and test data before sending the data to the classifier.</li>
+<li style="padding-bottom: 10px;"><a href="http://www.readout.info/toolbox-design/classifiers/" title="Classifiers">Classifiers (CL)</a> which learn models from the training data and then make predictions on the test data.</li>
+<li style="padding-bottom: 10px;"><a href="http://www.readout.info/toolbox-design/cross-validator/" title="Cross-validator">Cross-validators</a> (CV) which take in a datasource, preprocessors and a classifier, and train and test the classifier to produce an estimate of the decoding accuracy.</li>
+</ol>
+These four classes are considered <em>abstract</em> because there are specific methods that each classes must implement. For example, all members of the classifier (CL) class must have the methods 'train', and 'test' (although they can have additional methods as well). The benefit of having specific interfaces for these abstract classes is that one can easily create new classes that implement these interfaces and these new classes will work with the rest of the Neural Decoding Toolbox.  Please click the links above to learn about what methods are required from each class.
+
+The toolbox also comes with a few <a href="http://www.readout.info/toolbox-design/tools/" title="Tools">tools</a> that consist of useful functions and objects for running decoding experiments and plotting results.
+
+In order to use the toolbox, your data must be in one of the specified <a href="http://www.readout.info/toolbox-design/data-formats/" title="Data formats">data formats</a>, which are explained in more detail <a href="http://www.readout.info/toolbox-design/data-formats/" title="Data formats">here</a>.

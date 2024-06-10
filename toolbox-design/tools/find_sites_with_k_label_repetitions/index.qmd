@@ -1,0 +1,56 @@
+---
+title: find_sites_with_k_label_repetitions
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">This helper function takes in labels in <a href="http://www.readout.info/toolbox-design/data-formats/binned-format/" title="Binned-format">binned-format</a>, and an integer <tt>k</tt>, and returns the indices for all sites (e.g. neurons) that have at least <tt>k</tt> repetitions of each experimental condition. The function has the following form:
+<p class="ethan_bold_method">[inds_of_sites_with_at_least_k_repeats, min_num_repeats_all_sites, num_repeats_matrix label_names_used] = find_sites_with_k_label_repetitions(the_labels, k, label_names_to_use)</p>
+
+The arguments to this function are:
+<ol style="padding-left: 2em;">
+<li class="ethan_method_explanation"><tt>the_labels</tt>
+<p class="ethan_short_input_argument_explanation">The labels in binned-format that should be used (e.g., binned_labels.the_labels_to_use).</p>
+</li>
+<li class="ethan_method_explanation"><tt>k</tt>
+<p class="ethan_short_input_argument_explanation">An integer specifying that each site returned should have at least <tt>k</tt> repetitions of each condition.</p>
+</li>
+</ol>
+Optional input arguments:
+<ol style="padding-left: 2em;">
+<li class="ethan_method_explanation"><tt>label_names_to_use</tt>
+<p class="ethan_short_input_argument_explanation">This specifies what label names (or numbers) to use. For example, if <tt>the_labels</tt> contains have strings consisting of 'red', 'green', 'blue', but you only want to know which sites have k repeats of 'red' and 'green' trials, then setting this to <tt>label_names_to_use = {'red', 'green'}</tt> will accomplish this goal. If this argument is not specified, then any label that was presented to any site will be used.</p>
+</li>
+</ol>
+Returned values:
+<ol style="padding-left: 2em;">
+<li class="ethan_method_explanation"><tt>inds_of_sites_with_at_least_k_repeats</tt>
+<p class="ethan_short_input_argument_explanation">The indices of sites that have at least k repetitions of each condition.</p>
+</li>
+<li class="ethan_method_explanation"><tt>min_num_repeats_all_sites</tt>
+<p class="ethan_short_input_argument_explanation">This vector lists, for each site, the number of repetitions present for the label that has the minimum number of repetitions.</p>
+</li>
+<li class="ethan_method_explanation"><tt>num_repeats_matrix</tt>
+<p class="ethan_short_input_argument_explanation">A <tt>[num_sites x num_labels]</tt> matrix that specifies for each site, the number of repetitions of each condition. This variable could be useful for determining if particular conditions should be excluded based on whether a specific condition was presented only a few times to many of the sites.</p>
+</li>
+<li class="ethan_method_explanation"><tt>label_names_used</tt>
+
+<p class="ethan_short_input_argument_explanation">A specifies what label names were used when counting repetitions. This variable is equal to label_names_to_use if label_names_to_use was passed as an input argument. [added in NDT version 1.4]</p>
+</li>
+</ol>
+
+<h2 class="methods_and_properties">Example</h2>
+Suppose we had an experiment in which a number of different stimuli were shown when recordings were made from a number of different sites, and this information was contained in the variable binned_labels.stimulus_ID. The following command would find all sites in which each stimulus condition was presented at least 20 times:
+
+```matlab
+inds_of_sites_with_at_least_k_repeats = find_sites_with_k_label_repetitions(binned_labels.stimulus_ID, 20)
+```
+
+When one is first starting to analyze a new dataset, one can also use this function to assess how many times each condition has been presented to each site in order to determine how many cross-validation splits to use. Examining the variable <tt>min_num_repeats_all_sites</tt> could be useful for this purpose, or one could run the following command:
+
+```matlab
+for k = 0:60
+    inds_of_sites_with_at_least_k_repeats = find_sites_with_k_label_repetitions(binned_labels.stimulus_ID, k);
+    num_sites_with_k_repeats(k + 1) = length(inds_of_sites_with_at_least_k_repeats);
+end
+```
+
+The variable <tt>num_sites_with_k_repeats(i)</tt> indicates how many sites have at least <tt>i - 1</tt> repetitions, i.e., <tt>num_sites_with_k_repeats(1)</tt> gives the total number of sites, num_sites_with_k_repeats(2) gives how many sites have at least one presentation of each stimulus, etc.. Note that 2 repetitions is the minimum needed to do a decoding analyses, although to get reasonable results usually needs at least 5 repetitions of each condition.

@@ -1,0 +1,20 @@
+---
+title: Changelog
+toc: true
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">Below is a list of what has changed in different versions of the toolbox
+
+<h2>1.0.2 (Tue, Jul 9 2013)</h2>
+<h3>Fixes</h3>
+<ul>
+<li>basic_DS.m: fixed a bug that would cause an error to occur when shuffling the labels from simultaneously recorded data.</li>
+</ul>
+<h3>Enhancements</h3>
+<ul>
+
+<li>plot_standard_results_object.m: the constructor so can now take a <tt>[num_results_to_plot x num_time_bins]</tt> matrix that has all the decoding results precomputed rather than just a cell array with the names of standard results files. The field <tt>plot_obj.errorbar_file_names</tt> can now also be a <tt>[num_results_to_plot x num_time_bins]</tt> matrix of precomputed errorbars.</li>
+
+<br>
+
+<li>plot_standard_results_TCT_object.m: the constructor can now take a <tt>[num_training_times x num_test_times]</tt> matrix with precompiled decoding results and this object will display a TCT plot with these precompiled results. </li>

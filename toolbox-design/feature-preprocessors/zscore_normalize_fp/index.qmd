@@ -1,0 +1,21 @@
+---
+title: zscore_normalize_fp
+---
+
+<p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">This feature preprocessor object applies z-score normalization to each feature by calculating the mean and the standard deviation for each feature using the training data, and then subtracting the mean and dividing by the standard deviation for each feature in the training and test sets. This function is useful for preventing some classifiers from relying too heavily on particular features when different features can have very different ranges of values (for example, it is useful when decoding neural data because different neurons can have different ranges of firing rates). 
+
+
+<h2 class="methods_and_properties">Methods</h2>
+<p class="ethan_bold_method">fp = zscore_normalize_FP</p>
+<p class="ethan_method_explanation">Basic constructor</p>
+
+
+The following methods are used by the cross-validator algorithm to apply feature preprocessing to the data:  
+
+<p class="ethan_bold_method">[fp XTr_normalized] = set_properties_with_training_data(fp, XTr, ~)</p>
+<p class="ethan_method_explanation">Calculates the normalization parameters on the training data (i.e., the mean and the standard deviation) and returns the z-score normalized training data in XTr_normalized (by subtracting the mean and dividing by the standard deviation). </p>
+<p class="ethan_bold_method">X_normalized = preprocess_test_data(fp, X_data)</p>
+<p class="ethan_method_explanation">Normalized the test data (X_data) using the mean and standard deviation learned on the training data.</p>
+<p class="ethan_bold_method">current_FP_info_to_save = get_current_info_to_save(fp)</p>
+<p class="ethan_method_explanation">Returns an empty matrix indicating that there is no additional information to save for this feature preprocessor.</p>
+
