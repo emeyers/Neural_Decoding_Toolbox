@@ -200,15 +200,17 @@ methods
                 cTrainingNames = 0;
                 cTestNames = 0;
                 for iClass = 1:length(the_training_label_names)
-                    for iTrain = 1:size(the_training_label_names{iClass}, 2)
+                    
+                    for iTrain = 1:length(the_training_label_names{iClass})   %size(the_training_label_names{iClass}, 2)
                         cTrainingNames = cTrainingNames + 1;
                         all_training_names{cTrainingNames} = the_training_label_names{iClass}{iTrain};
                     end
                     
-                    for iTest = 1:size(the_test_label_names{iClass}, 2)
+                    for iTest = 1:length(the_test_label_names{iClass})  %size(the_test_label_names{iClass}, 2)
                         cTestNames = cTestNames + 1;
                         all_test_names{cTestNames} = the_test_label_names{iClass}{iTest}; 
-                    end                  
+                    end
+                    
                 end
                     
                 
@@ -240,15 +242,20 @@ methods
                 cTrainingNames = 0;
                 cTestNames = 0;
                 for iClass = 1:length(the_training_label_names)
-                    for iTrain = 1:size(the_training_label_names{iClass}, 2)
+                    
+                    
+                    for iTrain = 1:length(the_training_label_names{iClass})      %size(the_training_label_names{iClass}, 2)
                         cTrainingNames = cTrainingNames + 1;
                         the_training_label_numbers{iClass}(iTrain) = find(ismember(all_training_and_test_names, the_training_label_names{iClass}{iTrain}));
                     end
 
-                    for iTest = 1:size(the_test_label_names{iClass}, 2)
+                    
+                    for iTest = 1:length(the_test_label_names{iClass})    % size(the_test_label_names{iClass}, 2)
                         cTestNames = cTestNames + 1;
                         the_test_label_numbers{iClass}(iTest) = find(ismember(all_training_and_test_names, the_test_label_names{iClass}{iTest}));
                     end      
+                   
+                    
                 end
 
                 
@@ -286,7 +293,6 @@ methods
             label_numbers_to_use = unique([the_training_nums(:); the_test_nums(:)]);
             ds.the_basic_DS.label_names_to_use = label_numbers_to_use;
  
-            
             ds.initialized = 1;         
         end
         

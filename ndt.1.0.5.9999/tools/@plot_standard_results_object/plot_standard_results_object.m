@@ -1,4 +1,4 @@
-classdef plot_standard_results_object
+classdef plot_standard_results_object < handle
 
 %  This object allows one to plot the results that are saved when running 
 %   the standard_resample_CV.run_cv_decoding method.  The results are plotted
@@ -202,6 +202,7 @@ classdef plot_standard_results_object
   
       legend_names = {};
       
+      pval_objects = [];
       
       
   end
@@ -307,7 +308,7 @@ classdef plot_standard_results_object
 
                     % if plot_obj.plot_time_intervals is not set to a vector (or cell array of vectors) of specific times, try to use the binning parameters to 
                     %    get the time interval to plot the results against
-                    if isfield(all_curr_results_data, 'DS_PARAMETERS') && isfield(all_curr_results_data.DS_PARAMETERS, 'binned_site_info') && ~isempty(all_curr_results_data.DS_PARAMETERS.binned_site_info)
+                    if isfield(all_curr_results_data, 'DS_PARAMETERS') && isfield(all_curr_results_data.DS_PARAMETERS, 'binned_site_info') && isfield(all_curr_results_data.DS_PARAMETERS.binned_site_info, 'binning_parameters')  && ~isempty(all_curr_results_data.DS_PARAMETERS.binned_site_info.binning_parameters)
                         curr_default_binning_parameters = all_curr_results_data.DS_PARAMETERS.binned_site_info.binning_parameters;
                         all_default_binning_parameters{iResult} = all_curr_results_data.DS_PARAMETERS.binned_site_info.binning_parameters;
                     else
@@ -343,9 +344,8 @@ classdef plot_standard_results_object
                %  use these parameters to create a time interval.  Also make sure that plot_time_intervals has not been set to a vector of times.
                %if (isstruct(curr_time_interval) || ~isempty(curr_default_binning_parameters))  ||  ~(ismatrix(curr_time_interval) && ~isempty(curr_time_interval))  
                %if ~iscell(plot_obj.plot_time_intervals) && ((isstruct(curr_time_interval) || ~isempty(curr_default_binning_parameters))  ||  ~(ismatrix(curr_time_interval) && ~isempty(curr_time_interval)))  
-               if ~iscell(plot_obj.plot_time_intervals) && ((isstruct(curr_time_interval) || ~isempty(curr_default_binning_parameters))  ||  ~(ismatrix(curr_time_interval) && isempty(curr_time_interval)))    % hopefully this is right now :)
-
-                   time_interval_obj = time_interval_object;
+               if ~(iscell(plot_obj.plot_time_intervals) || isvector(plot_obj.plot_time_intervals)) && ((isstruct(curr_time_interval) || ~isempty(curr_default_binning_parameters))  ||  ~(ismatrix(curr_time_interval) && isempty(curr_time_interval)))    % hopefully this is right now :)
+                    time_interval_obj = time_interval_object;
                     time_interval_obj.set_parameters_with_binning_stucture(curr_time_interval);
                     
                     time_interval_obj.set_all_currently_unset_parameters_with_binning_structure(curr_default_binning_parameters);
@@ -492,24 +492,26 @@ classdef plot_standard_results_object
             
                 
             
-            % plot significant times if p-values are given
-            if ~isempty(plot_obj.p_values)                
+            % if plotting significant times, create/use p-values file names or p-value objects to get p-values
+            if ~isempty(plot_obj.p_values) || ~isempty(plot_obj.pval_objects)               
                 
                 ylims = get(gca, 'YLim');
                 y_interval_length = ylims(2) - ylims(1);
                 
-                % sanity check to make sure enough pvalues have been given
-                if number_of_results_to_plot ~= length(plot_obj.p_values)
-                    error('plot_obj.p_values must be a cell array that is the same number of results as plot_obj.result_file_names')
+                % sanity check to make sure enough pvalues have been given                
+                if (number_of_results_to_plot ~= length(plot_obj.p_values)) && (number_of_results_to_plot ~= length(plot_obj.pval_objects))
+                    error('plot_obj.p_values must be a cell array that is the same number of results as plot_obj.result_file_names or plot_obj.pval_objects must be set appropriately')
                 end
+                
                 
                 
                 for iResult = 1:number_of_results_to_plot
 
                     y_offset = ylims(1) - (((iResult -1) .* .025) .* (y_interval_length));
       
-                    % if plot_obj.p_values is a directory name with the null distribution files, calculate p-values from the null distribution
-                    if isstr(plot_obj.p_values{iResult})
+                    % if plot_obj.p_values is a directory name with the null distribution files (and pval_obj doesn't exist yet)
+                    %  calculate p-values from the null distribution
+                    if ~isempty(plot_obj.p_values) && length(plot_obj.p_values) >= iResult  && isstr(plot_obj.p_values{iResult}) && (length(plot_obj.pval_objects) < iResult)
                         
                         
                       % give an error if one tries to compute p-values from a null distribution file names when customized precomputed decoding results are given
@@ -526,17 +528,42 @@ classdef plot_standard_results_object
                        pval_obj.collapse_all_times_when_estimating_pvals = plot_obj.collapse_all_times_when_estimating_pvals;
                        plot_obj.p_values{iResult} = pval_obj.create_pvalues_from_nulldist_files;
                        
-                    else   % otherwise just use the pvalues given
-                        
-                       pval_obj = pvalue_object;
-                       pval_obj.p_values = plot_obj.p_values{iResult};
-                        
+                       
+                    else   % otherwise just use the pvalues or p-value objects given
+                       
+                                               
+                       % if the p-value objects don't exist, but p-values are listed, use these p-values
+                       if isempty(plot_obj.pval_objects)  
+                       
+                           pval_obj = pvalue_object;   % using existing precomputed p-values
+                           pval_obj.p_values = plot_obj.p_values{iResult};
+                       
+                       else  % else if p-value objects already exist, but p-value object do not, just use the p-values given 
+                           
+                           pval_obj = plot_obj.pval_objects{iResult};   % using existing precomputed pvalue objects
+                           
+                           
+                           % if p-values aready exist and so do p-value objects, use the p-value objects to recreate the p-values... 
+                           % print a message that we are ignoring the p-value that already are set in the plot_obj
+                           if ~isempty(plot_obj.p_values) && length(plot_obj.p_values) >= iResult  && ~isempty(plot_obj.p_values{iResult}) && ~isempty(plot_obj.pval_objects)
+                                'ignoring the plot_obj p-values and getting p-values from the p-value objects'
+                           end
+                           
+                           
+                           % just getting the p-values from the p-value object, 
+                           % perhaps should make the code robust and recompute them from the null distributions, but keeping this for now...
+                           plot_obj.p_values{iResult} = pval_obj.p_values;
+                       
+                           
+                       end
+                       
+                       
+
+                       
+                       
                     end
-                    
-                    
-                    % set the val_obj.p_values to the plot_obj pvalues in case pvalues were passed to the plot_object instead of calculated by the pvalue_object
-                    pval_obj.p_values = plot_obj.p_values{iResult};
-                    
+                                       
+
                     
                    % add decoded information latency to legends
                    if plot_obj.add_pvalue_latency_to_legends_alignment > 0
@@ -584,11 +611,17 @@ classdef plot_standard_results_object
                     for iSigInterval = 1:length(inds_to_use)
                         line([start_intervals(inds_to_use(iSigInterval)) end_intervals(inds_to_use(iSigInterval))], [y_offset y_offset], 'color', plot_obj.the_colors{iResult}, 'LineWidth', 5)      
                     end      
-                    
+
+                    % save the pvalue information...
+                    plot_obj.pval_objects{iResult} = pval_obj;
                     
                 end
                 
                 axis([get(gca, 'XLim') (ylims(1) - (((iResult + 1.5) .* .025) .* (y_interval_length))) ylims(2)])
+                
+                
+
+                
                 
             end
               

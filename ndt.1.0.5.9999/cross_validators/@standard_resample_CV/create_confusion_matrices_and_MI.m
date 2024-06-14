@@ -37,7 +37,7 @@ function DECODING_RESULTS = create_confusion_matrices_and_MI(cv, YTe, all_predic
     unique_labels = unique(YTe);
 
     % remap labels if they are not consequative positive numbers starting at 1
-    if min(YTe) < 0 || ~(unique_labels(end) == length(unique_labels))
+    if ~isequal(YTe, 1:length(unique_labels))   %min(YTe) < 0 || ~(unique_labels(end) == length(unique_labels))
 
         old_all_predicted_labels = all_predicted_labels;
         all_predicted_labels = zeros(size(old_all_predicted_labels));

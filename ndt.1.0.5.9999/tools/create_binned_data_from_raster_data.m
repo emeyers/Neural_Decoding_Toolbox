@@ -122,7 +122,9 @@ if strcmp(last_char, '*')
     end
     raster_file_directory_name = raster_file_directory_name(1:(end - length(t)));  % remove the end string from the directory name
 else
-    raster_file_dir = dir([raster_file_directory_name '*.mat']);
+    raster_file_dir_mat = dir([raster_file_directory_name '*.mat']);
+    raster_file_dir_csv = dir([raster_file_directory_name '*.csv']);
+    raster_file_dir = [raster_file_dir_mat; raster_file_dir_csv];
 end
 
 
@@ -140,7 +142,7 @@ if nargin < 5
     start_time = 1;
 end
 if nargin < 6
-    load([raster_file_directory_name raster_file_dir(1).name]);
+    [raster_labels, raster_site_info, raster_data] = load_raster_data([raster_file_directory_name raster_file_dir(1).name]);
     end_time = size(raster_data, 2);  
 end
 
@@ -178,10 +180,9 @@ for i = 1:length(raster_file_dir)
     end
     bin_str_len = length(curr_bin_string);
 
-    
-    
-   load([raster_file_directory_name raster_file_dir(i).name]);  
-
+          
+   [raster_labels, raster_site_info, raster_data] = load_raster_data([raster_file_directory_name raster_file_dir(i).name]);
+ 
    curr_binned_data = bin_one_site(raster_data, the_bin_start_times, the_bin_widths);  % use the below helper function to bin the data
 
    binned_data{i} = curr_binned_data;
@@ -261,8 +262,6 @@ save(saved_binned_data_file_name, 'binned_data', 'binned_labels', 'binned_site_i
 
 
 
-
-
 function  binned_data = bin_one_site(raster_data, the_bin_start_times, the_bin_widths)  
 % a helper function that bins the data for one site
 
@@ -277,7 +276,10 @@ function  binned_data = bin_one_site(raster_data, the_bin_start_times, the_bin_w
     
 
             
-        
+
+
+
+  
      
    
 

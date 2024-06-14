@@ -746,6 +746,7 @@ classdef standard_resample_CV
                if iResample > 1 
                     %result_types = fields(DECODING_RESULTS);
                     result_types = fieldnames(DECODING_RESULTS);  % changed to make the code compartible with Octave
+                    result_types = result_types(~ismember(result_types, 'FP_INFO'));
                     for iResultType = 1:length(result_types)
 
                         if ~strcmp(result_types{iResultType}, 'ROC_AUC_RESULTS')

@@ -284,6 +284,8 @@ methods
             the_properties.randomly_shuffle_labels_before_running = ds.randomly_shuffle_labels_before_running;
             the_properties.binned_site_info = ds.binned_site_info;
             the_properties.data_loaded_as_spike_counts = ds.data_loaded_as_spike_counts;
+            the_properties.label_names_to_label_numbers_mapping = ds.label_names_to_label_numbers_mapping;  % added in version 1.0.5
+            
             %the_properties.use_random_subset_of_k_labels_each_time_data_is_retrieved = ds.use_random_subset_of_k_labels_each_time_data_is_retrieved;
 
             
@@ -417,7 +419,7 @@ methods
 
                         for iSite = 1:length(the_data)                        
 
-                                if sum(abs(simultaneous_labels_to_use - ds.the_labels{iSite})) ~= 0
+                                if nansum(abs(simultaneous_labels_to_use - ds.the_labels{iSite})) ~= 0
                                     error('problem, all simultaneously recorded neurons should have the same labels')   
                                 end
 
@@ -536,7 +538,8 @@ methods
                     curr_resample_sites_to_use = sort(curr_resample_sites_to_use(1:num_resample_sites));  % sorting just for the heck of it
 
                 else   % selecting random features with replacement (i.e., the same feature can be repeated multiple times in a population vector).    
-                    initial_inds = ceil(rand(1, num_resample_sites) * num_resample_sites);  % can have multiple copies of the same feature within a population vector
+                    % % bug prior to version 1.0.6 % initial_inds = ceil(rand(1, num_resample_sites) * num_resample_sites);  % can have multiple copies of the same feature within a population vector
+                    initial_inds = ceil(rand(1, num_resample_sites) * length(sites_to_use));  % can have multiple copies of the same feature within a population vector
                     curr_resample_sites_to_use = sort(sites_to_use(initial_inds));    
                 end
 

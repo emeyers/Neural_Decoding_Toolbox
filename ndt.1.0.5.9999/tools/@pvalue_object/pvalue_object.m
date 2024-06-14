@@ -290,7 +290,7 @@ classdef pvalue_object < handle
                     pval_obj.real_results = diag(pval_obj.real_results); 
                 end
             else
-               pval_obj.real_results = real_data(pval_obj.training_time_ind_to_use, :);
+               pval_obj.real_results = pval_obj.real_results(pval_obj.training_time_ind_to_use, :);
             end
 
 

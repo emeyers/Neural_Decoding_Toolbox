@@ -3,22 +3,39 @@
 Development Changelog
 
 
+* 1.0.6  (Date 2018)
 
-
-* 1.0.2  (Tue, Jul 9 2013)
-
-  * Fixes 
-    
-    - basic_DS.m: fixed a bug that would cause an error to occur when shuffling the labels from simultaneously recorded data.  
-    
   * Enhancements
 
-    - plot_standard_results_object.m:  the constructor so can now take a [num_results_to_plot x num_time_bins] matrix 
-      that has all the decoding results precomputed rather than just a cell array with the names of standard results files.  
-      The field plot_obj.errorbar_file_names can now also be a [num_results_to_plot x num_time_bins] matrix of precomputed errorbars     
+     -  Changed get_properties() method  in the basic_DS so that it returns the property label_names_to_label_numbers_mapping. 
+	If the specific_binned_label_names that is passed to the constructor of the basic_DS is a cell array of strings then 
+    label_names_to_label_numbers_mapping contains the mapping of these strings onto numbers that are used for decoding 
+    (this mapping is done by the convert_label_strings_into_numbers() helper function. 
+	This property is useful when creating confusion matrices so that one can tell what mistakes were made between different labels. 
+
+     -  Changed plot_standard_resuls_object.m to inherit from handle so that it's state is perserved. This is most relevant after calling
+    the plot_results() method which updates a number of fields. Additionally, a new field has been added called pval_objects which stores the
+    pvalue objects for plotting when the results are above chance. These objects are saved after calling the plot_results() method and a lot of time
+    can be saved if one is repeatedly plotting the pvalues by saving these pval_objects and then setting them directly rather than recomputing
+    the null distributions every time one is replotting the results. 
+
     
-    - plot_standard_results_TCT_object.m: the constructor can now take a [num_training_times x num_test_times] matrix with precompiled 
-      decoding results and this object will display a TCT plot with these precompiled results. 
+  * Fixes 
+  
+      - plot_standard_resuls_object.m: Changed line 310 to: isfield(all_curr_results_data.DS_PARAMETERS, 'binning_parameters') && ~isempty(all_curr_results_data.DS_PARAMETERS.binning_parameters).
+        Was previously isfield(all_curr_results_data.DS_PARAMETERS, 'binned_site_info') && ~isempty(all_curr_results_data.DS_PARAMETERS.binned_site_info) which was a bug (i.e,. should have
+        said binned_parameters not binned_site_info. 
+
+      - generalization_DS.m: In previous versions, the generalization_DS did not work properly if the cell arrays given for the 
+        the_training_label_names and the_test_label_names contained cell arrays that were of size [k x 1] rather than of size [1 x k] 
+        (in previous versions, if cell arrays of size [kx1] were given, only the first label in each class would be used). To fix this so that
+        cell arrays of size [k x1] or of size [1 x k] both work, lines 204, 209, 248, 253 of the generalization_DS were changed so that 
+        length(the_training_label_names{iClass})  is used instead of size(the_training_label_names{iClass}, 2) in the for loop, which correctly
+        uses the numebr of labels in each class regardless of the the size of the the_training_label_names (or the_test_label_names).
+
+      - basic_DS.m: Fixed a bug in the get_data() method so that if sampling sites with replacement all sites will be selected. In particular,
+        line 542 was changed from initial_inds = ceil(rand(1, num_resample_sites) * num_resample_sites); 
+        to: initial_inds = ceil(rand(1, num_resample_sites) * length(sites_to_use)); 
 
 
 
@@ -125,5 +142,23 @@ Development Changelog
 
      9. add_ndt_paths_and_init_rand_generator.m: Added a line of code that check whether Octave is beig run and if it is it adds the octave_code/ the Octave's search path
         so that Octave's union function is overloaded.
- 
+
+
+
+
+* 1.0.2  (Tue, Jul 9 2013)
+
+  * Fixes 
+    
+    - basic_DS.m: fixed a bug that would cause an error to occur when shuffling the labels from simultaneously recorded data.  
+    
+  * Enhancements
+
+    - plot_standard_results_object.m:  the constructor so can now take a [num_results_to_plot x num_time_bins] matrix 
+      that has all the decoding results precomputed rather than just a cell array with the names of standard results files.  
+      The field plot_obj.errorbar_file_names can now also be a [num_results_to_plot x num_time_bins] matrix of precomputed errorbars     
+    
+    - plot_standard_results_TCT_object.m: the constructor can now take a [num_training_times x num_test_times] matrix with precompiled 
+      decoding results and this object will display a TCT plot with these precompiled results. 
+
 
