@@ -1,5 +1,5 @@
 ---
-title: Zhang desimone 7 object dataset
+title: Zhang Desimone 7 object dataset
 toc: true
 ---
 

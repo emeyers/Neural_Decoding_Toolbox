@@ -3,11 +3,24 @@
 title: Datasources
 ---
 
-<p class="ethan_opening_paragraph">Datasource objects (DS) take <a title="Binned-format" href="http://www.readout.info/toolbox-design/data-formats/binned-format/">binned data and labels</a> as inputs and generate population vectors (which are used by a cross-validator object to train and test a classifier).  Datasources must implement a <em>get_data</em> method that returns the training and test data splits.  The <em>get_data</em> method must have the following structure:</p>
+<p class="ethan_opening_paragraph">Datasource objects (DS) take <a title="Binned-format" href="http://www.readout.info/toolbox-design/data-formats/binned-format/">binned data and labels</a> as inputs and generate population vectors (which are used by a cross-validator object to train and test a classifier).</p>
+
+
+<p>The Neural Decoding Toolbox comes with following datasource objects:</p>
+<ol>
+<li><a title="basic_DS" href="http://www.readout.info/toolbox-design/datasources/basic_ds/">basic_DS</a></li>
+<li><a title="generalization_DS" href="http://www.readout.info/toolbox-design/datasources/generalization_ds/">generalization_DS</a></li>
+</ol>
+
+
+
+## Methods that must be implemented
+
+Datasources must implement a <em>get_data</em> method that returns the training and test data splits. The <em>get_data</em> method must have the following structure:</p>
 
 <p class="ethan_bold_method">[all_XTr, all_YTr, all_XTe, all_YTe, ADDITIONAL_INFO] = ds.get_data</p>
 
-<p style="padding-top: 3%; padding-bottom: 3%;"><u> The outputs of this methods are: </u></p>
+<p style="padding-top: 5%; padding-bottom: 1%;"><u> The outputs of this methods are: </u></p>
 
 <p class="ethan_bold_method">1.all_XTr{iTime}{iCV} = [num_features x num_training_points]</p>
 <p class="ethan_method_explanation">A cell array that has the training data for all times and cross-validation splits</p>
@@ -23,9 +36,5 @@ title: Datasources
 
 <br>
 
-<p>The Neural Decoding Toolbox comes with following datasource objects:</p>
-<ol>
-<li><a title="basic_DS" href="http://www.readout.info/toolbox-design/datasources/basic_ds/">basic_DS</a></li>
-<li><a title="generalization_DS" href="http://www.readout.info/toolbox-design/datasources/generalization_ds/">generalization_DS</a></li>
-</ol>
+
 
