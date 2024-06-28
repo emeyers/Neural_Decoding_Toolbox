@@ -1,5 +1,5 @@
 ---
-title: select_or_exclude_top_k_features_fp
+title: select_or_exclude_top_k_features_FP
 ---
 
 <p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">This feature preprocessor object applies an ANOVA to the training data to find the p-value of all features. It then either uses the top k features with the smallest p-values, or it removes the features with the smallest k p-values. Additionally, this function can be used to remove the top k p-values and then use only the following j next smallest p-values (for example, this can be useful if one is interested in comparing the performance using the most selective 10 neurons to using the next most selective neurons, etc.). 

@@ -7,6 +7,8 @@ website:
   bread-crumbs: false
   favicon: img/favicon.png
   
+  google-analytics: G-4E5B9S0Q5E
+  
   # start of the navigation bar at the top of the website
   navbar:
     pinned: true
@@ -102,3 +104,6 @@ format:
     fig-cap-location: margin
     reference-location: margin
     footnotes-hover: true
+    
+resources:
+  - CNAME

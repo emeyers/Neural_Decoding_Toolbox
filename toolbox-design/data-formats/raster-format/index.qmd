@@ -1,5 +1,5 @@
 ---
-title: raster-format
+title: Raster format
 ---
 
 <p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;"> Raster-format data files contain information from a single site (e.g., data from one neuron, one LFP channel, etc.). Data that is in raster-format contains three variables: raster_data, raster_labels and raster_site_info, which are described below.

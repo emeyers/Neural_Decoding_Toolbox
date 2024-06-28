@@ -1,5 +1,5 @@
 ---
-title: "libsvm_cl"
+title: "libsvm_CL"
 ---
 
 <p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">This classifier object uses the <a href="http://www.csie.ntu.edu.tw/~cjlin/libsvm/">LIBSVM software package</a> to implement a support vector machine. A support vector machine (SVM) is a classifier that learns a function <tt>f</tt> that minimizes the hinge loss between predictions made on the training data, while also applying a penalty for more complex <tt>f</tt> (the penalty is based on the norm of <tt>f</tt> in a reproducing kernel Hilbert space). The SVM has a parameter C that controls the trade off between the empirical loss (i.e., a smaller prediction error on the training set), and the complexity of the <tt>f</tt>. SVMs can use different kernels to create nonlinear decision boundaries.

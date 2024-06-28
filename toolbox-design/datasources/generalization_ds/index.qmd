@@ -1,5 +1,5 @@
 ---
-title: generalization_ds
+title: generalization_DS
 ---
 
 <p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;"> This datasource object (DS) allows one to train a classifier on a specific set of labels, and then test the classifier on a different set of labels.  This enables one to evaluate how similar neural representations are across different but related conditions (i.e., does training on one set of conditions generalization to a different but related set of conditions ). This datasource is a subclass of the handle class (i.e., it has a persistent state) and contains a <a href="http://www.readout.info/toolbox-design/datasources/basic_ds/" title="basic_DS">basic_DS</a> where it gets most of its functionality from.

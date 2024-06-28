@@ -1,5 +1,5 @@
 ---
-title: basic_ds
+title: basic_DS
 ---
 
 <p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;"> The datasource <tt>basic_DS</tt> implements the basic of a datasource (DS) object. Namely, it takes binned data and labels, and through the <tt> get_data() </tt> method, the object returns k leave-one-fold-out cross-validation splits of the data which can subsequently be used to train and test a classifier. The data in the population vectors is randomly selected subset of data from larger population of binned-format data that is passed to the constructor of this object. This object can create both pseudo-populations (i.e., populations vector in which the recordings were made on independent sessions but are treated as if they were recorded simultaneously) and simultaneously populations in which neurons that were recorded together always appear together in population vectors. 

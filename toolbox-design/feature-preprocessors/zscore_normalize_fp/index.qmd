@@ -1,5 +1,5 @@
 ---
-title: zscore_normalize_fp
+title: zscore_normalize_FP
 ---
 
 <p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">This feature preprocessor object applies z-score normalization to each feature by calculating the mean and the standard deviation for each feature using the training data, and then subtracting the mean and dividing by the standard deviation for each feature in the training and test sets. This function is useful for preventing some classifiers from relying too heavily on particular features when different features can have very different ranges of values (for example, it is useful when decoding neural data because different neurons can have different ranges of firing rates). 

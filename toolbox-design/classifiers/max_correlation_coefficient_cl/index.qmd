@@ -1,5 +1,5 @@
 ---
-title: max_correlation_coefficient_cl
+title: max_correlation_coefficient_CL
 ---
 
 <p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;"> This CL object learns a mean population vector (template) for each class from the training set (by averaging together the all training points within each class). The classifier is tested by calculated Pearson's correlation coefficient between a test point and the templates learned from the training set, and the class with the highest correlation value is returned as the predicted label. The decision values returned by the classifier are the correlation coefficients between all test points and all templates.

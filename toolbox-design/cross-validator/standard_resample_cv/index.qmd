@@ -1,5 +1,5 @@
 ---
-title: standard_resample_cv
+title: standard_resample_CV
 ---
 
 <p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;"> This is a cross-validator object that run a cross-validation procedure multiple times (as specified by the num_resample_runs property) and returns decoding results calculated over the resample runs and cross-validation splits. This cross-validator calculates a decoding measures based on the zero-one loss function (i.e., classification accuracy and mutual information based on the confusion matrix).  If a classifier is used that returns decision values, then one can also get results based on these decision values, normalized rank results, and results based on the area under ROC curves that are calculated separately for each class. More information about the methods, different properties that can be set, and different results that can be returned as described below. 

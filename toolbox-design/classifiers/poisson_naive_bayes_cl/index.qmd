@@ -1,5 +1,5 @@
 ---
-title: "poisson_naive_bayes_cl"
+title: "poisson_naive_bayes_CL"
 ---
 
 <p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">This classifier object implements a Poisson Naive Bayes classifier. The classifier works by learning the expected number of occurrences (denoted lambda) for each feature and each class by taking the average of the training data over all trials (separately for each feature and each class). To evaluate whether a given test point belongs to class i, the log of the likelihood function is calculated using the lambda values as parameters of Poisson distributions (i.e., there is a separate Poisson distribution for each feature, that is based on the lambda value for that feature). The overall likelihood value is calculated by multiplying the probabilities for each neuron together (i.e,. Naive Bayes classifiers assume that each feature is independent), or equivalently, adding the log of the probabilities for each feature together. The class with the highest likelihood value is chosen as the predicted label, and the decision values are the log likelihood values.

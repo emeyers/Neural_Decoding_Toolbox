@@ -1,5 +1,5 @@
 ---
-title: select_pvalue_significant_features_fp
+title: select_pvalue_significant_features_FP
 ---
 
 <p class="ethan_opening_paragraph" style="padding-bottom: 0% !important;">This feature preprocessor object applies an ANOVA separately to each feature using data from the training set to find the p-value of all features. It then removes all features that have p-values greater than a specified threshold from the training and test sets.  
