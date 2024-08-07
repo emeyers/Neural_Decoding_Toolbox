@@ -20,11 +20,11 @@ toc: true
 
 <br>
 
-[Download MATLAB version of the Freiwald Tsao Face Views AM dataset](/_freeze/download_data_and_code/Freiwald_Tsao_faceviews_AM_data_MATLAB.zip) 
+[Download MATLAB version of the Freiwald Tsao Face Views AM dataset](/assets/download_data_and_code/Freiwald_Tsao_faceviews_AM_data_MATLAB.zip) 
 
-[Download csv version of the Freiwald Tsao Face Views AM dataset](/_freeze/download_data_and_code/Freiwald_Tsao_faceviews_AM_data_csv.zip) 
+[Download csv version of the Freiwald Tsao Face Views AM dataset](/assets/download_data_and_code/Freiwald_Tsao_faceviews_AM_data_csv.zip) 
 
-[Download R version of the Freiwald Tsao Face Views AM dataset](/_freeze/download_data_and_code/Freiwald_Tsao_faceviews_AM_data.zip) 
+[Download R version of the Freiwald Tsao Face Views AM dataset](/assets/download_data_and_code/Freiwald_Tsao_faceviews_AM_data.zip) 
 
 
 

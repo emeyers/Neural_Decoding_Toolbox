@@ -7,7 +7,7 @@ title: Download the toolbox
 
 <br>
 
-<p style="font-size: 20px;">Download the latest version of the [Neural Decoding Toolbox (v1.0.4) ](/_freeze/download_data_and_code/ndt.1.0.4.zip)</p>
+<p style="font-size: 20px;">Download the latest version of the [Neural Decoding Toolbox (v1.0.4) ](/assets/download_data_and_code/ndt.1.0.4.zip)</p>
  
 <br>
 

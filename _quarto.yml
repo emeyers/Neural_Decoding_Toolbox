@@ -107,3 +107,4 @@ format:
     
 resources:
   - CNAME
+  - assets/

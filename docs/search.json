@@ -428,7 +428,7 @@
     "href": "downloads/download-the-toolbox/old-versions-of-the-toolbox/index.html",
     "title": "Old versions of the toolbox",
     "section": "",
-    "text": "The current version of the Neural Decoding Toolbox (version 1.0.4) and be downloaded here:\nDownload older version 1.0.4\n\nBelow are links to download older versions of the toolbox. In general we highly recommend using the latest version of the toolbox. However in order to see what has changed and to possibly replicate older results, we maintain links below to older versions of the toolbox. A list of the changes that have been made in different version of the toolbox can be found here.\nDownload older version 1.0.0\nDownload older version 1.0.2",
+    "text": "The current version of the Neural Decoding Toolbox (version 1.0.4) and be downloaded here:\nDownload version 1.0.4\n\nBelow are links to download older versions of the toolbox. In general we highly recommend using the latest version of the toolbox. However in order to see what has changed and to possibly replicate older results, we maintain links below to older versions of the toolbox. A list of the changes that have been made in different version of the toolbox can be found here.\nDownload older version 1.0.0\nDownload older version 1.0.2",
     "crumbs": [
       "Downloads",
       "Download the toolbox",
