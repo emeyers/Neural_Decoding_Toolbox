@@ -10,5 +10,5 @@ toc: true
 
 <a href="http://www.readout.info/downloads/datasets/" title="Datasets">Download example datasets in raster-format</a>
 
-<a href="http://www.readout.info/downloads/libsvm/" title="LibSVM">Download a version of LibSVM that will work with the Neural Decoding Toolbox  </a>
+<a href="http://readout.info/downloads/additional-code/libsvm/" title="LibSVM">Download a version of LibSVM that will work with the Neural Decoding Toolbox  </a>
 
